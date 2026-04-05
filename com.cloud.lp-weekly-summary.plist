@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.cloud.lp-weekly-summary</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/jerryshi/.local/bin/claude</string>
+        <string>-p</string>
+        <string>Get the LP pipeline status using lp_pipeline_status tool, then send a weekly summary to Jerry DM (chat_id 7337144058) via TG. Format: total LPs, committed vs $300-500M target, count per stage, any stale LPs. Keep it concise.</string>
+        <string>--mcp-config</string>
+        <string>/Users/jerryshi/Ship/cloud-mail/mcp-config.json</string>
+        <string>--allowedTools</string>
+        <string>mcp__orbit__lp_pipeline_status,mcp__plugin_telegram_telegram__reply</string>
+        <string>--max-turns</string>
+        <string>4</string>
+        <string>--output-format</string>
+        <string>json</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>/Users/jerryshi</string>
+        <key>PATH</key>
+        <string>/Users/jerryshi/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Weekday</key>
+        <integer>1</integer>
+        <key>Hour</key>
+        <integer>8</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>WorkingDirectory</key>
+    <string>/Users/jerryshi</string>
+    <key>StandardOutPath</key>
+    <string>/Users/jerryshi/Ship/ce/lp-crm/logs/weekly-summary.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/jerryshi/Ship/ce/lp-crm/logs/weekly-summary.log</string>
+</dict>
+</plist>
