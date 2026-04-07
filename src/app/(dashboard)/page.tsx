@@ -1,135 +1,287 @@
-import { db } from "@/db";
-import { lpOrganizations, lpContacts, interactions } from "@/db/schema";
-import { eq, sql, desc } from "drizzle-orm";
-import { KanbanBoard } from "@/components/pipeline/kanban-board";
+"use client";
 
-const STAGES = [
-  { key: "prospect", label: "Prospect" },
-  { key: "intro", label: "Intro" },
-  { key: "meeting", label: "Meeting" },
-  { key: "dd", label: "DD" },
-  { key: "soft_circle", label: "Soft Circle" },
-  { key: "committed", label: "Committed" },
-  { key: "closed", label: "Closed" },
-] as const;
+import { useState, useMemo } from "react";
+import Link from "next/link";
+import { useOrganizations } from "@/hooks/use-organizations";
+import { usePipelineSummary } from "@/hooks/use-pipeline";
+import { useInteractions } from "@/hooks/use-interactions";
+import { StatCard } from "@/components/dashboard/stat-card";
+import { RecentActivity } from "@/components/dashboard/recent-activity";
+import { StageBadge } from "@/components/shared/stage-badge";
+import { WarmthDot } from "@/components/shared/warmth-dot";
+import { Sparkline } from "@/components/shared/sparkline";
+import { formatMoney } from "@/lib/format";
+import {
+  FUND_TARGET_MM,
+  STRATEGIC_CATEGORIES,
+  STRATEGIC_CATEGORY_MAP,
+  inferStrategicCategory,
+} from "@/lib/constants";
+import type { OrgWithMeta } from "@/db/queries/organizations";
 
-export type LPCard = {
-  id: string;
-  name: string;
-  lpType: string | null;
-  stage: string;
-  targetCommitment: string | null;
-  actualCommitment: string | null;
-  primaryContact: string | null;
-  primaryTitle: string | null;
-  owner: string | null;
-  daysSinceInteraction: number | null;
-};
-
-async function getPipelineData() {
-  const orgs = await db
-    .select({
-      id: lpOrganizations.id,
-      name: lpOrganizations.name,
-      lpType: lpOrganizations.lpType,
-      stage: lpOrganizations.pipelineStage,
-      targetCommitment: lpOrganizations.targetCommitment,
-      actualCommitment: lpOrganizations.actualCommitment,
-      owner: lpOrganizations.relationshipOwner,
-    })
-    .from(lpOrganizations)
-    .where(sql`${lpOrganizations.pipelineStage} != 'passed'`)
-    .orderBy(lpOrganizations.name);
-
-  const cards: LPCard[] = [];
-
-  for (const org of orgs) {
-    // Get primary contact
-    const contact = await db
-      .select({
-        name: lpContacts.fullName,
-        title: lpContacts.title,
-      })
-      .from(lpContacts)
-      .where(eq(lpContacts.organizationId, org.id))
-      .orderBy(desc(lpContacts.isPrimary))
-      .limit(1);
-
-    // Get last interaction date
-    const lastInteraction = await db
-      .select({
-        maxDate: sql<string>`max(${interactions.interactionDate})`,
-      })
-      .from(interactions)
-      .where(eq(interactions.organizationId, org.id));
-
-    const lastDate = lastInteraction[0]?.maxDate;
-    let daysSince: number | null = null;
-    if (lastDate) {
-      daysSince = Math.floor(
-        (Date.now() - new Date(lastDate).getTime()) / (1000 * 60 * 60 * 24)
-      );
-    }
-
-    cards.push({
-      id: org.id,
-      name: org.name,
-      lpType: org.lpType,
-      stage: org.stage,
-      targetCommitment: org.targetCommitment,
-      actualCommitment: org.actualCommitment,
-      primaryContact: contact[0]?.name ?? null,
-      primaryTitle: contact[0]?.title ?? null,
-      owner: org.owner,
-      daysSinceInteraction: daysSince,
-    });
-  }
-
-  // Summary stats
-  const totalTarget = orgs.reduce(
-    (sum, o) => sum + parseFloat(o.targetCommitment ?? "0"),
-    0
-  );
-  const totalCommitted = orgs
-    .filter((o) => o.stage === "committed" || o.stage === "closed")
-    .reduce((sum, o) => sum + parseFloat(o.actualCommitment ?? "0"), 0);
-
-  return { cards, stages: STAGES, totalTarget, totalCommitted };
-}
-
-export default async function PipelinePage() {
-  const { cards, stages, totalTarget, totalCommitted } =
-    await getPipelineData();
+function CategoryTable({
+  category,
+  orgs,
+  sparklines,
+}: {
+  category: (typeof STRATEGIC_CATEGORIES)[number];
+  orgs: OrgWithMeta[];
+  sparklines: Record<string, number[]>;
+}) {
+  if (orgs.length === 0) return null;
 
   return (
-    <div className="p-6">
-      {/* Summary bar */}
-      <div className="flex items-center gap-6 mb-6 text-sm">
-        <div className="text-zinc-400">
-          <span className="text-white font-medium">{cards.length}</span> LPs in
-          pipeline
-        </div>
-        <div className="text-zinc-400">
-          Target:{" "}
-          <span className="text-white font-medium">
-            ${totalTarget >= 1000
-              ? `${(totalTarget / 1000).toFixed(1)}B`
-              : `${totalTarget.toFixed(0)}M`}
+    <div
+      className="rounded-xl overflow-hidden"
+      style={{
+        background: "var(--bg-surface)",
+        border: "1px solid var(--border-subtle)",
+      }}
+    >
+      {/* Category header */}
+      <div
+        className="px-4 py-3 flex items-center gap-2.5 border-b"
+        style={{ borderColor: "var(--border-subtle)" }}
+      >
+        <span
+          className="material-symbols-rounded text-[20px]"
+          style={{ color: category.color }}
+        >
+          {category.icon}
+        </span>
+        <div className="flex-1">
+          <span
+            className="text-sm font-medium"
+            style={{ color: "var(--text-primary)" }}
+          >
+            {category.label}
+          </span>
+          <span
+            className="text-xs ml-2"
+            style={{ color: "var(--text-tertiary)" }}
+          >
+            {orgs.length}
           </span>
         </div>
-        <div className="text-zinc-400">
-          Committed:{" "}
-          <span className="text-emerald-400 font-medium">
-            ${totalCommitted >= 1000
-              ? `${(totalCommitted / 1000).toFixed(1)}B`
-              : `${totalCommitted.toFixed(0)}M`}
-          </span>
-          <span className="text-zinc-500 ml-1">/ $300-500M</span>
-        </div>
+        <span
+          className="text-[11px]"
+          style={{ color: "var(--text-tertiary)" }}
+        >
+          {category.description}
+        </span>
       </div>
 
-      {/* Kanban board */}
-      <KanbanBoard cards={cards} stages={stages} />
+      {/* Rows */}
+      <table className="w-full">
+        <thead>
+          <tr style={{ borderBottom: "1px solid var(--border-subtle)" }}>
+            {["Organization", "Stage", "Contact", "HQ", "Notes", "Warmth", "Activity"].map((h) => (
+              <th
+                key={h}
+                className="px-3 py-1.5 text-[11px] font-medium text-left"
+                style={{ color: "var(--text-tertiary)" }}
+              >
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {orgs.map((org) => (
+            <tr
+              key={org.id}
+              className="transition-colors cursor-pointer"
+              style={{ borderBottom: "1px solid var(--border-subtle)" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "var(--bg-surface-hover)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "transparent")
+              }
+              onClick={() =>
+                (window.location.href = `/organizations/${org.id}`)
+              }
+            >
+              <td className="px-3 py-2">
+                <span
+                  className="text-sm font-medium"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  {org.name}
+                </span>
+              </td>
+              <td className="px-3 py-2">
+                <StageBadge stage={org.stage} />
+              </td>
+              <td
+                className="px-3 py-2 text-xs truncate max-w-[120px]"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                {org.primaryContact ?? "—"}
+              </td>
+              <td
+                className="px-3 py-2 text-xs"
+                style={{ color: "var(--text-tertiary)" }}
+              >
+                {org.headquarters ?? "—"}
+              </td>
+              <td
+                className="px-3 py-2 text-xs truncate max-w-[200px]"
+                style={{ color: "var(--text-tertiary)" }}
+              >
+                {org.notes?.slice(0, 60) ?? "—"}
+                {org.notes && org.notes.length > 60 ? "..." : ""}
+              </td>
+              <td className="px-3 py-2">
+                <WarmthDot daysSinceTouch={org.daysSinceInteraction} size={6} />
+              </td>
+              <td className="px-3 py-2">
+                <Sparkline
+                  data={sparklines[org.id] ?? []}
+                  width={48}
+                  height={12}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default function DashboardPage() {
+  const { data: orgs } = useOrganizations();
+  const { data: pipeline } = usePipelineSummary();
+  const { data: recentInteractions } = useInteractions({ limit: 10 });
+
+  const committedPct = pipeline
+    ? Math.round((pipeline.totalCommitted / FUND_TARGET_MM) * 100)
+    : 0;
+
+  // Group orgs by strategic category
+  const categorizedOrgs = useMemo(() => {
+    if (!orgs) return {};
+    const groups: Record<string, OrgWithMeta[]> = {};
+    for (const org of orgs) {
+      const cat = inferStrategicCategory(org);
+      if (!groups[cat]) groups[cat] = [];
+      groups[cat].push(org);
+    }
+    return groups;
+  }, [orgs]);
+
+  return (
+    <div className="space-y-6 max-w-[1200px]">
+      {/* Header with trip context */}
+      <div className="flex items-start justify-between">
+        <div>
+          <h1
+            className="text-2xl font-semibold"
+            style={{ color: "var(--text-primary)" }}
+          >
+            Orbit
+          </h1>
+          <p
+            className="text-sm mt-1"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            {orgs?.length ?? 0} organizations across{" "}
+            {Object.keys(categorizedOrgs).length} categories
+          </p>
+        </div>
+        <Link
+          href="/briefing"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90"
+          style={{ background: "var(--accent)", color: "white" }}
+        >
+          <span className="material-symbols-rounded text-[18px]">
+            strategy
+          </span>
+          Trip Briefing
+        </Link>
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-4 gap-4">
+        <StatCard
+          label="Total Pipeline"
+          value={String(orgs?.length ?? 0)}
+          subtext={`${Object.keys(categorizedOrgs).filter(k => k !== "uncategorized").length} strategic categories`}
+          icon="hub"
+        />
+        <StatCard
+          label="Committed"
+          value={pipeline ? formatMoney(pipeline.totalCommitted) : "—"}
+          subtext={`${committedPct}% of $${FUND_TARGET_MM}M`}
+          icon="verified"
+          accent={committedPct > 0 ? "#22c55e" : undefined}
+        />
+        <StatCard
+          label="Stale (14d+)"
+          value={String(pipeline?.staleCount ?? 0)}
+          subtext="Need follow-up"
+          icon="schedule"
+          accent={
+            pipeline && pipeline.staleCount > 5 ? "#f97316" : undefined
+          }
+        />
+        <StatCard
+          label="Recent Touches"
+          value={String(recentInteractions?.length ?? 0)}
+          subtext="Last 10 interactions"
+          icon="touch_app"
+        />
+      </div>
+
+      {/* Category Tables — the main view */}
+      <div className="space-y-4">
+        {STRATEGIC_CATEGORIES.filter((c) => c.key !== "uncategorized").map(
+          (category) => (
+            <CategoryTable
+              key={category.key}
+              category={category}
+              orgs={categorizedOrgs[category.key] ?? []}
+              sparklines={pipeline?.sparklines ?? {}}
+            />
+          )
+        )}
+
+        {/* Uncategorized at bottom */}
+        {categorizedOrgs["uncategorized"] &&
+          categorizedOrgs["uncategorized"].length > 0 && (
+            <CategoryTable
+              category={STRATEGIC_CATEGORY_MAP["uncategorized"]}
+              orgs={categorizedOrgs["uncategorized"]}
+              sparklines={pipeline?.sparklines ?? {}}
+            />
+          )}
+      </div>
+
+      {/* Recent Activity — compact, at the bottom */}
+      <div
+        className="rounded-xl overflow-hidden"
+        style={{
+          background: "var(--bg-surface)",
+          boxShadow: "var(--shadow-sm)",
+          border: "1px solid var(--border-subtle)",
+        }}
+      >
+        <div
+          className="px-5 py-3 border-b flex items-center justify-between"
+          style={{ borderColor: "var(--border-subtle)" }}
+        >
+          <h3
+            className="text-sm font-medium"
+            style={{ color: "var(--text-primary)" }}
+          >
+            Recent Activity
+          </h3>
+        </div>
+        {recentInteractions && (
+          <RecentActivity interactions={recentInteractions} />
+        )}
+      </div>
     </div>
   );
 }

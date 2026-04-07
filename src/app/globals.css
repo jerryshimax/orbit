@@ -1,26 +1,130 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ─── Google Material Design Token System ─── */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
+
+  /* Pipeline stage colors (universal) */
+  --color-stage-prospect: #6b7280;
+  --color-stage-intro: #3b82f6;
+  --color-stage-meeting: #f59e0b;
+  --color-stage-dd: #8b5cf6;
+  --color-stage-soft-circle: #06b6d4;
+  --color-stage-committed: #22c55e;
+  --color-stage-closed: #10b981;
+  --color-stage-passed: #ef4444;
+
+  /* Warmth indicators */
+  --color-warmth-hot: #22c55e;
+  --color-warmth-warm: #eab308;
+  --color-warmth-cooling: #f97316;
+  --color-warmth-cold: #ef4444;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Light Theme (default — Google style) ─── */
+:root {
+  --bg: #f8f9fa;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f1f3f4;
+  --bg-surface-active: #e8eaed;
+  --bg-sidebar: #ffffff;
+  --bg-elevated: #ffffff;
+
+  --text-primary: #1f1f1f;
+  --text-secondary: #5f6368;
+  --text-tertiary: #80868b;
+  --text-on-primary: #ffffff;
+
+  --border: #dadce0;
+  --border-subtle: #e8eaed;
+  --border-focus: #1a73e8;
+
+  --accent: #1a73e8;
+  --accent-hover: #1765cc;
+  --accent-surface: #e8f0fe;
+
+  --shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.1);
+  --shadow-md: 0 1px 3px 0 rgba(60, 64, 67, 0.15), 0 1px 2px -1px rgba(60, 64, 67, 0.1);
+  --shadow-lg: 0 4px 6px -1px rgba(60, 64, 67, 0.1), 0 2px 4px -2px rgba(60, 64, 67, 0.1);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
 }
 
+/* ─── Dark Theme (CE palette) ─── */
+.dark {
+  --bg: #0c1222;
+  --bg-surface: #161f32;
+  --bg-surface-hover: #1c2740;
+  --bg-surface-active: #22304d;
+  --bg-sidebar: #0a0f1c;
+  --bg-elevated: #1a2438;
+
+  --text-primary: #e8eaed;
+  --text-secondary: #9aa0a6;
+  --text-tertiary: #5f6368;
+  --text-on-primary: #ffffff;
+
+  --border: #2a3450;
+  --border-subtle: #1e293b;
+  --border-focus: #4a9eff;
+
+  --accent: #4a9eff;
+  --accent-hover: #6ab4ff;
+  --accent-surface: rgba(74, 158, 255, 0.1);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+}
+
+/* ─── Base Styles ─── */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Material Symbols ─── */
+.material-symbols-rounded {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.material-symbols-rounded.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ─── Scrollbar (subtle) ─── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--text-tertiary); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* ─── Selection ─── */
+::selection {
+  background: var(--accent-surface);
+  color: var(--accent);
+}
+
+/* ─── Tabular Numbers for Financial Data ─── */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ─── Transitions ─── */
+* {
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
+}
+
+/* ─── Mobile PWA Safe Area ─── */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }

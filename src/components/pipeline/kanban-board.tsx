@@ -1,63 +1,188 @@
 "use client";
 
-import type { LPCard } from "@/app/(dashboard)/page";
+import { useState, useCallback } from "react";
+import {
+  DndContext,
+  DragOverlay,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragStartEvent,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useDroppable } from "@dnd-kit/core";
 import { LPCardComponent } from "./lp-card";
 import { StageBadge } from "../shared/stage-badge";
+import { PIPELINE_STAGES } from "@/lib/constants";
+import { formatMoney } from "@/lib/format";
+import type { OrgWithMeta } from "@/db/queries/organizations";
 
-type Stage = { key: string; label: string };
+function StageColumn({
+  stage,
+  cards,
+  sparklines,
+}: {
+  stage: (typeof PIPELINE_STAGES)[number];
+  cards: OrgWithMeta[];
+  sparklines: Record<string, number[]>;
+}) {
+  const { setNodeRef, isOver } = useDroppable({ id: stage.key });
+
+  const stageTarget = cards.reduce(
+    (sum, c) => sum + parseFloat(c.targetCommitment ?? "0"),
+    0
+  );
+
+  return (
+    <div
+      ref={setNodeRef}
+      className="flex-shrink-0 w-72 rounded-xl transition-colors"
+      style={{
+        background: isOver ? "var(--accent-surface)" : "var(--bg-surface-hover)",
+        border: isOver
+          ? "1.5px dashed var(--accent)"
+          : "1px solid var(--border-subtle)",
+      }}
+    >
+      {/* Column header */}
+      <div
+        className="px-3 py-2.5 border-b flex items-center justify-between"
+        style={{ borderColor: "var(--border-subtle)" }}
+      >
+        <div className="flex items-center gap-2">
+          <StageBadge stage={stage.key} />
+          <span
+            className="text-xs tabular-nums"
+            style={{ color: "var(--text-tertiary)" }}
+          >
+            {cards.length}
+          </span>
+        </div>
+        {stageTarget > 0 && (
+          <span
+            className="text-xs tabular-nums"
+            style={{ color: "var(--text-tertiary)" }}
+          >
+            {formatMoney(stageTarget)}
+          </span>
+        )}
+      </div>
+
+      {/* Cards */}
+      <SortableContext
+        items={cards.map((c) => c.id)}
+        strategy={verticalListSortingStrategy}
+      >
+        <div className="p-2 space-y-2 min-h-[120px]">
+          {cards.map((card) => (
+            <LPCardComponent
+              key={card.id}
+              card={card}
+              sparklineData={sparklines[card.id]}
+            />
+          ))}
+          {cards.length === 0 && (
+            <div
+              className="text-xs text-center py-6"
+              style={{ color: "var(--text-tertiary)" }}
+            >
+              Drop here
+            </div>
+          )}
+        </div>
+      </SortableContext>
+    </div>
+  );
+}
 
 export function KanbanBoard({
-  cards,
-  stages,
+  orgs,
+  sparklines,
+  onStageChange,
 }: {
-  cards: LPCard[];
-  stages: readonly Stage[];
+  orgs: OrgWithMeta[];
+  sparklines: Record<string, number[]>;
+  onStageChange: (orgId: string, newStage: string) => void;
 }) {
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor)
+  );
+
+  const activeCard = activeId ? orgs.find((o) => o.id === activeId) : null;
+
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    setActiveId(String(event.active.id));
+  }, []);
+
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      setActiveId(null);
+      const { active, over } = event;
+      if (!over) return;
+
+      const orgId = String(active.id);
+      const org = orgs.find((o) => o.id === orgId);
+      if (!org) return;
+
+      // Check if dropped on a stage column
+      const targetStage = PIPELINE_STAGES.find((s) => s.key === over.id);
+      if (targetStage && targetStage.key !== org.stage) {
+        onStageChange(orgId, targetStage.key);
+        return;
+      }
+
+      // Check if dropped on another card — get that card's stage
+      const targetCard = orgs.find((o) => o.id === String(over.id));
+      if (targetCard && targetCard.stage !== org.stage) {
+        onStageChange(orgId, targetCard.stage);
+      }
+    },
+    [orgs, onStageChange]
+  );
+
+  // Only show active pipeline stages (exclude passed)
+  const activeStages = PIPELINE_STAGES.filter((s) => s.key !== "passed");
+
   return (
-    <div className="flex gap-4 overflow-x-auto pb-4">
-      {stages.map((stage) => {
-        const stageCards = cards.filter((c) => c.stage === stage.key);
-        const stageTarget = stageCards.reduce(
-          (sum, c) => sum + parseFloat(c.targetCommitment ?? "0"),
-          0
-        );
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      <div className="flex gap-3 overflow-x-auto pb-4">
+        {activeStages.map((stage) => {
+          const stageCards = orgs.filter((o) => o.stage === stage.key);
+          return (
+            <StageColumn
+              key={stage.key}
+              stage={stage}
+              cards={stageCards}
+              sparklines={sparklines}
+            />
+          );
+        })}
+      </div>
 
-        return (
-          <div
-            key={stage.key}
-            className="flex-shrink-0 w-72 bg-zinc-900/50 rounded-lg border border-zinc-800"
-          >
-            {/* Column header */}
-            <div className="px-3 py-2 border-b border-zinc-800 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <StageBadge stage={stage.key} />
-                <span className="text-xs text-zinc-500">
-                  {stageCards.length}
-                </span>
-              </div>
-              {stageTarget > 0 && (
-                <span className="text-xs text-zinc-500">
-                  ${stageTarget >= 1000
-                    ? `${(stageTarget / 1000).toFixed(1)}B`
-                    : `${stageTarget.toFixed(0)}M`}
-                </span>
-              )}
-            </div>
-
-            {/* Cards */}
-            <div className="p-2 space-y-2 min-h-[200px]">
-              {stageCards.map((card) => (
-                <LPCardComponent key={card.id} card={card} />
-              ))}
-              {stageCards.length === 0 && (
-                <div className="text-xs text-zinc-600 text-center py-8">
-                  No LPs
-                </div>
-              )}
-            </div>
+      <DragOverlay>
+        {activeCard && (
+          <div style={{ width: 272 }}>
+            <LPCardComponent
+              card={activeCard}
+              sparklineData={sparklines[activeCard.id]}
+            />
           </div>
-        );
-      })}
-    </div>
+        )}
+      </DragOverlay>
+    </DndContext>
   );
 }

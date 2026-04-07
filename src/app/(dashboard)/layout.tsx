@@ -1,4 +1,6 @@
-import Link from "next/link";
+import { Sidebar } from "@/components/shared/sidebar";
+import { Topbar } from "@/components/shared/topbar";
+import { CommandPalette } from "@/components/shared/command-palette";
 
 export default function DashboardLayout({
   children,
@@ -6,38 +8,17 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
-      <nav className="border-b border-zinc-800 px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="font-semibold text-lg">
-            Orbit
-          </Link>
-          <div className="flex items-center gap-4 text-sm text-zinc-400">
-            <Link
-              href="/"
-              className="hover:text-white transition-colors"
-            >
-              Pipeline
-            </Link>
-            <Link
-              href="/contacts"
-              className="hover:text-white transition-colors"
-            >
-              Contacts
-            </Link>
-            <Link
-              href="/activity"
-              className="hover:text-white transition-colors"
-            >
-              Activity
-            </Link>
-          </div>
+    <div className="min-h-screen flex">
+      <div className="hidden md:block">
+        <Sidebar />
+      </div>
+      <div className="flex-1 md:ml-[220px] flex flex-col">
+        <div className="hidden md:block">
+          <Topbar />
         </div>
-        <div className="text-xs text-zinc-500">
-          Current Equities Fund I
-        </div>
-      </nav>
-      <main>{children}</main>
+        <main className="flex-1 p-4 md:p-6 overflow-auto">{children}</main>
+      </div>
+      <CommandPalette />
     </div>
   );
 }
