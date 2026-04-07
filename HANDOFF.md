@@ -1,4 +1,4 @@
-# SOVEREIGN Handoff
+# Orbit Handoff
 > Last updated: 2026-04-07 by Jerry (via Claude Code)
 
 ## Status: 🔴 NEEDS DEPLOY — Jerry departs Apr 12
@@ -10,7 +10,7 @@
 ### Done
 - Built full Roadshow Dashboard (Trip HQ, Timeline, Meeting List, Meeting Prep Card)
 - Built full LP CRM (Dashboard, Pipeline Kanban, Organizations, Contacts, Analytics, Briefing)
-- Wired Stitch UI design (SOVEREIGN brand: M3 tokens, Manrope/Space Grotesk, glass morphism)
+- Wired Stitch UI design (Orbit brand: M3 tokens, Manrope/Space Grotesk, glass morphism)
 - Database: 7 tables, Drizzle migrations, seed script (13 meetings, 4 legs, Chinese + English)
 - API: 10 route groups, MCP server with 6 tools
 - PWA manifest + meta tags for iOS home screen
@@ -21,7 +21,7 @@
 - Vercel Hobby plan cannot build Next.js 16 — need Vercel Pro or Docker deploy
 
 ### For David
-1. **🔴 HIGHEST PRIORITY:** Deploy the app before Apr 12. See `docs/sovereign-handoff.md` Chapter 7 for step-by-step checklist. Supabase + Vercel Pro or Docker.
+1. **🔴 HIGHEST PRIORITY:** Deploy the app before Apr 12. See `docs/orbit-handoff.md` Chapter 7 for step-by-step checklist. Supabase + Vercel Pro or Docker.
 2. **Important:** Test on iPhone after deploy. Safari → Add to Home Screen. Verify bottom nav, meeting cards, Chinese text rendering.
 3. **Nice-to-have:** Compare live app against Stitch mockups. Fix any visual gaps.
 

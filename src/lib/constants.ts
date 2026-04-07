@@ -15,7 +15,7 @@ export const STAGE_MAP = Object.fromEntries(
 
 export const LP_TYPES: Record<string, string> = {
   pension: "Pension",
-  sovereign_wealth: "Sovereign Wealth",
+  sovereign_wealth: "Orbit Wealth",
   endowment: "Endowment",
   foundation: "Foundation",
   family_office: "Family Office",

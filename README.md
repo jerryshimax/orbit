@@ -1,99 +1,85 @@
-# CE Roadshow — Sovereign
+# Orbit
 
-Institutional roadshow dashboard for Current Equities Fund I. Mobile-first PWA for managing meetings, prep, and follow-ups across a multi-city fundraising trip.
+**Universal relationship CRM for Jerry Shi's multi-entity empire.**
+
+Orbit is the single dashboard that manages LP pipeline, roadshow prep, deal flow, contacts, and interactions across all of Jerry's entities:
+
+| Entity | Tag | What Orbit Manages |
+|--------|-----|--------------------|
+| **Synergis Capital** | SYN | VC deal pipeline, portfolio companies, co-investor relations. $500K–$5M checks across AI, crypto, biotech, govtech, consumer. |
+| **Current Equities** | CE | Infrastructure PE fund formation. Behind-the-meter energy for AI data centers. $300–500M Fund I. LP fundraising, roadshow, deal pipeline. |
+| **UUL Global** | UUL | Logistics operating company. BD pipeline, partner relationships, customer CRM. |
+| **Family Office** | FO | FO networks, events, roundtables, conference relationships. |
+
+## What Orbit Does
+
+### LP CRM
+- **Pipeline Kanban** — drag-drop LP organizations across 8 stages (prospect → committed)
+- **Organization profiles** — contacts, interaction history, pipeline stage, Brain note sync
+- **Contact directory** — people across all LP organizations
+- **Analytics** — fund progress, stage funnel, warmth distribution, team activity
+- **AI Briefing** — Claude ranks LPs by strategic fit before meetings
+- **Command palette** — ⌘K search across everything
+
+### Roadshow Dashboard
+- **Trip HQ** — stat cards, calendar strip, today's agenda, deal flow progress
+- **Meeting prep cards** — strategic ask, pitch angle, CRM dossier, attendees, intro chain, action items
+- **Timeline** — day-by-day view with sticky city headers, current meeting highlight
+- **Bilingual** — Chinese prep for Chinese meetings, English for Western ones
+
+### Agent Integration
+- **MCP Server** — 6 tools for Cloud (Jerry's Telegram AI assistant) to log interactions, move pipeline stages, search LPs, get full dossiers
+- **Brain sync** — reads/writes Obsidian Brain notes
 
 ## Stack
 
-- **Framework:** Next.js 16 (App Router)
-- **Styling:** Tailwind CSS 4
-- **Database:** PostgreSQL via Drizzle ORM
-- **Fonts:** Manrope, Inter, Space Grotesk, JetBrains Mono
-- **Icons:** Material Symbols Outlined
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router) |
+| UI | React 19, Tailwind CSS 4 |
+| Database | PostgreSQL via Drizzle ORM / Supabase |
+| Data Fetching | SWR (5s auto-refresh) |
+| Fonts | Manrope · Inter · Space Grotesk · JetBrains Mono |
+| Icons | Material Symbols Outlined |
+| AI | Anthropic Claude API (briefing) |
+| Agent | MCP Server (6 tools for Cloud) |
+| Deploy | Docker / Vercel Pro |
 
-## Setup
-
-### 1. Clone and install
+## Quick Start
 
 ```bash
 git clone https://github.com/jerryshimax/ce-roadshow.git
 cd ce-roadshow
 npm install
+cp .env.local.example .env.local    # Fill in Supabase creds
+npx drizzle-kit push                # Create tables
+npx tsx src/db/seed/roadshow-apr2026.ts  # Seed 13 meetings
+npm run dev                         # http://localhost:3000/roadshow
 ```
-
-### 2. Create Supabase project
-
-1. Go to [supabase.com](https://supabase.com) and create a new project
-2. Copy the connection string from Settings → Database
-
-### 3. Configure environment
-
-```bash
-cp .env.local.example .env.local
-# Edit .env.local with your Supabase credentials
-```
-
-### 4. Push database schema
-
-```bash
-npx drizzle-kit push
-```
-
-### 5. Seed roadshow data
-
-```bash
-npx tsx src/db/seed/roadshow-apr2026.ts
-```
-
-This creates the trip with 4 legs (HK, China, Paris, LA) and 13 meetings with full prep content in Chinese and English.
-
-### 6. Run dev server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000/roadshow](http://localhost:3000/roadshow)
 
 ## Deploy
 
-### Vercel Pro (Recommended)
-
-1. Import the GitHub repo on [vercel.com](https://vercel.com) (requires Pro plan for Next.js 16)
-2. Add a Postgres database via Vercel Storage (Neon)
-3. Deploy — the `DATABASE_URL` env var is auto-configured
-4. Run seed remotely: `DATABASE_URL=<vercel-postgres-url> npx tsx src/db/seed/roadshow-apr2026.ts`
-
-### Docker
-
+**Docker:**
 ```bash
 docker compose up -d
 ```
 
-Requires `.env` file with database credentials. See `.env.local.example`.
+**Vercel Pro:**
+Import repo → add Postgres (Neon) → deploy.
 
-## Project Structure
+## Documentation
 
-```
-src/
-├── app/
-│   ├── (dashboard)/roadshow/     ← Roadshow pages
-│   │   ├── page.tsx              ← Trip HQ (home)
-│   │   ├── meetings/page.tsx     ← Meeting list
-│   │   ├── meetings/[id]/page.tsx ← Meeting prep card
-│   │   └── timeline/page.tsx     ← Day-by-day timeline
-│   └── api/roadshow/             ← API routes
-├── components/roadshow/          ← UI components
-├── db/
-│   ├── schema/roadshow.ts        ← Database tables
-│   ├── queries/roadshow.ts       ← Query functions
-│   └── seed/                     ← Seed scripts
-└── hooks/use-roadshow.ts         ← SWR data hooks
-```
+- **[Handoff Document](docs/orbit-handoff.md)** — comprehensive 11-chapter technical handoff
+- **[HANDOFF.md](HANDOFF.md)** — rolling daily sync
+- **[Design Brief](ROADSHOW-DESIGN-BRIEF.md)** — visual design spec for mockup generation
 
-## Database Tables
+## Design Identity
 
-- `roadshow_trips` — Trip metadata, fund thesis, talking points
-- `roadshow_legs` — Geographic segments (HK, China, Paris, LA)
-- `roadshow_meetings` — Meetings with prep content, CRM links, action items
+Dark, gold-accented, institutional-grade. Material Design 3 color system.
 
-All tables link to the existing LP CRM (`lp_organizations`, `lp_contacts`, `interactions`).
+- **Primary:** #e9c176 (gold — marks what matters)
+- **Background:** #10141a (deep navy-black)
+- **Surface:** #181c22 → #1c2026 → #262a31 (elevation layers)
+- **Text:** #dfe2eb (primary) · #d1c5b4 (secondary) · #9a8f80 (tertiary)
+
+Bloomberg Terminal meets Linear. Every pixel carries information.

@@ -2,12 +2,12 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Sovereign — CE Roadshow",
-  description: "Current Equities Fund I Institutional Roadshow",
+  title: "Orbit — Orbit",
+  description: "Universal CRM — Synergis Capital · Current Equities · UUL Global",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "CE Roadshow",
+    title: "Orbit",
   },
 };
 

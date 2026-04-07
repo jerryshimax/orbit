@@ -1,4 +1,4 @@
-# SOVEREIGN — Project Handoff Document
+# Orbit — Project Handoff Document
 
 **Recipient:** David Wu (Engineer)
 **Author:** Jerry Shi
@@ -20,7 +20,7 @@ Current Equities (CE) is a new infrastructure PE fund I'm founding. We invest in
 - **Thesis:** Grid interconnection queues are 5-7 years. Behind-the-meter energy (gas, solar+storage, microgrids) delivers power in months. We bridge the gap between power developers who can build but can't sell, and hyperscalers who need power but can't build.
 - **Track record:** Jerry invested in AIP at Series A. Nscale acquired AIP at $1.5B (5x in <1 year). Microsoft LOI for 1.35 GW. This is the model we replicate.
 
-### 1.2 Why SOVEREIGN Exists
+### 1.2 Why Orbit Exists
 
 We're running a 3-week fundraising roadshow (April 12 – May 2, 2026) across 4 cities:
 
@@ -33,7 +33,7 @@ We're running a 3-week fundraising roadshow (April 12 – May 2, 2026) across 4 
 
 **The problem:** Before every meeting, Jerry and Ray need instant access to: who they're meeting, their background, what to ask, what to pitch, how they're connected, and what was promised last time — in the right language (Chinese or English). Between meetings, they need to track follow-ups and see what's next.
 
-**SOVEREIGN is the solution.** It's a mobile-first war room that combines:
+**Orbit is the solution.** It's a mobile-first war room that combines:
 
 1. **LP CRM (Orbit)** — manage 100+ LP relationships, pipeline stages, interactions, contacts
 2. **Roadshow Dashboard** — trip-specific prep cards, timeline, agenda, action items
@@ -42,7 +42,7 @@ These are NOT two separate apps. They are one unified product. The CRM data feed
 
 ### 1.3 Who Uses It
 
-| Person | Role | How They Use SOVEREIGN |
+| Person | Role | How They Use Orbit |
 |--------|------|----------------------|
 | **Jerry Shi** | GP, Managing Partner | Primary user. Opens on iPhone between meetings. Reviews prep cards, checks agenda, tracks action items. |
 | **Ray Mao** | Partner | Co-traveler on roadshow. Same usage as Jerry. |
@@ -51,9 +51,9 @@ These are NOT two separate apps. They are one unified product. The CRM data feed
 
 **Primary device:** iPhone (PWA via home screen shortcut). Desktop is secondary (for pre-trip prep at the desk).
 
-### 1.4 The Name: SOVEREIGN
+### 1.4 The Name: Orbit
 
-The app is branded "SOVEREIGN" internally — it references sovereign wealth funds, institutional authority, and the gravity of LP capital allocation. The design identity is dark, gold-accented, institutional-grade. Think Bloomberg Terminal meets Linear.
+The app is branded "Orbit" internally — it references sovereign wealth funds, institutional authority, and the gravity of LP capital allocation. The design identity is dark, gold-accented, institutional-grade. Think Bloomberg Terminal meets Linear.
 
 ---
 
@@ -87,7 +87,7 @@ Current auth: Supabase magic link login, restricted to `@synergiscap.com` and `@
 | **Database** | PostgreSQL via Supabase | Managed Postgres, free tier available |
 | **ORM** | Drizzle ORM 0.45.2 | Type-safe, lightweight, generates migrations |
 | **Data Fetching** | SWR 2.4.1 | Client-side with auto-revalidation (5s interval) |
-| **Fonts** | Manrope (headline), Inter (body), Space Grotesk (labels), JetBrains Mono (data) | SOVEREIGN design system |
+| **Fonts** | Manrope (headline), Inter (body), Space Grotesk (labels), JetBrains Mono (data) | Orbit design system |
 | **Icons** | Material Symbols Outlined | Google's latest icon system |
 | **AI** | Anthropic Claude API (@anthropic-ai/sdk) | For LP briefing generation |
 | **Agent Integration** | MCP Server (@modelcontextprotocol/sdk) | 6 tools for Cloud (Jerry's Telegram AI assistant) |
@@ -252,7 +252,7 @@ roadshow_legs ←──FK── roadshow_meetings (meetings belong to a leg)
 - ✅ Meeting list — filterable by leg, grouped by date
 - ✅ Meeting prep card — strategic ask, pitch angle, CRM dossier, attendees, intro chain, action items with checkboxes
 - ✅ Bottom nav (mobile) — Today, Meetings, Timeline, Contacts
-- ✅ Top bar with SOVEREIGN branding + glass morphism
+- ✅ Top bar with Orbit branding + glass morphism
 - ✅ Seed data — 13 real meetings with Chinese/English content
 - ✅ PWA manifest for iOS home screen
 
@@ -422,11 +422,11 @@ docker compose up -d
 
 ---
 
-## Chapter 9: Design System — SOVEREIGN Identity
+## Chapter 9: Design System — Orbit Identity
 
 ### 9.1 Brand
 
-- **Name:** SOVEREIGN
+- **Name:** Orbit
 - **Icon:** double_arrow (Material Symbols) in gold
 - **Aesthetic:** Dark, institutional, gold-accented. Bloomberg Terminal meets Linear.
 
@@ -528,7 +528,7 @@ The root-level `HANDOFF.md` is a rolling daily sync file. Keep it under 80 lines
 ```
 ce-roadshow/
 ├── docs/
-│   └── sovereign-handoff.md     ← THIS DOCUMENT
+│   └── orbit-handoff.md     ← THIS DOCUMENT
 ├── drizzle/                     ← SQL migrations
 ├── public/
 │   └── manifest.json            ← PWA config

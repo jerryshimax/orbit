@@ -61,7 +61,7 @@ export function TopBar({ title }: { title?: string }) {
           </span>
         </div>
         <span className="text-[#e9c176] text-2xl font-black font-[Manrope] tracking-tighter">
-          {title ?? "SOVEREIGN"}
+          {title ?? "ORBIT"}
         </span>
       </div>
       <div className="flex items-center gap-4">

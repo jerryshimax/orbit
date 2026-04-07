@@ -1,11 +1,11 @@
 {
-  "name": "CE Roadshow",
-  "short_name": "Roadshow",
-  "description": "Current Equities Fund I Roadshow Dashboard",
+  "name": "Orbit",
+  "short_name": "Orbit",
+  "description": "Universal CRM — Synergis Capital · Current Equities · UUL Global",
   "start_url": "/roadshow",
   "display": "standalone",
-  "background_color": "#0c1222",
-  "theme_color": "#0c1222",
+  "background_color": "#10141a",
+  "theme_color": "#10141a",
   "icons": [
     {
       "src": "/icon-192.png",
