@@ -6,33 +6,35 @@ export function StatCard({
   subtext,
   icon,
   accent,
+  hero,
 }: {
   label: string;
   value: string;
   subtext?: string;
   icon: string;
   accent?: string;
+  hero?: boolean;
 }) {
   return (
     <div
       className="p-5 rounded-xl"
       style={{
         background: "var(--bg-surface)",
-        boxShadow: "var(--shadow-sm)",
         border: "1px solid var(--border-subtle)",
+        borderLeft: hero ? "2px solid var(--accent)" : undefined,
       }}
     >
       <div className="flex items-start justify-between">
         <div>
           <div
-            className="text-sm mb-1.5"
-            style={{ color: "var(--text-secondary)" }}
+            className="font-[Space_Grotesk] text-[10px] uppercase tracking-wider mb-2"
+            style={{ color: "var(--text-tertiary)" }}
           >
             {label}
           </div>
           <div
-            className="text-2xl font-semibold tabular-nums"
-            style={{ color: accent ?? "var(--text-primary)" }}
+            className="font-[Space_Grotesk] text-2xl font-bold tabular-nums"
+            style={{ color: accent ?? "var(--accent)" }}
           >
             {value}
           </div>

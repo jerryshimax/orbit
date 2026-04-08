@@ -1,15 +1,15 @@
 #!/usr/bin/env npx tsx
 // @ts-nocheck
 /**
- * Orbit — Relationship CRM — Current Equities Fund I
+ * Orbit — Universal CRM MCP Server
  *
- * 6 tools for Cloud to manage LP relationships:
- * - lp_log_interaction: Create/update LP + contact + log touchpoint
- * - lp_pipeline_status: Pipeline summary with counts and commitments
- * - lp_move_stage: Move LP org to new pipeline stage
- * - lp_search: Search LPs by stage, type, staleness, owner
- * - lp_get_detail: Full LP dossier for call prep
- * - lp_update_contact: Update structured fields on contact/org
+ * 6 tools for Cloud to manage relationships across all entities:
+ * - lp_log_interaction: Create/update org + person + log touchpoint
+ * - lp_pipeline_status: Pipeline summary from opportunities
+ * - lp_move_stage: Move opportunity to new pipeline stage
+ * - lp_search: Search organizations by type, stage, staleness, owner
+ * - lp_get_detail: Full org dossier with people, opportunities, interactions
+ * - lp_update_contact: Update structured fields on person/org
  */
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -24,9 +24,6 @@ import {
   desc,
   asc,
   and,
-  lte,
-  isNull,
-  or,
 } from "drizzle-orm";
 import * as schema from "../db/schema/index.js";
 
@@ -43,44 +40,86 @@ const db = drizzle(client, { schema });
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-async function fuzzyFindOrg(name: string) {
+async function fuzzyFindOrg(name) {
   const results = await db
     .select()
-    .from(schema.lpOrganizations)
-    .where(ilike(schema.lpOrganizations.name, `%${name}%`))
+    .from(schema.organizations)
+    .where(
+      sql`${schema.organizations.name} ILIKE ${"%" + name + "%"}
+          OR ${schema.organizations.nameZh} ILIKE ${"%" + name + "%"}`
+    )
     .limit(1);
   return results[0] ?? null;
 }
 
-async function fuzzyFindContact(name: string, orgId?: string) {
-  const conditions = [ilike(schema.lpContacts.fullName, `%${name}%`)];
+async function fuzzyFindPerson(name, orgId) {
+  const conditions = [
+    sql`${schema.people.fullName} ILIKE ${"%" + name + "%"}
+        OR ${schema.people.fullNameZh} ILIKE ${"%" + name + "%"}`,
+  ];
+
+  let results;
   if (orgId) {
-    conditions.push(eq(schema.lpContacts.organizationId, orgId));
+    // Find person affiliated with this org
+    results = await db
+      .select({ person: schema.people })
+      .from(schema.people)
+      .innerJoin(
+        schema.personOrgAffiliations,
+        eq(schema.personOrgAffiliations.personId, schema.people.id)
+      )
+      .where(
+        and(
+          sql`${schema.people.fullName} ILIKE ${"%" + name + "%"}
+              OR ${schema.people.fullNameZh} ILIKE ${"%" + name + "%"}`,
+          eq(schema.personOrgAffiliations.organizationId, orgId)
+        )
+      )
+      .limit(1);
+    return results[0]?.person ?? null;
   }
-  const results = await db
+
+  results = await db
     .select()
-    .from(schema.lpContacts)
-    .where(and(...conditions))
+    .from(schema.people)
+    .where(
+      sql`${schema.people.fullName} ILIKE ${"%" + name + "%"}
+          OR ${schema.people.fullNameZh} ILIKE ${"%" + name + "%"}`
+    )
     .limit(1);
   return results[0] ?? null;
 }
 
-function formatCurrency(val: string | null | undefined): string {
+async function getActiveOpportunity(orgId) {
+  const [opp] = await db
+    .select()
+    .from(schema.opportunities)
+    .where(
+      and(
+        eq(schema.opportunities.organizationId, orgId),
+        eq(schema.opportunities.status, "active")
+      )
+    )
+    .orderBy(desc(schema.opportunities.updatedAt))
+    .limit(1);
+  return opp ?? null;
+}
+
+function formatCurrency(val) {
   if (!val) return "—";
   const n = parseFloat(val);
   if (n >= 1000) return `$${(n / 1000).toFixed(1)}B`;
   return `$${n.toFixed(0)}M`;
 }
 
-/** Wrap tool handlers with error handling so DB failures return error text instead of crashing. */
-function safeHandler<T>(fn: (params: T) => Promise<{ content: { type: string; text: string }[] }>): (params: T) => Promise<{ content: { type: string; text: string }[]; isError?: boolean }> {
-  return async (params: T) => {
+function safeHandler(fn) {
+  return async (params) => {
     try {
       return await fn(params);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error(`Orbit MCP error: ${msg}`);
-      return { content: [{ type: "text" as const, text: `Error: ${msg}` }], isError: true };
+      return { content: [{ type: "text", text: `Error: ${msg}` }], isError: true };
     }
   };
 }
@@ -89,185 +128,166 @@ function safeHandler<T>(fn: (params: T) => Promise<{ content: { type: string; te
 
 const server = new McpServer({
   name: "orbit",
-  version: "1.0.0",
+  version: "2.0.0",
 });
 
 // ── Tool 1: lp_log_interaction ─────────────────────────────────────────────
 
 server.tool(
   "lp_log_interaction",
-  "Log an LP interaction. Creates org/contact if new, logs the touchpoint. Use for any LP meeting, call, email, conference encounter.",
+  "Log an interaction. Creates org/person if new, logs the touchpoint. Use for any meeting, call, email, conference encounter.",
   {
-    contact_name: z.string().describe("Full name of the LP contact"),
-    organization: z.string().describe("LP organization name"),
+    contact_name: z.string().describe("Full name of the contact"),
+    organization: z.string().describe("Organization name"),
     interaction_type: z
       .enum([
-        "meeting",
-        "call",
-        "email",
-        "conference",
-        "intro",
-        "dd_session",
-        "deck_sent",
-        "follow_up",
-        "commitment",
-        "note",
+        "meeting", "call", "email", "conference", "intro", "dd_session",
+        "deck_sent", "follow_up", "commitment", "note", "telegram_message",
+        "wechat_message", "site_visit", "dinner", "board_meeting",
       ])
       .describe("Type of interaction"),
     summary: z.string().describe("Brief summary of the interaction"),
-    team_member: z
-      .string()
-      .describe("Who logged this (jerry, ray, matt, angel, etc.)"),
+    team_member: z.string().describe("Who logged this (jerry, ray, matt, angel)"),
     source: z
-      .enum(["telegram", "email", "meeting_transcript", "web", "brain_sync"])
-      .default("telegram")
-      .optional(),
-    lp_type: z
-      .enum([
-        "pension",
-        "sovereign_wealth",
-        "endowment",
-        "foundation",
-        "family_office",
-        "fund_of_funds",
-        "insurance",
-        "corporate",
-        "hnwi",
-        "gp_commit",
-        "other",
-      ])
-      .optional()
-      .describe("Type of LP (if known)"),
-    aum: z.string().optional().describe("AUM in millions USD (e.g. '2000' for $2B)"),
+      .enum(["telegram", "email", "meeting_transcript", "web", "brain_sync", "calendar", "manual", "cloud_bot", "wechat"])
+      .default("telegram").optional(),
+    org_type: z
+      .enum(["lp", "portfolio_company", "prospect", "strategic_partner", "developer", "manufacturer", "hyperscaler", "epc", "corporate", "other"])
+      .optional().describe("Organization type"),
+    entity_code: z.string().optional().describe("Entity (CE, SYN, UUL)"),
     title: z.string().optional().describe("Contact's title"),
-    location: z.string().optional().describe("Where the interaction happened"),
+    location: z.string().optional(),
     pipeline_stage: z
-      .enum([
-        "prospect",
-        "intro",
-        "meeting",
-        "dd",
-        "soft_circle",
-        "committed",
-        "closed",
-        "passed",
-      ])
-      .optional()
-      .describe("Set pipeline stage (if different from current)"),
-    target_commitment: z
-      .string()
-      .optional()
-      .describe("Target commitment in millions USD"),
-    email: z.string().optional().describe("Contact email"),
-    introduced_by: z.string().optional().describe("Who introduced this LP"),
+      .enum(["prospect", "intro", "meeting", "dd", "soft_circle", "committed", "closed", "passed"])
+      .optional().describe("Set opportunity stage"),
+    target_commitment: z.string().optional().describe("Target commitment in millions USD"),
+    email: z.string().optional(),
+    wechat: z.string().optional(),
+    introduced_by: z.string().optional(),
   },
   safeHandler(async (params) => {
     // 1. Find or create org
     let org = await fuzzyFindOrg(params.organization);
     if (!org) {
       const [newOrg] = await db
-        .insert(schema.lpOrganizations)
+        .insert(schema.organizations)
         .values({
           name: params.organization,
-          lpType: params.lp_type ?? null,
-          aumUsd: params.aum ?? null,
-          pipelineStage: params.pipeline_stage ?? "prospect",
-          targetCommitment: params.target_commitment ?? null,
+          orgType: params.org_type ?? "other",
+          entityTags: params.entity_code ? [params.entity_code] : ["CE"],
           relationshipOwner: params.team_member,
+          targetCommitment: params.target_commitment ?? null,
         })
         .returning();
       org = newOrg;
-    } else if (params.pipeline_stage || params.aum || params.lp_type) {
-      const updates: Record<string, unknown> = {
-        updatedAt: new Date(),
-      };
-      if (params.aum) updates.aumUsd = params.aum;
-      if (params.lp_type) updates.lpType = params.lp_type;
-      if (params.target_commitment)
-        updates.targetCommitment = params.target_commitment;
-      if (params.pipeline_stage && params.pipeline_stage !== org.pipelineStage) {
-        // Log pipeline change
-        await db.insert(schema.pipelineHistory).values({
-          organizationId: org.id,
-          fromStage: org.pipelineStage,
-          toStage: params.pipeline_stage,
-          changedBy: params.team_member,
-          notes: `Stage changed during interaction logging`,
-        });
-        updates.pipelineStage = params.pipeline_stage;
-        updates.stageChangedAt = new Date();
-      }
-      await db
-        .update(schema.lpOrganizations)
-        .set(updates)
-        .where(eq(schema.lpOrganizations.id, org.id));
     }
 
-    // 2. Find or create contact
-    let contact = await fuzzyFindContact(params.contact_name, org.id);
-    if (!contact) {
-      const nameParts = params.contact_name.split(" ");
-      const [newContact] = await db
-        .insert(schema.lpContacts)
+    // 2. Find or create person
+    let person = await fuzzyFindPerson(params.contact_name, org.id);
+    if (!person) {
+      const [newPerson] = await db
+        .insert(schema.people)
         .values({
-          organizationId: org.id,
           fullName: params.contact_name,
-          firstName: nameParts[0] ?? null,
-          lastName: nameParts.slice(1).join(" ") || null,
           title: params.title ?? null,
           email: params.email ?? null,
-          isPrimary: true,
-          source: params.location ?? params.source ?? "telegram",
-          introducedBy: params.introduced_by ?? null,
+          wechat: params.wechat ?? null,
+          introducedByName: params.introduced_by ?? null,
+          entityTags: params.entity_code ? [params.entity_code] : ["CE"],
           lastInteractionAt: new Date(),
         })
         .returning();
-      contact = newContact;
+      person = newPerson;
+
+      // Create affiliation
+      await db.insert(schema.personOrgAffiliations).values({
+        personId: person.id,
+        organizationId: org.id,
+        title: params.title ?? null,
+        isPrimaryOrg: true,
+        isPrimaryContact: true,
+      });
     } else {
-      const contactUpdates: Record<string, unknown> = {
-        lastInteractionAt: new Date(),
-        updatedAt: new Date(),
-      };
-      if (params.title) contactUpdates.title = params.title;
-      if (params.email) contactUpdates.email = params.email;
       await db
-        .update(schema.lpContacts)
-        .set(contactUpdates)
-        .where(eq(schema.lpContacts.id, contact.id));
+        .update(schema.people)
+        .set({ lastInteractionAt: new Date(), updatedAt: new Date() })
+        .where(eq(schema.people.id, person.id));
     }
 
-    // 3. Log interaction
+    // 3. Handle pipeline stage change if requested
+    let opp = await getActiveOpportunity(org.id);
+    if (params.pipeline_stage) {
+      if (!opp) {
+        // Create opportunity
+        const [defaultPipeline] = await db
+          .select()
+          .from(schema.pipelineDefinitions)
+          .where(eq(schema.pipelineDefinitions.isDefault, true))
+          .limit(1);
+
+        if (defaultPipeline) {
+          const [newOpp] = await db
+            .insert(schema.opportunities)
+            .values({
+              name: `${org.name} — CE Fund I`,
+              opportunityType: "lp_commitment",
+              status: "active",
+              pipelineId: defaultPipeline.id,
+              stage: params.pipeline_stage,
+              organizationId: org.id,
+              entityCode: params.entity_code ?? "CE",
+              entityTags: params.entity_code ? [params.entity_code] : ["CE"],
+              dealSize: params.target_commitment ?? null,
+              leadOwner: params.team_member,
+            })
+            .returning();
+          opp = newOpp;
+        }
+      } else if (opp.stage !== params.pipeline_stage) {
+        await db.insert(schema.pipelineHistory).values({
+          opportunityId: opp.id,
+          fromStage: opp.stage,
+          toStage: params.pipeline_stage,
+          changedBy: params.team_member,
+          notes: "Stage changed during interaction logging",
+        });
+        await db
+          .update(schema.opportunities)
+          .set({ stage: params.pipeline_stage, stageChangedAt: new Date(), updatedAt: new Date() })
+          .where(eq(schema.opportunities.id, opp.id));
+      }
+    }
+
+    // 4. Log interaction
     const [interaction] = await db
       .insert(schema.interactions)
       .values({
-        organizationId: org.id,
-        contactId: contact.id,
+        orgId: org.id,
+        personId: person.id,
+        opportunityId: opp?.id ?? null,
         interactionType: params.interaction_type,
         source: params.source ?? "telegram",
         teamMember: params.team_member,
         summary: params.summary,
         rawInput: JSON.stringify(params),
         location: params.location ?? null,
+        entityCode: params.entity_code ?? "CE",
+        entityTags: params.entity_code ? [params.entity_code] : ["CE"],
       })
       .returning();
 
     return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(
-            {
-              status: "logged",
-              organization: { id: org.id, name: org.name, stage: org.pipelineStage },
-              contact: { id: contact.id, name: contact.fullName },
-              interaction_id: interaction.id,
-              message: `Logged ${params.interaction_type} with ${params.contact_name} @ ${params.organization}. Pipeline: ${org.pipelineStage}.`,
-            },
-            null,
-            2
-          ),
-        },
-      ],
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          status: "logged",
+          organization: { id: org.id, name: org.name },
+          person: { id: person.id, name: person.fullName },
+          opportunity_stage: opp?.stage ?? "none",
+          interaction_id: interaction.id,
+          message: `Logged ${params.interaction_type} with ${params.contact_name} @ ${params.organization}`,
+        }, null, 2),
+      }],
     };
   })
 );
@@ -276,78 +296,75 @@ server.tool(
 
 server.tool(
   "lp_pipeline_status",
-  "Get LP pipeline summary: counts per stage, total commitments, stale LPs.",
+  "Get pipeline summary: counts per stage, total commitments, stale orgs.",
   {
-    stale_days: z
-      .number()
-      .optional()
-      .describe("Days threshold for stale LP warning (default 14)"),
+    stale_days: z.number().optional().describe("Days threshold for stale warning (default 14)"),
+    entity_code: z.string().optional().describe("Filter by entity (CE, SYN)"),
   },
   safeHandler(async (params) => {
     const staleDays = params.stale_days ?? 14;
     const staleDate = new Date();
     staleDate.setDate(staleDate.getDate() - staleDays);
 
-    // Get all orgs
-    const orgs = await db.select().from(schema.lpOrganizations);
+    const conditions = [eq(schema.opportunities.status, "active")];
+    if (params.entity_code) {
+      conditions.push(eq(schema.opportunities.entityCode, params.entity_code));
+    }
 
-    // Build stage counts
-    const stageBuckets: Record<string, { count: number; target: number; actual: number }> = {};
-    for (const org of orgs) {
-      const s = org.pipelineStage;
+    const opps = await db
+      .select({
+        stage: schema.opportunities.stage,
+        dealSize: schema.opportunities.dealSize,
+        commitment: schema.opportunities.commitment,
+        orgId: schema.opportunities.organizationId,
+        orgName: schema.organizations.name,
+      })
+      .from(schema.opportunities)
+      .leftJoin(schema.organizations, eq(schema.opportunities.organizationId, schema.organizations.id))
+      .where(and(...conditions));
+
+    const stageBuckets = {};
+    for (const opp of opps) {
+      const s = opp.stage;
       if (!stageBuckets[s]) stageBuckets[s] = { count: 0, target: 0, actual: 0 };
       stageBuckets[s].count++;
-      stageBuckets[s].target += parseFloat(org.targetCommitment ?? "0");
-      stageBuckets[s].actual += parseFloat(org.actualCommitment ?? "0");
+      stageBuckets[s].target += parseFloat(opp.dealSize ?? "0");
+      stageBuckets[s].actual += parseFloat(opp.commitment ?? "0");
     }
 
     const pipeline = Object.entries(stageBuckets).map(([stage, data]) => ({
-      stage,
-      count: data.count,
+      stage, count: data.count,
       target: formatCurrency(String(data.target)),
       actual: formatCurrency(String(data.actual)),
     }));
 
     const totalCommitted = (stageBuckets["committed"]?.actual ?? 0) + (stageBuckets["closed"]?.actual ?? 0);
 
-    // Find stale LPs in active stages
+    // Find stale
     const activeStages = ["intro", "meeting", "dd", "soft_circle"];
-    const activeOrgs = orgs.filter((o) => activeStages.includes(o.pipelineStage));
-    const staleLPs: { name: string; stage: string; last_interaction: string }[] = [];
+    const activeOpps = opps.filter((o) => activeStages.includes(o.stage));
+    const staleOrgs = [];
 
-    for (const org of activeOrgs) {
+    for (const opp of activeOpps) {
+      if (!opp.orgId) continue;
       const lastInt = await db
-        .select({ maxDate: sql<string>`max(${schema.interactions.interactionDate})` })
+        .select({ maxDate: sql`max(${schema.interactions.interactionDate})` })
         .from(schema.interactions)
-        .where(eq(schema.interactions.organizationId, org.id));
-
+        .where(eq(schema.interactions.orgId, opp.orgId));
       const lastDate = lastInt[0]?.maxDate;
       if (!lastDate || new Date(lastDate) < staleDate) {
-        staleLPs.push({
-          name: org.name,
-          stage: org.pipelineStage,
-          last_interaction: lastDate ?? "never",
-        });
+        staleOrgs.push({ name: opp.orgName, stage: opp.stage, last_interaction: lastDate ?? "never" });
       }
     }
 
     return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(
-            {
-              pipeline,
-              total_committed: formatCurrency(String(totalCommitted)),
-              fund_target: "$300-500M",
-              stale_lps: staleLPs,
-              total_lps: orgs.length,
-            },
-            null,
-            2
-          ),
-        },
-      ],
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          pipeline, total_committed: formatCurrency(String(totalCommitted)),
+          fund_target: "$300-500M", stale_orgs: staleOrgs, total_opportunities: opps.length,
+        }, null, 2),
+      }],
     };
   })
 );
@@ -356,87 +373,52 @@ server.tool(
 
 server.tool(
   "lp_move_stage",
-  "Move an LP organization to a new pipeline stage.",
+  "Move an organization's active opportunity to a new pipeline stage.",
   {
-    organization: z.string().describe("LP organization name"),
-    new_stage: z
-      .enum([
-        "prospect",
-        "intro",
-        "meeting",
-        "dd",
-        "soft_circle",
-        "committed",
-        "closed",
-        "passed",
-      ])
-      .describe("New pipeline stage"),
+    organization: z.string().describe("Organization name"),
+    new_stage: z.enum(["prospect", "intro", "meeting", "dd", "soft_circle", "committed", "closed", "passed"]),
     changed_by: z.string().describe("Who made this change"),
-    notes: z.string().optional().describe("Reason for stage change"),
-    actual_commitment: z
-      .string()
-      .optional()
-      .describe("Actual commitment amount in millions (for committed/closed)"),
+    notes: z.string().optional(),
+    actual_commitment: z.string().optional().describe("Actual commitment in millions (for committed/closed)"),
   },
   safeHandler(async (params) => {
     const org = await fuzzyFindOrg(params.organization);
     if (!org) {
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: `LP organization "${params.organization}" not found.`,
-          },
-        ],
-      };
+      return { content: [{ type: "text", text: `Organization "${params.organization}" not found.` }] };
     }
 
-    const oldStage = org.pipelineStage;
+    const opp = await getActiveOpportunity(org.id);
+    if (!opp) {
+      return { content: [{ type: "text", text: `No active opportunity for "${org.name}".` }] };
+    }
 
-    // Log history
+    const oldStage = opp.stage;
+
     await db.insert(schema.pipelineHistory).values({
-      organizationId: org.id,
+      opportunityId: opp.id,
       fromStage: oldStage,
       toStage: params.new_stage,
       changedBy: params.changed_by,
       notes: params.notes ?? null,
     });
 
-    // Update org
-    const updates: Record<string, unknown> = {
-      pipelineStage: params.new_stage,
+    const updates = {
+      stage: params.new_stage,
       stageChangedAt: new Date(),
       updatedAt: new Date(),
     };
-    if (params.actual_commitment) {
-      updates.actualCommitment = params.actual_commitment;
-    }
+    if (params.actual_commitment) updates.commitment = params.actual_commitment;
 
-    await db
-      .update(schema.lpOrganizations)
-      .set(updates)
-      .where(eq(schema.lpOrganizations.id, org.id));
+    await db.update(schema.opportunities).set(updates).where(eq(schema.opportunities.id, opp.id));
 
     return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(
-            {
-              status: "moved",
-              organization: org.name,
-              from: oldStage,
-              to: params.new_stage,
-              actual_commitment: params.actual_commitment
-                ? formatCurrency(params.actual_commitment)
-                : undefined,
-              message: `${org.name}: ${oldStage} → ${params.new_stage}`,
-            },
-            null,
-            2
-          ),
-        },
-      ],
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          status: "moved", organization: org.name, from: oldStage, to: params.new_stage,
+          message: `${org.name}: ${oldStage} → ${params.new_stage}`,
+        }, null, 2),
+      }],
     };
   })
 );
@@ -445,115 +427,69 @@ server.tool(
 
 server.tool(
   "lp_search",
-  "Search LP organizations by stage, type, staleness, or owner.",
+  "Search organizations by type, stage, staleness, or owner.",
   {
-    stage: z
-      .enum([
-        "prospect",
-        "intro",
-        "meeting",
-        "dd",
-        "soft_circle",
-        "committed",
-        "closed",
-        "passed",
-      ])
-      .optional(),
-    lp_type: z
-      .enum([
-        "pension",
-        "sovereign_wealth",
-        "endowment",
-        "foundation",
-        "family_office",
-        "fund_of_funds",
-        "insurance",
-        "corporate",
-        "hnwi",
-        "gp_commit",
-        "other",
-      ])
-      .optional(),
-    days_since_contact: z
-      .number()
-      .optional()
-      .describe("Find LPs with no interaction in N days"),
+    stage: z.enum(["prospect", "intro", "meeting", "dd", "soft_circle", "committed", "closed", "passed"]).optional(),
+    org_type: z.enum(["lp", "portfolio_company", "prospect", "strategic_partner", "developer", "manufacturer", "hyperscaler", "epc", "corporate", "other"]).optional(),
+    days_since_contact: z.number().optional(),
     relationship_owner: z.string().optional(),
-    query: z.string().optional().describe("Free text search on org name"),
-    limit: z.number().optional().describe("Max results (default 20)"),
+    query: z.string().optional(),
+    entity_code: z.string().optional(),
+    limit: z.number().optional(),
   },
   safeHandler(async (params) => {
     const conditions = [];
 
-    if (params.stage) {
-      conditions.push(
-        eq(schema.lpOrganizations.pipelineStage, params.stage)
-      );
-    }
-    if (params.lp_type) {
-      conditions.push(eq(schema.lpOrganizations.lpType, params.lp_type));
-    }
-    if (params.relationship_owner) {
-      conditions.push(
-        ilike(
-          schema.lpOrganizations.relationshipOwner,
-          `%${params.relationship_owner}%`
-        )
-      );
-    }
-    if (params.query) {
-      conditions.push(
-        ilike(schema.lpOrganizations.name, `%${params.query}%`)
-      );
-    }
+    if (params.org_type) conditions.push(eq(schema.organizations.orgType, params.org_type));
+    if (params.relationship_owner) conditions.push(ilike(schema.organizations.relationshipOwner, `%${params.relationship_owner}%`));
+    if (params.query) conditions.push(sql`${schema.organizations.name} ILIKE ${"%" + params.query + "%"} OR ${schema.organizations.nameZh} ILIKE ${"%" + params.query + "%"}`);
+    if (params.entity_code) conditions.push(sql`${params.entity_code} = ANY(${schema.organizations.entityTags})`);
 
     let results = await db
       .select()
-      .from(schema.lpOrganizations)
+      .from(schema.organizations)
       .where(conditions.length > 0 ? and(...conditions) : undefined)
-      .orderBy(asc(schema.lpOrganizations.name))
+      .orderBy(asc(schema.organizations.name))
       .limit(params.limit ?? 20);
 
-    // Filter by staleness if requested
+    // Filter by stage (via opportunities)
+    if (params.stage) {
+      const orgIdsInStage = new Set();
+      for (const org of results) {
+        const opp = await getActiveOpportunity(org.id);
+        if (opp?.stage === params.stage) orgIdsInStage.add(org.id);
+      }
+      results = results.filter((r) => orgIdsInStage.has(r.id));
+    }
+
+    // Filter by staleness
     if (params.days_since_contact) {
       const cutoff = new Date();
       cutoff.setDate(cutoff.getDate() - params.days_since_contact);
-
-      const staleOrgIds = new Set<string>();
+      const staleIds = new Set();
       for (const org of results) {
-        const lastInteraction = await db
-          .select({ maxDate: sql<string>`max(${schema.interactions.interactionDate})` })
+        const lastInt = await db
+          .select({ maxDate: sql`max(${schema.interactions.interactionDate})` })
           .from(schema.interactions)
-          .where(eq(schema.interactions.organizationId, org.id));
-
-        const lastDate = lastInteraction[0]?.maxDate;
-        if (!lastDate || new Date(lastDate) < cutoff) {
-          staleOrgIds.add(org.id);
-        }
+          .where(eq(schema.interactions.orgId, org.id));
+        const lastDate = lastInt[0]?.maxDate;
+        if (!lastDate || new Date(lastDate) < cutoff) staleIds.add(org.id);
       }
-      results = results.filter((r) => staleOrgIds.has(r.id));
+      results = results.filter((r) => staleIds.has(r.id));
     }
 
-    const formatted = results.map((org) => ({
-      name: org.name,
-      stage: org.pipelineStage,
-      type: org.lpType,
-      aum: formatCurrency(org.aumUsd),
-      target: formatCurrency(org.targetCommitment),
-      owner: org.relationshipOwner,
+    const formatted = await Promise.all(results.map(async (org) => {
+      const opp = await getActiveOpportunity(org.id);
+      return {
+        name: org.name, name_zh: org.nameZh, type: org.orgType,
+        stage: opp?.stage ?? "none", aum: formatCurrency(org.aumUsd),
+        target: formatCurrency(opp?.dealSize), owner: org.relationshipOwner,
+        entities: org.entityTags,
+      };
     }));
 
     return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(
-            { count: formatted.length, results: formatted },
-            null,
-            2
-          ),
-        },
-      ],
+      content: [{ type: "text", text: JSON.stringify({ count: formatted.length, results: formatted }, null, 2) }],
     };
   })
 );
@@ -562,43 +498,50 @@ server.tool(
 
 server.tool(
   "lp_get_detail",
-  "Get full LP dossier: org info, all contacts, interaction timeline, pipeline history. Use for call prep.",
+  "Get full org dossier: info, people, opportunities, interaction timeline. Use for call prep.",
   {
-    organization: z.string().describe("LP organization name"),
+    organization: z.string().describe("Organization name"),
   },
   safeHandler(async (params) => {
     const org = await fuzzyFindOrg(params.organization);
     if (!org) {
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: `LP organization "${params.organization}" not found.`,
-          },
-        ],
-      };
+      return { content: [{ type: "text", text: `Organization "${params.organization}" not found.` }] };
     }
 
-    const contacts = await db
-      .select()
-      .from(schema.lpContacts)
-      .where(eq(schema.lpContacts.organizationId, org.id))
-      .orderBy(desc(schema.lpContacts.isPrimary));
+    // People via affiliations
+    const orgPeople = await db
+      .select({ person: schema.people, affiliation: schema.personOrgAffiliations })
+      .from(schema.personOrgAffiliations)
+      .innerJoin(schema.people, eq(schema.personOrgAffiliations.personId, schema.people.id))
+      .where(eq(schema.personOrgAffiliations.organizationId, org.id));
 
+    // Opportunities
+    const opps = await db
+      .select()
+      .from(schema.opportunities)
+      .where(eq(schema.opportunities.organizationId, org.id))
+      .orderBy(desc(schema.opportunities.updatedAt));
+
+    // Interactions
     const recentInteractions = await db
       .select()
       .from(schema.interactions)
-      .where(eq(schema.interactions.organizationId, org.id))
+      .where(eq(schema.interactions.orgId, org.id))
       .orderBy(desc(schema.interactions.interactionDate))
       .limit(20);
 
-    const history = await db
-      .select()
-      .from(schema.pipelineHistory)
-      .where(eq(schema.pipelineHistory.organizationId, org.id))
-      .orderBy(desc(schema.pipelineHistory.createdAt));
+    // Pipeline history
+    const oppIds = opps.map((o) => o.id);
+    let history = [];
+    if (oppIds.length > 0) {
+      history = await db
+        .select()
+        .from(schema.pipelineHistory)
+        .where(sql`${schema.pipelineHistory.opportunityId} = ANY(${oppIds})`)
+        .orderBy(desc(schema.pipelineHistory.createdAt));
+    }
 
-    // Read Brain note if path exists
+    // Brain note
     let brainNote = null;
     if (org.brainNotePath) {
       try {
@@ -610,56 +553,40 @@ server.tool(
     }
 
     return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(
-            {
-              organization: {
-                name: org.name,
-                type: org.lpType,
-                aum: formatCurrency(org.aumUsd),
-                stage: org.pipelineStage,
-                target_commitment: formatCurrency(org.targetCommitment),
-                actual_commitment: formatCurrency(org.actualCommitment),
-                owner: org.relationshipOwner,
-                headquarters: org.headquarters,
-                website: org.website,
-                sector_focus: org.sectorFocus,
-                notes: org.notes,
-              },
-              contacts: contacts.map((c) => ({
-                name: c.fullName,
-                title: c.title,
-                email: c.email,
-                phone: c.phone,
-                relationship: c.relationship,
-                primary: c.isPrimary,
-                last_interaction: c.lastInteractionAt,
-                source: c.source,
-                introduced_by: c.introducedBy,
-              })),
-              interactions: recentInteractions.map((i) => ({
-                date: i.interactionDate,
-                type: i.interactionType,
-                summary: i.summary,
-                by: i.teamMember,
-                location: i.location,
-              })),
-              pipeline_history: history.map((h) => ({
-                date: h.createdAt,
-                from: h.fromStage,
-                to: h.toStage,
-                by: h.changedBy,
-                notes: h.notes,
-              })),
-              brain_note: brainNote,
-            },
-            null,
-            2
-          ),
-        },
-      ],
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          organization: {
+            name: org.name, name_zh: org.nameZh, type: org.orgType,
+            aum: formatCurrency(org.aumUsd), headquarters: org.headquarters,
+            country: org.country, website: org.website,
+            sector_focus: org.sectorFocus, notes: org.notes,
+            owner: org.relationshipOwner, entities: org.entityTags,
+          },
+          opportunities: opps.map((o) => ({
+            name: o.name, stage: o.stage, type: o.opportunityType,
+            deal_size: formatCurrency(o.dealSize), commitment: formatCurrency(o.commitment),
+            owner: o.leadOwner, status: o.status,
+          })),
+          people: orgPeople.map((p) => ({
+            name: p.person.fullName, name_zh: p.person.fullNameZh,
+            title: p.affiliation.title, relationship: p.person.relationshipStrength,
+            score: p.person.relationshipScore, primary: p.affiliation.isPrimaryContact,
+            email: p.person.email, phone: p.person.phone,
+            wechat: p.person.wechat, telegram: p.person.telegram,
+            introduced_by: p.person.introducedByName, intro_chain: p.person.introChain,
+          })),
+          interactions: recentInteractions.map((i) => ({
+            date: i.interactionDate, type: i.interactionType,
+            summary: i.summary, by: i.teamMember, location: i.location,
+          })),
+          pipeline_history: history.map((h) => ({
+            date: h.createdAt, from: h.fromStage, to: h.toStage,
+            by: h.changedBy, notes: h.notes,
+          })),
+          brain_note: brainNote,
+        }, null, 2),
+      }],
     };
   })
 );
@@ -668,57 +595,47 @@ server.tool(
 
 server.tool(
   "lp_update_contact",
-  "Update structured fields on an LP contact or organization.",
+  "Update structured fields on a person or organization.",
   {
-    contact_name: z.string().optional().describe("Contact to update"),
+    contact_name: z.string().optional().describe("Person to update"),
     organization: z.string().optional().describe("Organization to update"),
     email: z.string().optional(),
     phone: z.string().optional(),
     title: z.string().optional(),
+    wechat: z.string().optional(),
+    telegram: z.string().optional(),
     linkedin: z.string().optional(),
     headquarters: z.string().optional(),
     website: z.string().optional(),
-    aum: z.string().optional().describe("AUM in millions USD"),
-    target_commitment: z.string().optional().describe("Target commitment in millions"),
-    lp_type: z
-      .enum([
-        "pension",
-        "sovereign_wealth",
-        "endowment",
-        "foundation",
-        "family_office",
-        "fund_of_funds",
-        "insurance",
-        "corporate",
-        "hnwi",
-        "gp_commit",
-        "other",
-      ])
-      .optional(),
+    aum: z.string().optional(),
+    target_commitment: z.string().optional(),
+    org_type: z.enum(["lp", "portfolio_company", "prospect", "strategic_partner", "developer", "manufacturer", "hyperscaler", "epc", "corporate", "other"]).optional(),
+    relationship_strength: z.enum(["strong", "medium", "weak", "cold"]).optional(),
     notes: z.string().optional(),
     tags: z.array(z.string()).optional(),
   },
   safeHandler(async (params) => {
-    const updated: string[] = [];
+    const updated = [];
 
-    // Update contact
+    // Update person
     if (params.contact_name) {
-      const contact = await fuzzyFindContact(params.contact_name);
-      if (contact) {
-        const contactUpdates: Record<string, unknown> = { updatedAt: new Date() };
-        if (params.email) contactUpdates.email = params.email;
-        if (params.phone) contactUpdates.phone = params.phone;
-        if (params.title) contactUpdates.title = params.title;
-        if (params.linkedin) contactUpdates.linkedIn = params.linkedin;
-        if (params.tags) contactUpdates.tags = params.tags;
+      const person = await fuzzyFindPerson(params.contact_name);
+      if (person) {
+        const u = { updatedAt: new Date() };
+        if (params.email) u.email = params.email;
+        if (params.phone) u.phone = params.phone;
+        if (params.title) u.title = params.title;
+        if (params.wechat) u.wechat = params.wechat;
+        if (params.telegram) u.telegram = params.telegram;
+        if (params.linkedin) u.linkedin = params.linkedin;
+        if (params.relationship_strength) u.relationshipStrength = params.relationship_strength;
+        if (params.tags) u.tags = params.tags;
+        if (params.notes) u.notes = params.notes;
 
-        await db
-          .update(schema.lpContacts)
-          .set(contactUpdates)
-          .where(eq(schema.lpContacts.id, contact.id));
-        updated.push(`Contact ${contact.fullName} updated`);
+        await db.update(schema.people).set(u).where(eq(schema.people.id, person.id));
+        updated.push(`Person ${person.fullName} updated`);
       } else {
-        updated.push(`Contact "${params.contact_name}" not found`);
+        updated.push(`Person "${params.contact_name}" not found`);
       }
     }
 
@@ -726,20 +643,16 @@ server.tool(
     if (params.organization) {
       const org = await fuzzyFindOrg(params.organization);
       if (org) {
-        const orgUpdates: Record<string, unknown> = { updatedAt: new Date() };
-        if (params.headquarters) orgUpdates.headquarters = params.headquarters;
-        if (params.website) orgUpdates.website = params.website;
-        if (params.aum) orgUpdates.aumUsd = params.aum;
-        if (params.target_commitment)
-          orgUpdates.targetCommitment = params.target_commitment;
-        if (params.lp_type) orgUpdates.lpType = params.lp_type;
-        if (params.notes) orgUpdates.notes = params.notes;
-        if (params.tags) orgUpdates.tags = params.tags;
+        const u = { updatedAt: new Date() };
+        if (params.headquarters) u.headquarters = params.headquarters;
+        if (params.website) u.website = params.website;
+        if (params.aum) u.aumUsd = params.aum;
+        if (params.target_commitment) u.targetCommitment = params.target_commitment;
+        if (params.org_type) u.orgType = params.org_type;
+        if (params.notes) u.notes = params.notes;
+        if (params.tags) u.tags = params.tags;
 
-        await db
-          .update(schema.lpOrganizations)
-          .set(orgUpdates)
-          .where(eq(schema.lpOrganizations.id, org.id));
+        await db.update(schema.organizations).set(u).where(eq(schema.organizations.id, org.id));
         updated.push(`Organization ${org.name} updated`);
       } else {
         updated.push(`Organization "${params.organization}" not found`);
@@ -747,12 +660,7 @@ server.tool(
     }
 
     return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify({ updates: updated }, null, 2),
-        },
-      ],
+      content: [{ type: "text", text: JSON.stringify({ updates: updated }, null, 2) }],
     };
   })
 );

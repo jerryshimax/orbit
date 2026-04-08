@@ -1,9 +1,9 @@
 "use client";
 
 import type { MeetingWithOrg } from "@/db/queries/roadshow";
-import type { roadshowLegs } from "@/db/schema/roadshow";
+import type { fieldTripLegs } from "@/db/schema/field-trips";
 
-type Leg = typeof roadshowLegs.$inferSelect;
+type Leg = typeof fieldTripLegs.$inferSelect;
 
 const LEG_ICONS: Record<string, string> = {
   "Hong Kong": "🇭🇰",

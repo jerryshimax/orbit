@@ -1,29 +1,48 @@
 import { db } from "@/db";
 import {
-  lpOrganizations,
-  lpContacts,
+  organizations,
+  people,
+  personOrgAffiliations,
+  opportunities,
   interactions,
   pipelineHistory,
 } from "@/db/schema";
-import { eq, sql, desc, ilike, and, count, max } from "drizzle-orm";
+import { eq, sql, desc, ilike, and, count, max, inArray } from "drizzle-orm";
 
 export type OrgWithMeta = {
   id: string;
   name: string;
-  lpType: string | null;
-  stage: string;
+  nameZh: string | null;
+  orgType: string;
+  orgSubtype: string | null;
   aumUsd: string | null;
   headquarters: string | null;
-  targetCommitment: string | null;
-  actualCommitment: string | null;
+  country: string | null;
+  website: string | null;
+  description: string | null;
+  sectorFocus: string[] | null;
+  geographyFocus: string[] | null;
+  entityTags: string[];
   relationshipOwner: string | null;
   notes: string | null;
   tags: string[] | null;
-  sectorFocus: string[] | null;
-  geographyFocus: string[] | null;
+  // LP-specific (backward compat)
+  lpType: string | null;
+  targetCommitment: string | null;
+  actualCommitment: string | null;
+  // Computed from opportunities
+  primaryOpportunity: {
+    id: string;
+    name: string;
+    stage: string;
+    commitment: string | null;
+    pipelineId: string;
+  } | null;
+  // People
   primaryContact: string | null;
   primaryTitle: string | null;
   contactCount: number;
+  // Interactions
   interactionCount: number;
   lastInteractionDate: string | null;
   daysSinceInteraction: number | null;
@@ -31,66 +50,99 @@ export type OrgWithMeta = {
 };
 
 /**
- * Get all organizations with metadata. Uses parallel queries instead of N+1.
+ * Get all organizations with metadata using universal schema.
  */
 export async function getOrganizations(filters?: {
   stage?: string;
+  orgType?: string;
   lpType?: string;
   owner?: string;
   query?: string;
+  entityCode?: string;
 }): Promise<OrgWithMeta[]> {
   const conditions = [];
-  if (filters?.stage) {
-    conditions.push(eq(lpOrganizations.pipelineStage, filters.stage as any));
+  if (filters?.orgType) {
+    conditions.push(eq(organizations.orgType, filters.orgType as any));
   }
   if (filters?.lpType) {
-    conditions.push(eq(lpOrganizations.lpType, filters.lpType as any));
+    conditions.push(eq(organizations.lpType, filters.lpType as any));
   }
   if (filters?.owner) {
-    conditions.push(eq(lpOrganizations.relationshipOwner, filters.owner));
+    conditions.push(eq(organizations.relationshipOwner, filters.owner));
   }
   if (filters?.query) {
-    conditions.push(ilike(lpOrganizations.name, `%${filters.query}%`));
+    conditions.push(ilike(organizations.name, `%${filters.query}%`));
+  }
+  if (filters?.entityCode) {
+    conditions.push(
+      sql`${filters.entityCode} = ANY(${organizations.entityTags})`
+    );
   }
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
-  // Main org query
   const orgs = await db
     .select()
-    .from(lpOrganizations)
+    .from(organizations)
     .where(whereClause)
-    .orderBy(lpOrganizations.name);
+    .orderBy(organizations.name);
 
   if (orgs.length === 0) return [];
 
-  // Batch: all contacts (grouped by org)
-  const allContacts = await db
-    .select({
-      orgId: lpContacts.organizationId,
-      name: lpContacts.fullName,
-      title: lpContacts.title,
-      isPrimary: lpContacts.isPrimary,
-    })
-    .from(lpContacts);
+  const orgIds = orgs.map((o) => o.id);
 
-  // Batch: interaction stats per org
+  // Batch: people via affiliations
+  const allAffiliations = await db
+    .select({
+      orgId: personOrgAffiliations.organizationId,
+      personName: people.fullName,
+      personTitle: personOrgAffiliations.title,
+      isPrimary: personOrgAffiliations.isPrimaryContact,
+    })
+    .from(personOrgAffiliations)
+    .innerJoin(people, eq(personOrgAffiliations.personId, people.id))
+    .where(inArray(personOrgAffiliations.organizationId, orgIds));
+
+  // Batch: primary opportunity per org (most recent active)
+  const allOpps = await db
+    .select()
+    .from(opportunities)
+    .where(
+      and(
+        inArray(opportunities.organizationId, orgIds),
+        eq(opportunities.status, "active")
+      )
+    )
+    .orderBy(desc(opportunities.updatedAt));
+
+  // Batch: interaction stats per org (using universal orgId FK)
   const interactionStats = await db
     .select({
-      orgId: interactions.organizationId,
+      orgId: interactions.orgId,
       cnt: count(),
       lastDate: max(interactions.interactionDate),
     })
     .from(interactions)
-    .groupBy(interactions.organizationId);
+    .where(inArray(interactions.orgId, orgIds))
+    .groupBy(interactions.orgId);
 
   // Build lookup maps
-  const contactsByOrg: Record<string, typeof allContacts> = {};
-  for (const c of allContacts) {
-    const key = c.orgId ?? "";
-    if (!contactsByOrg[key]) contactsByOrg[key] = [];
-    contactsByOrg[key].push(c);
+  const affiliationsByOrg: Record<string, typeof allAffiliations> = {};
+  for (const a of allAffiliations) {
+    const key = a.orgId;
+    if (!affiliationsByOrg[key]) affiliationsByOrg[key] = [];
+    affiliationsByOrg[key].push(a);
   }
+
+  const oppsByOrg: Record<string, (typeof allOpps)[number]> = {};
+  for (const o of allOpps) {
+    if (o.organizationId && !oppsByOrg[o.organizationId]) {
+      oppsByOrg[o.organizationId] = o; // first = most recent
+    }
+  }
+
+  // Filter by stage if requested (stage lives on opportunities now)
+  const stageFilter = filters?.stage;
 
   const interactionsByOrg = new Map(
     interactionStats.map((r) => [
@@ -99,14 +151,16 @@ export async function getOrganizations(filters?: {
     ])
   );
 
-  return orgs.map((o) => {
-    const orgContacts = contactsByOrg[o.id] ?? [];
+  const results = orgs.map((o) => {
+    const orgAffils = affiliationsByOrg[o.id] ?? [];
     const primary =
-      orgContacts.find((c) => c.isPrimary) ?? orgContacts[0] ?? null;
+      orgAffils.find((a) => a.isPrimary) ?? orgAffils[0] ?? null;
     const iStats = interactionsByOrg.get(o.id);
     const lastDate = iStats?.lastDate
       ? new Date(iStats.lastDate).toISOString()
-      : null;
+      : o.lastInteractionAt
+        ? new Date(o.lastInteractionAt).toISOString()
+        : null;
     let daysSince: number | null = null;
     if (lastDate) {
       daysSince = Math.floor(
@@ -114,61 +168,106 @@ export async function getOrganizations(filters?: {
       );
     }
 
+    const opp = oppsByOrg[o.id] ?? null;
+
     return {
       id: o.id,
       name: o.name,
-      lpType: o.lpType,
-      stage: o.pipelineStage,
+      nameZh: o.nameZh,
+      orgType: o.orgType,
+      orgSubtype: o.orgSubtype,
       aumUsd: o.aumUsd,
       headquarters: o.headquarters,
-      targetCommitment: o.targetCommitment,
-      actualCommitment: o.actualCommitment,
+      country: o.country,
+      website: o.website,
+      description: o.description,
+      sectorFocus: o.sectorFocus,
+      geographyFocus: o.geographyFocus,
+      entityTags: o.entityTags,
       relationshipOwner: o.relationshipOwner,
       notes: o.notes,
       tags: o.tags,
-      sectorFocus: o.sectorFocus,
-      geographyFocus: o.geographyFocus,
-      primaryContact: primary?.name ?? null,
-      primaryTitle: primary?.title ?? null,
-      contactCount: orgContacts.length,
-      interactionCount: iStats?.count ?? 0,
+      lpType: o.lpType,
+      targetCommitment: o.targetCommitment,
+      actualCommitment: o.actualCommitment,
+      primaryOpportunity: opp
+        ? {
+            id: opp.id,
+            name: opp.name,
+            stage: opp.stage,
+            commitment: opp.commitment,
+            pipelineId: opp.pipelineId,
+          }
+        : null,
+      primaryContact: primary?.personName ?? null,
+      primaryTitle: primary?.personTitle ?? null,
+      contactCount: orgAffils.length,
+      interactionCount: iStats?.count ?? (o.interactionCount ?? 0),
       lastInteractionDate: lastDate,
       daysSinceInteraction: daysSince,
       createdAt: new Date(o.createdAt).toISOString(),
     };
   });
+
+  // Post-filter by stage if needed
+  if (stageFilter) {
+    return results.filter(
+      (r) => r.primaryOpportunity?.stage === stageFilter
+    );
+  }
+
+  return results;
 }
 
 /**
- * Get full org detail with contacts, interactions, and pipeline history.
+ * Get full org detail with people, opportunities, interactions, and pipeline history.
  */
 export async function getOrganizationDetail(id: string) {
   const [org] = await db
     .select()
-    .from(lpOrganizations)
-    .where(eq(lpOrganizations.id, id))
+    .from(organizations)
+    .where(eq(organizations.id, id))
     .limit(1);
 
   if (!org) return null;
 
-  const [contacts, orgInteractions, history] = await Promise.all([
-    db
-      .select()
-      .from(lpContacts)
-      .where(eq(lpContacts.organizationId, id))
-      .orderBy(desc(lpContacts.isPrimary), lpContacts.fullName),
-    db
-      .select()
-      .from(interactions)
-      .where(eq(interactions.organizationId, id))
-      .orderBy(desc(interactions.interactionDate))
-      .limit(50),
-    db
-      .select()
-      .from(pipelineHistory)
-      .where(eq(pipelineHistory.organizationId, id))
-      .orderBy(desc(pipelineHistory.createdAt)),
-  ]);
+  const [orgPeople, orgOpportunities, orgInteractions, history] =
+    await Promise.all([
+      db
+        .select({
+          affiliation: personOrgAffiliations,
+          person: people,
+        })
+        .from(personOrgAffiliations)
+        .innerJoin(people, eq(personOrgAffiliations.personId, people.id))
+        .where(eq(personOrgAffiliations.organizationId, id))
+        .orderBy(
+          desc(personOrgAffiliations.isPrimaryContact),
+          people.fullName
+        ),
+      db
+        .select()
+        .from(opportunities)
+        .where(eq(opportunities.organizationId, id))
+        .orderBy(desc(opportunities.updatedAt)),
+      db
+        .select()
+        .from(interactions)
+        .where(eq(interactions.orgId, id))
+        .orderBy(desc(interactions.interactionDate))
+        .limit(50),
+      db
+        .select()
+        .from(pipelineHistory)
+        .where(eq(pipelineHistory.opportunityId, id))
+        .orderBy(desc(pipelineHistory.createdAt)),
+    ]);
 
-  return { org, contacts, interactions: orgInteractions, history };
+  return {
+    org,
+    people: orgPeople,
+    opportunities: orgOpportunities,
+    interactions: orgInteractions,
+    history,
+  };
 }

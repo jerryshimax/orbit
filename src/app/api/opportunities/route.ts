@@ -1,13 +1,13 @@
 import { NextRequest } from "next/server";
-import { getPipelineSummary } from "@/db/queries/pipeline";
+import { getOpportunitiesForKanban } from "@/db/queries/pipeline";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
 
-  const summary = await getPipelineSummary({
+  const data = await getOpportunitiesForKanban({
     pipelineId: searchParams.get("pipelineId") ?? undefined,
     entityCode: searchParams.get("entity") ?? undefined,
   });
 
-  return Response.json(summary);
+  return Response.json(data);
 }

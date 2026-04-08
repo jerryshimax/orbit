@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Command } from "cmdk";
 import { useSearch } from "@/hooks/use-search";
 import { useRouter } from "next/navigation";
-import { STAGE_MAP, LP_TYPES } from "@/lib/constants";
+// Constants no longer needed for search results
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
@@ -66,7 +66,7 @@ export function CommandPalette() {
             <Command.Input
               value={query}
               onValueChange={setQuery}
-              placeholder="Search LPs, contacts, or navigate..."
+              placeholder="Search organizations, people, or navigate..."
               className="flex-1 bg-transparent outline-none text-sm"
               style={{ color: "var(--text-primary)" }}
               autoFocus
@@ -149,30 +149,26 @@ export function CommandPalette() {
                     <span style={{ color: "var(--text-primary)" }}>
                       {org.name}
                     </span>
-                    <span className="text-xs ml-auto">
-                      {STAGE_MAP[org.stage]?.label ?? org.stage}
+                    <span className="text-xs ml-auto capitalize">
+                      {org.orgType?.replace("_", " ") ?? ""}
                     </span>
                   </Command.Item>
                 ))}
               </Command.Group>
             )}
 
-            {data?.contacts && data.contacts.length > 0 && (
+            {data?.people && data.people.length > 0 && (
               <Command.Group>
                 <div
                   className="px-2 py-1.5 text-[11px] font-medium"
                   style={{ color: "var(--text-tertiary)" }}
                 >
-                  Contacts
+                  People
                 </div>
-                {data.contacts.map((c) => (
+                {data.people.map((c) => (
                   <Command.Item
                     key={c.id}
-                    onSelect={() =>
-                      c.orgId
-                        ? navigate(`/organizations/${c.orgId}`)
-                        : undefined
-                    }
+                    onSelect={() => navigate(`/contacts/${c.id}`)}
                     className="flex items-center gap-3 px-2 py-2 rounded-lg cursor-pointer"
                     style={{ color: "var(--text-secondary)" }}
                     onMouseEnter={(e) =>
@@ -196,7 +192,7 @@ export function CommandPalette() {
               </Command.Group>
             )}
 
-            {query && (!data?.organizations?.length && !data?.contacts?.length) && (
+            {query && (!data?.organizations?.length && !data?.people?.length) && (
               <Command.Empty
                 className="p-4 text-center text-sm"
                 style={{ color: "var(--text-tertiary)" }}

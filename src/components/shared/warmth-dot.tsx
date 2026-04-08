@@ -5,6 +5,7 @@ import { getWarmthLevel } from "@/lib/constants";
 /**
  * Color-coded dot showing relationship warmth based on days since last touch.
  * Hot (green) → Warm (yellow) → Cooling (orange) → Cold (red)
+ * Stitch pattern: glow shadow on all states for visual pop.
  */
 export function WarmthDot({
   daysSinceTouch,
@@ -25,10 +26,9 @@ export function WarmthDot({
           width: size,
           height: size,
           background: warmth.color,
-          boxShadow:
-            warmth.level === "hot"
-              ? `0 0 6px ${warmth.color}40`
-              : undefined,
+          boxShadow: warmth.level !== "unknown"
+            ? `0 0 8px ${warmth.color}80`
+            : undefined,
         }}
       />
       {showLabel && (

@@ -1,12 +1,12 @@
 import { db } from "@/db";
-import { lpOrganizations } from "@/db/schema";
+import { organizations } from "@/db/schema";
 import { count } from "drizzle-orm";
 
 export async function GET() {
   try {
     const [result] = await db
       .select({ count: count() })
-      .from(lpOrganizations);
+      .from(organizations);
     return Response.json({ ok: true, orgCount: Number(result.count) });
   } catch (err: any) {
     return Response.json(

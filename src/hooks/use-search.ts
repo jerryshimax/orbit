@@ -3,8 +3,8 @@ import useSWR from "swr";
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 type SearchResults = {
-  organizations: { id: string; name: string; stage: string; lpType: string | null }[];
-  contacts: { id: string; name: string; title: string | null; orgId: string | null }[];
+  organizations: { id: string; name: string; nameZh: string | null; orgType: string; headquarters: string | null }[];
+  people: { id: string; name: string; nameZh: string | null; title: string | null }[];
 };
 
 export function useSearch(query: string) {

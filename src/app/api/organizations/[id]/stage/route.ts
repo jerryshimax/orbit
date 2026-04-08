@@ -1,45 +1,71 @@
 import { NextRequest } from "next/server";
 import { db } from "@/db";
-import { lpOrganizations, pipelineHistory } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { opportunities, pipelineHistory } from "@/db/schema";
+import { eq, and } from "drizzle-orm";
 
+/**
+ * Move an opportunity's pipeline stage.
+ * Body: { opportunityId, stage, changedBy?, notes? }
+ * OR legacy: { stage, changedBy? } — moves the org's first active opportunity.
+ */
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   const body = await request.json();
-  const { stage, changedBy = "jerry", notes } = body;
+  const { stage, changedBy = "jerry", notes, opportunityId } = body;
+
+  // Find the opportunity to update
+  let oppId = opportunityId;
+  if (!oppId) {
+    // Legacy: find first active opportunity for this org
+    const [opp] = await db
+      .select({ id: opportunities.id, stage: opportunities.stage })
+      .from(opportunities)
+      .where(
+        and(
+          eq(opportunities.organizationId, id),
+          eq(opportunities.status, "active")
+        )
+      )
+      .limit(1);
+
+    if (!opp) {
+      return Response.json({ error: "No active opportunity for this org" }, { status: 404 });
+    }
+    oppId = opp.id;
+  }
 
   // Get current stage
-  const [org] = await db
-    .select({ stage: lpOrganizations.pipelineStage })
-    .from(lpOrganizations)
-    .where(eq(lpOrganizations.id, id))
+  const [opp] = await db
+    .select({ stage: opportunities.stage })
+    .from(opportunities)
+    .where(eq(opportunities.id, oppId))
     .limit(1);
 
-  if (!org) {
-    return Response.json({ error: "Not found" }, { status: 404 });
+  if (!opp) {
+    return Response.json({ error: "Opportunity not found" }, { status: 404 });
   }
 
   // Update stage
   await db
-    .update(lpOrganizations)
+    .update(opportunities)
     .set({
-      pipelineStage: stage,
+      stage,
       stageChangedAt: new Date(),
       updatedAt: new Date(),
     })
-    .where(eq(lpOrganizations.id, id));
+    .where(eq(opportunities.id, oppId));
 
   // Log to pipeline_history
   await db.insert(pipelineHistory).values({
-    organizationId: id,
-    fromStage: org.stage,
+    opportunityId: oppId,
+    fromStage: opp.stage,
     toStage: stage,
     changedBy,
-    notes: notes ?? `Stage moved via Orbit dashboard`,
+    notes: notes ?? "Stage moved via Orbit dashboard",
   });
 
-  return Response.json({ success: true, from: org.stage, to: stage });
+  return Response.json({ success: true, from: opp.stage, to: stage });
 }

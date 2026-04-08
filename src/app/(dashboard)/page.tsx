@@ -111,13 +111,18 @@ function CategoryTable({
                 </span>
               </td>
               <td className="px-3 py-2">
-                <StageBadge stage={org.stage} />
+                <StageBadge stage={org.primaryOpportunity?.stage ?? "prospect"} />
               </td>
               <td
                 className="px-3 py-2 text-xs truncate max-w-[120px]"
                 style={{ color: "var(--text-secondary)" }}
               >
                 {org.primaryContact ?? "—"}
+                {org.nameZh && org.nameZh !== org.name && (
+                  <span className="block text-[10px]" style={{ color: "var(--text-tertiary)" }}>
+                    {org.nameZh}
+                  </span>
+                )}
               </td>
               <td
                 className="px-3 py-2 text-xs"

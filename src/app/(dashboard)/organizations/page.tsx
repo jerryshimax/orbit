@@ -40,7 +40,7 @@ export default function OrganizationsPage() {
           case "name":
             return a.name.localeCompare(b.name) * dir;
           case "stage":
-            return (a.stage ?? "").localeCompare(b.stage ?? "") * dir;
+            return (a.primaryOpportunity?.stage ?? "").localeCompare(b.primaryOpportunity?.stage ?? "") * dir;
           case "target":
             return (
               (parseFloat(a.targetCommitment ?? "0") -
@@ -215,7 +215,7 @@ export default function OrganizationsPage() {
                   </span>
                 </td>
                 <td className="px-3 py-2.5">
-                  <StageBadge stage={org.stage} />
+                  <StageBadge stage={org.primaryOpportunity?.stage ?? "prospect"} />
                 </td>
                 <td
                   className="px-3 py-2.5 text-xs"

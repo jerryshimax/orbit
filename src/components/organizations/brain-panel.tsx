@@ -107,25 +107,24 @@ export function BrainPanel({ orgName }: { orgName: string }) {
     <div
       className="rounded-xl overflow-hidden"
       style={{
-        background: "var(--bg-surface)",
-        border: "1px solid var(--border-subtle)",
+        background: "#31353c1a",
+        border: "1px solid #4e463933",
       }}
     >
       <div
-        className="px-4 py-3 border-b flex items-center gap-2"
-        style={{ borderColor: "var(--border-subtle)" }}
+        className="px-5 py-3 flex items-center gap-2"
       >
         <span
-          className="material-symbols-rounded text-[16px]"
+          className="material-symbols-outlined text-lg"
           style={{ color: "var(--accent)" }}
         >
-          neurology
+          psychology
         </span>
         <h3
-          className="text-sm font-medium"
-          style={{ color: "var(--text-primary)" }}
+          className="font-[Space_Grotesk] text-xs uppercase tracking-[0.2em]"
+          style={{ color: "var(--accent)" }}
         >
-          Brain Context ({files.length})
+          Intelligence Brief ({files.length})
         </h3>
       </div>
 

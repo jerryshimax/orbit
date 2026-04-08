@@ -10,9 +10,10 @@ import type { OrgWithMeta } from "@/db/queries/organizations";
  */
 export function HeatMap({ orgs }: { orgs: OrgWithMeta[] }) {
   // Filter out passed/closed for heat map
-  const active = orgs.filter(
-    (o) => o.stage !== "passed" && o.stage !== "closed"
-  );
+  const active = orgs.filter((o) => {
+    const stage = o.primaryOpportunity?.stage ?? "prospect";
+    return stage !== "passed" && stage !== "closed";
+  });
 
   if (active.length === 0) {
     return (

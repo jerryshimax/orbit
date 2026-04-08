@@ -134,16 +134,18 @@ export function KanbanBoard({
       if (!org) return;
 
       // Check if dropped on a stage column
+      const orgStage = org.primaryOpportunity?.stage ?? "prospect";
       const targetStage = PIPELINE_STAGES.find((s) => s.key === over.id);
-      if (targetStage && targetStage.key !== org.stage) {
+      if (targetStage && targetStage.key !== orgStage) {
         onStageChange(orgId, targetStage.key);
         return;
       }
 
       // Check if dropped on another card — get that card's stage
       const targetCard = orgs.find((o) => o.id === String(over.id));
-      if (targetCard && targetCard.stage !== org.stage) {
-        onStageChange(orgId, targetCard.stage);
+      const targetCardStage = targetCard?.primaryOpportunity?.stage ?? "prospect";
+      if (targetCard && targetCardStage !== orgStage) {
+        onStageChange(orgId, targetCardStage);
       }
     },
     [orgs, onStageChange]
@@ -161,7 +163,7 @@ export function KanbanBoard({
     >
       <div className="flex gap-3 overflow-x-auto pb-4">
         {activeStages.map((stage) => {
-          const stageCards = orgs.filter((o) => o.stage === stage.key);
+          const stageCards = orgs.filter((o) => (o.primaryOpportunity?.stage ?? "prospect") === stage.key);
           return (
             <StageColumn
               key={stage.key}

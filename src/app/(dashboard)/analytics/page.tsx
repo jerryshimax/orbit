@@ -25,12 +25,15 @@ export default function AnalyticsPage() {
     }
   }
 
-  // Stage conversion: count orgs per stage
+  // Stage conversion: count orgs per stage (stage now lives on primaryOpportunity)
+  const getStage = (o: { primaryOpportunity?: { stage: string } | null }) =>
+    o.primaryOpportunity?.stage ?? "prospect";
+
   const stageCounts = PIPELINE_STAGES.map((s) => ({
     ...s,
-    count: orgs?.filter((o) => o.stage === s.key).length ?? 0,
+    count: orgs?.filter((o) => getStage(o) === s.key).length ?? 0,
     target: orgs
-      ?.filter((o) => o.stage === s.key)
+      ?.filter((o) => getStage(o) === s.key)
       .reduce((sum, o) => sum + parseFloat(o.targetCommitment ?? "0"), 0) ?? 0,
   }));
 
@@ -46,7 +49,8 @@ export default function AnalyticsPage() {
   const warmthDist = { hot: 0, warm: 0, cooling: 0, cold: 0, unknown: 0 };
   if (orgs) {
     for (const o of orgs) {
-      if (o.stage === "passed" || o.stage === "closed") continue;
+      const oStage = getStage(o);
+      if (oStage === "passed" || oStage === "closed") continue;
       const w = getWarmthLevel(o.daysSinceInteraction);
       warmthDist[w.level]++;
     }

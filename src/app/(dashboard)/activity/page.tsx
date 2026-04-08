@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { interactions, lpOrganizations, lpContacts } from "@/db/schema";
+import { interactions, organizations, people } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 
 const INTERACTION_ICONS: Record<string, string> = {
@@ -13,6 +13,11 @@ const INTERACTION_ICONS: Record<string, string> = {
   follow_up: "F",
   commitment: "$",
   note: "N",
+  telegram_message: "T",
+  wechat_message: "W",
+  site_visit: "SV",
+  dinner: "D",
+  board_meeting: "B",
 };
 
 async function getActivity() {
@@ -25,17 +30,14 @@ async function getActivity() {
       date: interactions.interactionDate,
       location: interactions.location,
       source: interactions.source,
-      orgName: lpOrganizations.name,
-      orgStage: lpOrganizations.pipelineStage,
-      contactName: lpContacts.fullName,
-      contactId: lpContacts.id,
+      entityCode: interactions.entityCode,
+      orgName: organizations.name,
+      personName: people.fullName,
+      personId: people.id,
     })
     .from(interactions)
-    .leftJoin(
-      lpOrganizations,
-      eq(interactions.organizationId, lpOrganizations.id)
-    )
-    .leftJoin(lpContacts, eq(interactions.contactId, lpContacts.id))
+    .leftJoin(organizations, eq(interactions.orgId, organizations.id))
+    .leftJoin(people, eq(interactions.personId, people.id))
     .orderBy(desc(interactions.interactionDate))
     .limit(100);
 
@@ -85,6 +87,12 @@ export default async function ActivityPage() {
                   )}
                   <span className="text-zinc-700">·</span>
                   <span className="text-zinc-600">{a.source}</span>
+                  {a.entityCode && (
+                    <>
+                      <span className="text-zinc-700">·</span>
+                      <span className="text-zinc-600">{a.entityCode}</span>
+                    </>
+                  )}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
                   {a.orgName && (
@@ -92,9 +100,9 @@ export default async function ActivityPage() {
                       {a.orgName}
                     </span>
                   )}
-                  {a.contactName && (
+                  {a.personName && (
                     <span className="text-xs text-zinc-500">
-                      {a.contactName}
+                      {a.personName}
                     </span>
                   )}
                 </div>
@@ -105,7 +113,7 @@ export default async function ActivityPage() {
         ))}
         {activity.length === 0 && (
           <div className="text-sm text-zinc-500 text-center py-12">
-            No activity yet. Log an LP interaction via Cloud to get started.
+            No activity yet. Log an interaction via Cloud to get started.
           </div>
         )}
       </div>

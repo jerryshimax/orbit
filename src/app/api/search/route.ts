@@ -1,45 +1,48 @@
 import { NextRequest } from "next/server";
 import { db } from "@/db";
-import { lpOrganizations, lpContacts } from "@/db/schema";
-import { ilike, sql } from "drizzle-orm";
+import { organizations, people } from "@/db/schema";
+import { sql } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams.get("q");
   if (!q || q.length < 2) {
-    return Response.json({ organizations: [], contacts: [] });
+    return Response.json({ organizations: [], people: [] });
   }
 
   const pattern = `%${q}%`;
 
-  const [orgs, contacts] = await Promise.all([
+  const [orgs, ppl] = await Promise.all([
     db
       .select({
-        id: lpOrganizations.id,
-        name: lpOrganizations.name,
-        stage: lpOrganizations.pipelineStage,
-        lpType: lpOrganizations.lpType,
+        id: organizations.id,
+        name: organizations.name,
+        nameZh: organizations.nameZh,
+        orgType: organizations.orgType,
+        headquarters: organizations.headquarters,
       })
-      .from(lpOrganizations)
+      .from(organizations)
       .where(
-        sql`${lpOrganizations.name} ILIKE ${pattern}
-            OR ${lpOrganizations.notes} ILIKE ${pattern}
-            OR array_to_string(${lpOrganizations.tags}, ',') ILIKE ${pattern}`
+        sql`${organizations.name} ILIKE ${pattern}
+            OR ${organizations.nameZh} ILIKE ${pattern}
+            OR ${organizations.notes} ILIKE ${pattern}
+            OR array_to_string(${organizations.tags}, ',') ILIKE ${pattern}`
       )
       .limit(10),
     db
       .select({
-        id: lpContacts.id,
-        name: lpContacts.fullName,
-        title: lpContacts.title,
-        orgId: lpContacts.organizationId,
+        id: people.id,
+        name: people.fullName,
+        nameZh: people.fullNameZh,
+        title: people.title,
       })
-      .from(lpContacts)
+      .from(people)
       .where(
-        sql`${lpContacts.fullName} ILIKE ${pattern}
-            OR ${lpContacts.title} ILIKE ${pattern}`
+        sql`${people.fullName} ILIKE ${pattern}
+            OR ${people.fullNameZh} ILIKE ${pattern}
+            OR ${people.title} ILIKE ${pattern}`
       )
       .limit(10),
   ]);
 
-  return Response.json({ organizations: orgs, contacts });
+  return Response.json({ organizations: orgs, people: ppl });
 }

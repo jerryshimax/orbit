@@ -90,15 +90,24 @@ export function LPCardComponent({
         </div>
       )}
 
-      {/* Footer: owner + sparkline */}
+      {/* Footer: owner initials + sparkline */}
       <div className="flex items-center justify-between mt-2">
         {card.relationshipOwner && (
-          <span
-            className="text-[10px] uppercase tracking-wider"
-            style={{ color: "var(--text-tertiary)" }}
+          <div
+            className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold border-2"
+            style={{
+              background: "var(--bg-surface-hover)",
+              borderColor: "var(--border-subtle)",
+              color: "var(--text-secondary)",
+            }}
           >
-            {card.relationshipOwner}
-          </span>
+            {card.relationshipOwner
+              .split(/\s+/)
+              .map((w) => w[0])
+              .join("")
+              .toUpperCase()
+              .slice(0, 2)}
+          </div>
         )}
         {sparklineData && <Sparkline data={sparklineData} width={52} height={14} />}
       </div>

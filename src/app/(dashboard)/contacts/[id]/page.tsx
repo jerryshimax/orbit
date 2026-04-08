@@ -1,13 +1,5 @@
-import { db } from "@/db";
-import {
-  lpContacts,
-  lpOrganizations,
-  interactions,
-  pipelineHistory,
-} from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { getPersonDetail } from "@/db/queries/people";
 import { notFound } from "next/navigation";
-import { StageBadge } from "@/components/shared/stage-badge";
 
 const INTERACTION_ICONS: Record<string, string> = {
   meeting: "M",
@@ -22,193 +14,142 @@ const INTERACTION_ICONS: Record<string, string> = {
   note: "N",
 };
 
-async function getContactDetail(id: string) {
-  const [contact] = await db
-    .select()
-    .from(lpContacts)
-    .where(eq(lpContacts.id, id))
-    .limit(1);
-
-  if (!contact) return null;
-
-  const org = contact.organizationId
-    ? (
-        await db
-          .select()
-          .from(lpOrganizations)
-          .where(eq(lpOrganizations.id, contact.organizationId))
-          .limit(1)
-      )[0]
-    : null;
-
-  const orgInteractions = org
-    ? await db
-        .select()
-        .from(interactions)
-        .where(eq(interactions.organizationId, org.id))
-        .orderBy(desc(interactions.interactionDate))
-        .limit(50)
-    : [];
-
-  const history = org
-    ? await db
-        .select()
-        .from(pipelineHistory)
-        .where(eq(pipelineHistory.organizationId, org.id))
-        .orderBy(desc(pipelineHistory.createdAt))
-    : [];
-
-  const otherContacts = org
-    ? await db
-        .select()
-        .from(lpContacts)
-        .where(eq(lpContacts.organizationId, org.id))
-    : [];
-
-  return { contact, org, interactions: orgInteractions, history, otherContacts };
-}
-
 export default async function ContactDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const data = await getContactDetail(id);
+  const data = await getPersonDetail(id);
   if (!data) notFound();
 
-  const { contact, org, interactions: ints, history, otherContacts } = data;
+  const { person, affiliations, channels, interactions: ints } = data;
 
   return (
     <div className="p-6">
       <div className="grid grid-cols-3 gap-6">
-        {/* Left panel — contact + org info */}
+        {/* Left panel — person + org info */}
         <div className="col-span-1 space-y-6">
-          {/* Contact card */}
+          {/* Person card */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
-            <h1 className="text-lg font-semibold">{contact.fullName}</h1>
-            {contact.title && (
-              <p className="text-sm text-zinc-400 mt-0.5">{contact.title}</p>
+            <h1 className="text-lg font-semibold">{person.fullName}</h1>
+            {person.fullNameZh && person.fullNameZh !== person.fullName && (
+              <p className="text-sm text-zinc-400 mt-0.5">{person.fullNameZh}</p>
+            )}
+            {person.title && (
+              <p className="text-sm text-zinc-400 mt-0.5">{person.title}</p>
+            )}
+            {person.relationshipStrength && (
+              <span className="inline-block mt-2 text-[10px] px-1.5 py-0.5 rounded capitalize bg-zinc-800 text-zinc-400">
+                {person.relationshipStrength}
+                {person.relationshipScore ? ` · ${person.relationshipScore}/100` : ""}
+              </span>
             )}
             <div className="mt-3 space-y-1.5 text-sm">
-              {contact.email && (
+              {person.email && (
                 <div className="text-zinc-300">
                   <span className="text-zinc-500 text-xs mr-2">Email</span>
-                  {contact.email}
+                  {person.email}
                 </div>
               )}
-              {contact.phone && (
+              {person.phone && (
                 <div className="text-zinc-300">
                   <span className="text-zinc-500 text-xs mr-2">Phone</span>
-                  {contact.phone}
+                  {person.phone}
                 </div>
               )}
-              {contact.linkedIn && (
+              {person.wechat && (
+                <div className="text-zinc-300">
+                  <span className="text-zinc-500 text-xs mr-2">WeChat</span>
+                  {person.wechat}
+                </div>
+              )}
+              {person.telegram && (
+                <div className="text-zinc-300">
+                  <span className="text-zinc-500 text-xs mr-2">Telegram</span>
+                  {person.telegram}
+                </div>
+              )}
+              {person.linkedin && (
                 <div className="text-zinc-300">
                   <span className="text-zinc-500 text-xs mr-2">LinkedIn</span>
-                  {contact.linkedIn}
+                  {person.linkedin}
                 </div>
               )}
-              {contact.source && (
-                <div className="text-zinc-300">
-                  <span className="text-zinc-500 text-xs mr-2">Source</span>
-                  {contact.source}
-                </div>
-              )}
-              {contact.introducedBy && (
+              {person.introducedByName && (
                 <div className="text-zinc-300">
                   <span className="text-zinc-500 text-xs mr-2">Intro by</span>
-                  {contact.introducedBy}
+                  {person.introducedByName}
+                </div>
+              )}
+              {person.introChain && (
+                <div className="text-zinc-300">
+                  <span className="text-zinc-500 text-xs mr-2">Chain</span>
+                  {person.introChain}
                 </div>
               )}
             </div>
-          </div>
-
-          {/* Org card */}
-          {org && (
-            <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
-              <div className="flex items-center justify-between">
-                <h2 className="font-medium">{org.name}</h2>
-                <StageBadge stage={org.pipelineStage} />
-              </div>
-              <div className="mt-3 space-y-1.5 text-sm">
-                {org.lpType && (
-                  <div className="text-zinc-300">
-                    <span className="text-zinc-500 text-xs mr-2">Type</span>
-                    {org.lpType.replace("_", " ")}
-                  </div>
-                )}
-                {org.aumUsd && (
-                  <div className="text-zinc-300">
-                    <span className="text-zinc-500 text-xs mr-2">AUM</span>$
-                    {parseFloat(org.aumUsd) >= 1000
-                      ? `${(parseFloat(org.aumUsd) / 1000).toFixed(1)}B`
-                      : `${parseFloat(org.aumUsd).toFixed(0)}M`}
-                  </div>
-                )}
-                {org.targetCommitment && (
-                  <div className="text-zinc-300">
-                    <span className="text-zinc-500 text-xs mr-2">Target</span>$
-                    {parseFloat(org.targetCommitment).toFixed(0)}M
-                  </div>
-                )}
-                {org.actualCommitment &&
-                  parseFloat(org.actualCommitment) > 0 && (
-                    <div className="text-emerald-400">
-                      <span className="text-zinc-500 text-xs mr-2">
-                        Committed
-                      </span>
-                      ${parseFloat(org.actualCommitment).toFixed(0)}M
-                    </div>
-                  )}
-                {org.relationshipOwner && (
-                  <div className="text-zinc-300">
-                    <span className="text-zinc-500 text-xs mr-2">Owner</span>
-                    {org.relationshipOwner}
-                  </div>
-                )}
-              </div>
-
-              {/* Other contacts at this org */}
-              {otherContacts.length > 1 && (
-                <div className="mt-4 pt-3 border-t border-zinc-800">
-                  <div className="text-xs text-zinc-500 mb-2">
-                    Other contacts
-                  </div>
-                  {otherContacts
-                    .filter((c) => c.id !== contact.id)
-                    .map((c) => (
-                      <div key={c.id} className="text-sm text-zinc-400">
-                        {c.fullName}
-                        {c.title && (
-                          <span className="text-zinc-600"> · {c.title}</span>
-                        )}
-                      </div>
-                    ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Pipeline history */}
-          {history.length > 0 && (
-            <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
-              <h3 className="text-sm font-medium text-zinc-300 mb-3">
-                Pipeline History
-              </h3>
-              <div className="space-y-2">
-                {history.map((h) => (
-                  <div key={h.id} className="text-xs">
-                    <span className="text-zinc-500">
-                      {new Date(h.createdAt).toLocaleDateString()}
-                    </span>
-                    <span className="text-zinc-400 mx-1">
-                      {h.fromStage ?? "—"} → {h.toStage}
-                    </span>
-                    <span className="text-zinc-600">by {h.changedBy}</span>
+            {/* Additional channels */}
+            {channels.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-zinc-800">
+                <div className="text-xs text-zinc-500 mb-2">Contact Channels</div>
+                {channels.map((ch) => (
+                  <div key={ch.id} className="text-sm text-zinc-400">
+                    <span className="text-zinc-600 text-xs mr-2 capitalize">{ch.channelType}</span>
+                    {ch.value}
+                    {ch.label && <span className="text-zinc-600 text-xs ml-1">({ch.label})</span>}
+                    {ch.isPreferred && <span className="text-amber-500 text-xs ml-1">★</span>}
                   </div>
                 ))}
               </div>
+            )}
+          </div>
+
+          {/* Affiliations */}
+          {affiliations.length > 0 && (
+            <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
+              <h3 className="text-sm font-medium text-zinc-300 mb-3">
+                Organizations ({affiliations.length})
+              </h3>
+              <div className="space-y-3">
+                {affiliations.map((a) => (
+                  <div
+                    key={a.affiliation.id}
+                    className="cursor-pointer hover:bg-zinc-800/50 -mx-2 px-2 py-1 rounded transition-colors"
+                    onClick={() => {
+                      // Client nav not available in server component
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-zinc-200">
+                        {a.orgName}
+                      </span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 capitalize">
+                        {a.orgType}
+                      </span>
+                    </div>
+                    {a.affiliation.title && (
+                      <p className="text-xs text-zinc-500 mt-0.5">
+                        {a.affiliation.title}
+                        {a.affiliation.role && ` · ${a.affiliation.role}`}
+                      </p>
+                    )}
+                    {a.orgHeadquarters && (
+                      <p className="text-xs text-zinc-600 mt-0.5">
+                        {a.orgHeadquarters}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Notes */}
+          {person.notes && (
+            <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
+              <h3 className="text-sm font-medium text-zinc-300 mb-2">Notes</h3>
+              <p className="text-sm text-zinc-400 whitespace-pre-wrap">{person.notes}</p>
             </div>
           )}
         </div>

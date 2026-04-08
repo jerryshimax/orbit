@@ -1,7 +1,8 @@
 import { NextRequest } from "next/server";
 import { getOrganizations } from "@/db/queries/organizations";
 import { db } from "@/db";
-import { lpContacts } from "@/db/schema";
+import { people, personOrgAffiliations } from "@/db/schema";
+import { eq, inArray } from "drizzle-orm";
 import { readFile, readdir } from "fs/promises";
 import { join } from "path";
 import Anthropic from "@anthropic-ai/sdk";
@@ -25,13 +26,25 @@ export async function POST(request: NextRequest) {
   // 1. Get all organizations
   const orgs = await getOrganizations();
 
-  // 2. Get all contacts with their org associations
-  const allContacts = await db.select().from(lpContacts);
-  const contactsByOrg: Record<string, typeof allContacts> = {};
-  for (const c of allContacts) {
-    const key = c.organizationId ?? "";
+  // 2. Get all people with their org affiliations
+  const orgIds = orgs.map((o) => o.id);
+  const allAffils = orgIds.length > 0
+    ? await db
+        .select({
+          orgId: personOrgAffiliations.organizationId,
+          fullName: people.fullName,
+          title: personOrgAffiliations.title,
+          introducedByName: people.introducedByName,
+        })
+        .from(personOrgAffiliations)
+        .innerJoin(people, eq(personOrgAffiliations.personId, people.id))
+        .where(inArray(personOrgAffiliations.organizationId, orgIds))
+    : [];
+  const contactsByOrg: Record<string, typeof allAffils> = {};
+  for (const a of allAffils) {
+    const key = a.orgId;
     if (!contactsByOrg[key]) contactsByOrg[key] = [];
-    contactsByOrg[key].push(c);
+    contactsByOrg[key].push(a);
   }
 
   // 3. Try to find relevant Brain files for each org
@@ -71,7 +84,7 @@ export async function POST(request: NextRequest) {
         orgId: org.id,
         orgName: org.name,
         lpType: org.lpType,
-        stage: org.stage,
+        stage: org.primaryOpportunity?.stage ?? "prospect",
         headquarters: org.headquarters,
         targetCommitment: org.targetCommitment,
         notes: org.notes,
@@ -81,7 +94,7 @@ export async function POST(request: NextRequest) {
         contacts: contacts.map((c) => ({
           name: c.fullName,
           title: c.title,
-          introducedBy: c.introducedBy,
+          introducedBy: c.introducedByName,
         })),
         daysSinceInteraction: org.daysSinceInteraction,
         brainContext: brainContext || null,

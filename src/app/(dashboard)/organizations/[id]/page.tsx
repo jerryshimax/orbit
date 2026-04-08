@@ -24,7 +24,7 @@ export default function OrgDetailPage() {
     );
   }
 
-  const { org, contacts, interactions, history } = data;
+  const { org, people: orgPeople, opportunities: orgOpps, interactions, history } = data;
   const lastInteraction = interactions[0];
   const days = lastInteraction
     ? daysSince(lastInteraction.interactionDate)
@@ -42,7 +42,7 @@ export default function OrgDetailPage() {
             >
               {org.name}
             </h1>
-            <StageBadge stage={org.pipelineStage} />
+            <StageBadge stage={orgOpps?.[0]?.stage ?? "prospect"} />
             <WarmthDot daysSinceTouch={days} showLabel />
           </div>
           <div
@@ -143,20 +143,23 @@ export default function OrgDetailPage() {
                 className="text-sm font-medium"
                 style={{ color: "var(--text-primary)" }}
               >
-                Contacts ({contacts.length})
+                People ({orgPeople?.length ?? 0})
               </h3>
             </div>
             <div className="divide-y" style={{ borderColor: "var(--border-subtle)" }}>
-              {contacts.map((c: any) => (
-                <div key={c.id} className="px-4 py-3">
+              {orgPeople?.map((entry: any) => (
+                <div key={entry.person.id} className="px-4 py-3">
                   <div className="flex items-center gap-2">
                     <span
                       className="text-sm font-medium"
                       style={{ color: "var(--text-primary)" }}
                     >
-                      {c.fullName}
+                      {entry.person.fullName}
+                      {entry.person.fullNameZh && entry.person.fullNameZh !== entry.person.fullName && (
+                        <span className="text-xs text-zinc-500 ml-1">{entry.person.fullNameZh}</span>
+                      )}
                     </span>
-                    {c.isPrimary && (
+                    {entry.affiliation.isPrimaryContact && (
                       <span
                         className="text-[10px] px-1.5 py-0.5 rounded"
                         style={{
@@ -167,26 +170,37 @@ export default function OrgDetailPage() {
                         Primary
                       </span>
                     )}
+                    {entry.person.relationshipStrength && (
+                      <span
+                        className="text-[10px] px-1 py-0.5 rounded capitalize"
+                        style={{
+                          background: "var(--bg-surface-hover)",
+                          color: "var(--text-tertiary)",
+                        }}
+                      >
+                        {entry.person.relationshipStrength}
+                      </span>
+                    )}
                   </div>
-                  {c.title && (
+                  {entry.affiliation.title && (
                     <div
                       className="text-xs mt-0.5"
                       style={{ color: "var(--text-secondary)" }}
                     >
-                      {c.title}
+                      {entry.affiliation.title}
                     </div>
                   )}
-                  {c.introducedBy && (
+                  {entry.person.introducedByName && (
                     <div
                       className="text-[11px] mt-1"
                       style={{ color: "var(--text-tertiary)" }}
                     >
-                      Intro: {c.introducedBy}
+                      Intro: {entry.person.introducedByName}
                     </div>
                   )}
                 </div>
               ))}
-              {contacts.length === 0 && (
+              {(!orgPeople || orgPeople.length === 0) && (
                 <div
                   className="px-4 py-6 text-center text-sm"
                   style={{ color: "var(--text-tertiary)" }}
@@ -260,22 +274,30 @@ export default function OrgDetailPage() {
                 Interactions ({interactions.length})
               </h3>
             </div>
-            <div className="divide-y" style={{ borderColor: "var(--border-subtle)" }}>
-              {interactions.map((i: any) => {
+            <div className="relative pl-10 pr-4 py-4 space-y-6 before:content-[''] before:absolute before:left-[19px] before:top-6 before:bottom-6 before:w-[2px] before:bg-[#4e4639]/20">
+              {interactions.map((i: any, idx: number) => {
                 const typeInfo = INTERACTION_TYPES[i.interactionType] ?? {
                   label: i.interactionType,
                   icon: "note",
                 };
+                const isFirst = idx === 0;
                 return (
-                  <div key={i.id} className="px-4 py-3 flex items-start gap-3">
+                  <div key={i.id} className="relative">
                     <span
-                      className="material-symbols-rounded text-[16px] mt-0.5"
-                      style={{ color: "var(--text-tertiary)" }}
-                    >
-                      {typeInfo.icon}
-                    </span>
-                    <div className="flex-1">
+                      className="absolute -left-[25px] top-1 w-3 h-3 rounded-full ring-4"
+                      style={{
+                        background: isFirst ? "var(--accent)" : "#4e4639",
+                        boxShadow: "0 0 0 4px var(--bg-surface)",
+                      }}
+                    />
+                    <div>
                       <div className="flex items-baseline gap-2">
+                        <span
+                          className="font-[JetBrains_Mono] text-[10px] uppercase"
+                          style={{ color: isFirst ? "var(--accent)" : "var(--text-tertiary)" }}
+                        >
+                          {formatRelativeDate(i.interactionDate)}
+                        </span>
                         <span
                           className="text-xs font-medium"
                           style={{ color: "var(--text-secondary)" }}
@@ -286,7 +308,7 @@ export default function OrgDetailPage() {
                           className="text-[11px]"
                           style={{ color: "var(--text-tertiary)" }}
                         >
-                          {i.teamMember} · {formatRelativeDate(i.interactionDate)}
+                          {i.teamMember}
                         </span>
                       </div>
                       <p

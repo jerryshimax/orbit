@@ -1,6 +1,6 @@
 import { getMeetingDetail } from "@/db/queries/roadshow";
 import { db } from "@/db";
-import { roadshowMeetings } from "@/db/schema";
+import { fieldTripMeetings } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function GET(
@@ -32,9 +32,9 @@ export async function PATCH(
   updates.updatedAt = new Date();
 
   await db
-    .update(roadshowMeetings)
+    .update(fieldTripMeetings)
     .set(updates)
-    .where(eq(roadshowMeetings.id, meetingId));
+    .where(eq(fieldTripMeetings.id, meetingId));
 
   return Response.json({ ok: true });
 }

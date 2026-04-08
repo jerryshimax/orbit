@@ -15,12 +15,19 @@ export default function PipelinePage() {
       // Optimistic update
       if (orgs) {
         const updated = orgs.map((o) =>
-          o.id === orgId ? { ...o, stage: newStage } : o
+          o.id === orgId
+            ? {
+                ...o,
+                primaryOpportunity: o.primaryOpportunity
+                  ? { ...o.primaryOpportunity, stage: newStage }
+                  : null,
+              }
+            : o
         );
         mutate("/api/organizations", updated, false);
       }
 
-      // Server update
+      // Server update — routes through opportunities now
       await fetch(`/api/organizations/${orgId}/stage`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -50,7 +57,7 @@ export default function PipelinePage() {
 
       {orgs && pipeline && (
         <KanbanBoard
-          orgs={orgs.filter((o) => o.stage !== "passed")}
+          orgs={orgs.filter((o) => (o.primaryOpportunity?.stage ?? "prospect") !== "passed")}
           sparklines={pipeline.sparklines ?? {}}
           onStageChange={handleStageChange}
         />

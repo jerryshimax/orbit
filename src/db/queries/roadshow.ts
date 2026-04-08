@@ -1,18 +1,20 @@
 import { db } from "@/db";
 import {
-  roadshowTrips,
-  roadshowLegs,
-  roadshowMeetings,
-  lpOrganizations,
+  fieldTrips,
+  fieldTripLegs,
+  fieldTripMeetings,
+  organizations,
+  opportunities,
   interactions,
 } from "@/db/schema";
-import { eq, desc, count, max, and } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 
 export type MeetingWithOrg = {
   id: string;
   tripId: string;
   legId: string | null;
   organizationId: string | null;
+  opportunityId: string | null;
   title: string;
   meetingDate: string | null;
   meetingTime: string | null;
@@ -29,30 +31,35 @@ export type MeetingWithOrg = {
   outcome: string | null;
   actionItems: any;
   sortOrder: number | null;
-  // Joined CRM data
+  // Joined org data
   orgName: string | null;
-  orgStage: string | null;
+  orgNameZh: string | null;
   orgType: string | null;
-  orgTargetCommitment: string | null;
+  orgHeadquarters: string | null;
   orgRelationshipOwner: string | null;
+  // Joined opportunity data
+  oppStage: string | null;
+  oppCommitment: string | null;
+  oppDealSize: string | null;
+  timezone?: string | null;
 };
 
 export type TripWithLegsAndMeetings = {
-  trip: typeof roadshowTrips.$inferSelect;
-  legs: (typeof roadshowLegs.$inferSelect)[];
+  trip: typeof fieldTrips.$inferSelect;
+  legs: (typeof fieldTripLegs.$inferSelect)[];
   meetings: MeetingWithOrg[];
 };
 
 /**
- * Get full trip with legs and meetings, with CRM org data joined.
+ * Get full trip with legs and meetings, with universal CRM data joined.
  */
 export async function getTripWithLegsAndMeetings(
   tripId: string
 ): Promise<TripWithLegsAndMeetings | null> {
   const [trip] = await db
     .select()
-    .from(roadshowTrips)
-    .where(eq(roadshowTrips.id, tripId))
+    .from(fieldTrips)
+    .where(eq(fieldTrips.id, tripId))
     .limit(1);
 
   if (!trip) return null;
@@ -60,25 +67,32 @@ export async function getTripWithLegsAndMeetings(
   const [legs, meetingsRaw] = await Promise.all([
     db
       .select()
-      .from(roadshowLegs)
-      .where(eq(roadshowLegs.tripId, tripId))
-      .orderBy(roadshowLegs.sortOrder),
+      .from(fieldTripLegs)
+      .where(eq(fieldTripLegs.tripId, tripId))
+      .orderBy(fieldTripLegs.sortOrder),
     db
       .select({
-        meeting: roadshowMeetings,
-        orgName: lpOrganizations.name,
-        orgStage: lpOrganizations.pipelineStage,
-        orgType: lpOrganizations.lpType,
-        orgTargetCommitment: lpOrganizations.targetCommitment,
-        orgRelationshipOwner: lpOrganizations.relationshipOwner,
+        meeting: fieldTripMeetings,
+        orgName: organizations.name,
+        orgNameZh: organizations.nameZh,
+        orgType: organizations.orgType,
+        orgHeadquarters: organizations.headquarters,
+        orgRelationshipOwner: organizations.relationshipOwner,
+        oppStage: opportunities.stage,
+        oppCommitment: opportunities.commitment,
+        oppDealSize: opportunities.dealSize,
       })
-      .from(roadshowMeetings)
+      .from(fieldTripMeetings)
       .leftJoin(
-        lpOrganizations,
-        eq(roadshowMeetings.organizationId, lpOrganizations.id)
+        organizations,
+        eq(fieldTripMeetings.organizationId, organizations.id)
       )
-      .where(eq(roadshowMeetings.tripId, tripId))
-      .orderBy(roadshowMeetings.meetingDate, roadshowMeetings.sortOrder),
+      .leftJoin(
+        opportunities,
+        eq(fieldTripMeetings.opportunityId, opportunities.id)
+      )
+      .where(eq(fieldTripMeetings.tripId, tripId))
+      .orderBy(fieldTripMeetings.meetingDate, fieldTripMeetings.sortOrder),
   ]);
 
   const meetings: MeetingWithOrg[] = meetingsRaw.map((r) => ({
@@ -86,6 +100,7 @@ export async function getTripWithLegsAndMeetings(
     tripId: r.meeting.tripId,
     legId: r.meeting.legId,
     organizationId: r.meeting.organizationId,
+    opportunityId: r.meeting.opportunityId,
     title: r.meeting.title,
     meetingDate: r.meeting.meetingDate,
     meetingTime: r.meeting.meetingTime,
@@ -103,10 +118,13 @@ export async function getTripWithLegsAndMeetings(
     actionItems: r.meeting.actionItems,
     sortOrder: r.meeting.sortOrder,
     orgName: r.orgName,
-    orgStage: r.orgStage,
+    orgNameZh: r.orgNameZh,
     orgType: r.orgType,
-    orgTargetCommitment: r.orgTargetCommitment,
+    orgHeadquarters: r.orgHeadquarters,
     orgRelationshipOwner: r.orgRelationshipOwner,
+    oppStage: r.oppStage,
+    oppCommitment: r.oppCommitment,
+    oppDealSize: r.oppDealSize,
   }));
 
   return { trip, legs, meetings };
@@ -118,22 +136,28 @@ export async function getTripWithLegsAndMeetings(
 export async function getMeetingDetail(meetingId: string) {
   const [row] = await db
     .select({
-      meeting: roadshowMeetings,
-      orgName: lpOrganizations.name,
-      orgStage: lpOrganizations.pipelineStage,
-      orgType: lpOrganizations.lpType,
-      orgTargetCommitment: lpOrganizations.targetCommitment,
-      orgRelationshipOwner: lpOrganizations.relationshipOwner,
-      orgHeadquarters: lpOrganizations.headquarters,
-      orgNotes: lpOrganizations.notes,
-      orgTags: lpOrganizations.tags,
+      meeting: fieldTripMeetings,
+      orgName: organizations.name,
+      orgNameZh: organizations.nameZh,
+      orgType: organizations.orgType,
+      orgHeadquarters: organizations.headquarters,
+      orgRelationshipOwner: organizations.relationshipOwner,
+      orgNotes: organizations.notes,
+      orgTags: organizations.tags,
+      oppStage: opportunities.stage,
+      oppCommitment: opportunities.commitment,
+      oppDealSize: opportunities.dealSize,
     })
-    .from(roadshowMeetings)
+    .from(fieldTripMeetings)
     .leftJoin(
-      lpOrganizations,
-      eq(roadshowMeetings.organizationId, lpOrganizations.id)
+      organizations,
+      eq(fieldTripMeetings.organizationId, organizations.id)
     )
-    .where(eq(roadshowMeetings.id, meetingId))
+    .leftJoin(
+      opportunities,
+      eq(fieldTripMeetings.opportunityId, opportunities.id)
+    )
+    .where(eq(fieldTripMeetings.id, meetingId))
     .limit(1);
 
   if (!row) return null;
@@ -144,7 +168,7 @@ export async function getMeetingDetail(meetingId: string) {
     orgInteractions = await db
       .select()
       .from(interactions)
-      .where(eq(interactions.organizationId, row.meeting.organizationId))
+      .where(eq(interactions.orgId, row.meeting.organizationId))
       .orderBy(desc(interactions.interactionDate))
       .limit(20);
   }
@@ -152,13 +176,15 @@ export async function getMeetingDetail(meetingId: string) {
   return {
     ...row.meeting,
     orgName: row.orgName,
-    orgStage: row.orgStage,
+    orgNameZh: row.orgNameZh,
     orgType: row.orgType,
-    orgTargetCommitment: row.orgTargetCommitment,
-    orgRelationshipOwner: row.orgRelationshipOwner,
     orgHeadquarters: row.orgHeadquarters,
+    orgRelationshipOwner: row.orgRelationshipOwner,
     orgNotes: row.orgNotes,
     orgTags: row.orgTags,
+    oppStage: row.oppStage,
+    oppCommitment: row.oppCommitment,
+    oppDealSize: row.oppDealSize,
     orgInteractions,
   };
 }
@@ -169,14 +195,14 @@ export async function getMeetingDetail(meetingId: string) {
 export async function getTripActionItems(tripId: string) {
   const meetings = await db
     .select({
-      id: roadshowMeetings.id,
-      title: roadshowMeetings.title,
-      meetingDate: roadshowMeetings.meetingDate,
-      actionItems: roadshowMeetings.actionItems,
+      id: fieldTripMeetings.id,
+      title: fieldTripMeetings.title,
+      meetingDate: fieldTripMeetings.meetingDate,
+      actionItems: fieldTripMeetings.actionItems,
     })
-    .from(roadshowMeetings)
-    .where(eq(roadshowMeetings.tripId, tripId))
-    .orderBy(roadshowMeetings.meetingDate);
+    .from(fieldTripMeetings)
+    .where(eq(fieldTripMeetings.tripId, tripId))
+    .orderBy(fieldTripMeetings.meetingDate);
 
   return meetings
     .filter((m) => m.actionItems && Array.isArray(m.actionItems))
@@ -194,13 +220,13 @@ export async function getTripActionItems(tripId: string) {
 }
 
 /**
- * Get the first (or only) trip.
+ * Get the default (most recent) trip.
  */
 export async function getDefaultTrip() {
   const [trip] = await db
     .select()
-    .from(roadshowTrips)
-    .orderBy(desc(roadshowTrips.createdAt))
+    .from(fieldTrips)
+    .orderBy(desc(fieldTrips.createdAt))
     .limit(1);
   return trip ?? null;
 }
