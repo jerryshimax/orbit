@@ -48,8 +48,8 @@ Orbit is the single dashboard that manages LP pipeline, roadshow prep, deal flow
 ## Quick Start
 
 ```bash
-git clone https://github.com/jerryshimax/ce-roadshow.git
-cd ce-roadshow
+git clone https://github.com/jerryshimax/orbit.git
+cd orbit
 npm install
 cp .env.local.example .env.local    # Fill in Supabase creds
 npx drizzle-kit push                # Create tables

@@ -3,7 +3,7 @@
 **Recipient:** David Wu (Engineer)
 **Author:** Jerry Shi
 **Date:** April 7, 2026
-**Repository:** https://github.com/jerryshimax/ce-roadshow
+**Repository:** https://github.com/jerryshimax/orbit
 **Current State:** Frontend + backend complete, needs Supabase + Vercel Pro deployment
 **Deadline:** App must be live before April 12 (roadshow departure)
 
@@ -323,8 +323,8 @@ roadshow_legs ←──FK── roadshow_meetings (meetings belong to a leg)
 
 ```
 □ 1. Clone repo
-     git clone https://github.com/jerryshimax/ce-roadshow.git
-     cd ce-roadshow
+     git clone https://github.com/jerryshimax/orbit.git
+     cd orbit
      npm install
 
 □ 2. Create Supabase project
@@ -371,8 +371,8 @@ roadshow_legs ←──FK── roadshow_meetings (meetings belong to a leg)
 ### 8.1 Local Development
 
 ```bash
-git clone https://github.com/jerryshimax/ce-roadshow.git
-cd ce-roadshow
+git clone https://github.com/jerryshimax/orbit.git
+cd orbit
 npm install
 cp .env.local.example .env.local
 # Edit .env.local with your database credentials
@@ -415,7 +415,7 @@ docker compose up -d
 
 ### 8.5 Vercel Pro Deployment
 
-1. Import `jerryshimax/ce-roadshow` on vercel.com
+1. Import `jerryshimax/orbit` on vercel.com
 2. Add Postgres via Vercel Storage (Neon) — auto-sets DATABASE_URL
 3. Or manually add DATABASE_URL pointing to Supabase
 4. Push to main → auto-deploys
@@ -526,7 +526,7 @@ The root-level `HANDOFF.md` is a rolling daily sync file. Keep it under 80 lines
 ## Appendix: File Map
 
 ```
-ce-roadshow/
+orbit/
 ├── docs/
 │   └── orbit-handoff.md     ← THIS DOCUMENT
 ├── drizzle/                     ← SQL migrations
