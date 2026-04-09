@@ -1,2 +1,5 @@
-// Root page — handled by (dashboard) route group
-export { default } from "./(dashboard)/page";
+import { redirect } from "next/navigation";
+
+export default function RootPage() {
+  redirect("/brief");
+}

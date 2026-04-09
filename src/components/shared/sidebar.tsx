@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 
 const PRIMARY_NAV = [
-  { href: "/", icon: "summarize", label: "Brief" },
+  { href: "/brief", icon: "summarize", label: "Brief" },
   { href: "/meetings", icon: "groups", label: "Meetings" },
   { href: "/schedule", icon: "calendar_month", label: "Schedule" },
   { href: "/contacts", icon: "contact_page", label: "Contacts" },
