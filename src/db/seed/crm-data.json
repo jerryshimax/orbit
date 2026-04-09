@@ -1,0 +1,3030 @@
+{
+  "organizations": [
+    {
+      "name": "Synergis Capital",
+      "orgType": "other",
+      "orgSubtype": "vc_firm",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Jerry's VC/PE firm. $150M+ deployed across AI, crypto, biotech, govtech, consumer."
+    },
+    {
+      "name": "UUL Global",
+      "orgType": "portfolio_company",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Jerry's operating company. Global end-to-end logistics."
+    },
+    {
+      "name": "Current Equities",
+      "orgType": "other",
+      "orgSubtype": "pe_fund",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Infrastructure PE fund. $300-500M Fund I target. Behind-the-meter energy for AI data centers."
+    },
+    {
+      "name": "Neuron VC",
+      "orgType": "other",
+      "orgSubtype": "vc_firm",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "angel",
+      "notes": "Angel Zhou's VC entity under Synergis umbrella."
+    },
+    {
+      "name": "Nscale",
+      "orgType": "portfolio_company",
+      "headquarters": "London",
+      "country": "UK",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "AI infra. Acquired AIP at $1.5B. Microsoft LOI 1.35 GW. Series C+ closed Mar 2026 via 8090 SPV."
+    },
+    {
+      "name": "Stratum",
+      "nameZh": null,
+      "orgType": "portfolio_company",
+      "headquarters": "San Francisco",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "StratumAI. Governance challenges — board dispute between Farzi and Daniel Mogilny."
+    },
+    {
+      "name": "Packsmith",
+      "orgType": "portfolio_company",
+      "headquarters": "San Francisco",
+      "country": "USA",
+      "entityTags": [
+        "SYN",
+        "UUL"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "AI packaging. Strategic partnership with UUL for logistics integration."
+    },
+    {
+      "name": "VoiceBrain",
+      "orgType": "portfolio_company",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Voice AI. Co-founded by Tony Ayaz and Dean Gardner."
+    },
+    {
+      "name": "Puller AI",
+      "orgType": "portfolio_company",
+      "headquarters": "New York",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Pre-seed investment. Zac Choi CEO. Meral departed, Niro advising, Rohan CTO joined 2025."
+    },
+    {
+      "name": "Zensors",
+      "orgType": "portfolio_company",
+      "headquarters": "Pittsburgh",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Visual AI. SAFE investment. Anuraag Jain founder/CEO."
+    },
+    {
+      "name": "Nuel",
+      "orgType": "prospect",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "angel",
+      "notes": "Being evaluated. Krishna Manda CEO, Alan Kartchner co-founder."
+    },
+    {
+      "name": "Departure",
+      "orgType": "service_provider",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Design/creative partner. Ben Fogarty founding partner."
+    },
+    {
+      "name": "Wisor AI",
+      "orgType": "prospect",
+      "headquarters": "Poland",
+      "country": "Poland",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Being evaluated for UUL logistics partnership."
+    },
+    {
+      "name": "8090 Industries",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Co-investor. Nscale SPV. Exowatt co-invest. Wes Mendenhall partner."
+    },
+    {
+      "name": "YXS Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Co-investor on Nscale. Yotis Tonnelier + Sunny Patel managing partners."
+    },
+    {
+      "name": "Alpha Square Group",
+      "orgType": "strategic_partner",
+      "orgSubtype": "co_investor",
+      "headquarters": "China",
+      "country": "China",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Co-investor on Stratum (2nd largest). Sebastian Zhou, Peter Lin, Renee Li, Wally Wang."
+    },
+    {
+      "name": "LDV Partners",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Co-investor. Eddie Chan, Winston."
+    },
+    {
+      "name": "Two Small Fish VC",
+      "orgType": "strategic_partner",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Co-investor on Stratum. Eva Lau."
+    },
+    {
+      "name": "Soma Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "San Francisco",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Co-investor. Aneel Ranadive."
+    },
+    {
+      "name": "J17 Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Co-investor on Stratum. Frank Zhao."
+    },
+    {
+      "name": "Waed (Aramco VC)",
+      "orgType": "strategic_partner",
+      "headquarters": "Saudi Arabia",
+      "country": "Saudi Arabia",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Co-investor on Stratum. Rawan Farwana."
+    },
+    {
+      "name": "Crossover Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Dean Gardner. Also co-founded VoiceBrain."
+    },
+    {
+      "name": "Interplay VC",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Kevin Tung senior partner."
+    },
+    {
+      "name": "Atas VC",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Andrew Chan's new fund (former Builders VC)."
+    },
+    {
+      "name": "Rethink Ventures",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Aaron Nathan, Matthias Schanze."
+    },
+    {
+      "name": "Beliron",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Deal source. Chad."
+    },
+    {
+      "name": "Accathon Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Michael Zhu CIO."
+    },
+    {
+      "name": "Antler",
+      "orgType": "strategic_partner",
+      "headquarters": "Singapore",
+      "country": "Singapore",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Bernie Li. VC accelerator."
+    },
+    {
+      "name": "Struck Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Adam Struck."
+    },
+    {
+      "name": "Bernstein",
+      "orgType": "service_provider",
+      "orgSubtype": "investment_bank",
+      "headquarters": "New York",
+      "country": "USA",
+      "entityTags": [
+        "CE",
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "AllianceBernstein. Ian Zinn principal. Hosting HK SFO Roundtable Apr 12-13. Key LP intro partner."
+    },
+    {
+      "name": "Northview Law",
+      "orgType": "service_provider",
+      "orgSubtype": "law_firm",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Albert Lin attorney. Ex-McCarthy, Brookfield. Counsel for Stratum board matters."
+    },
+    {
+      "name": "Pallet",
+      "orgType": "service_provider",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Lisa + Ishan Lakhani. Talent/recruiting platform."
+    },
+    {
+      "name": "Caplink Securities",
+      "orgType": "service_provider",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Mike Oshiro. Broker-dealer."
+    },
+    {
+      "name": "Corner Capital",
+      "orgType": "service_provider",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Alex Kassan, Michelle Lord."
+    },
+    {
+      "name": "Gamma Point Advisory",
+      "orgType": "service_provider",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Joseph. Advisory firm."
+    },
+    {
+      "name": "Apollo Global",
+      "orgType": "lp",
+      "orgSubtype": "asset_manager",
+      "headquarters": "New York",
+      "country": "USA",
+      "entityTags": [
+        "CE",
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Will Bocking (Director Global FO), Jeffrey Wong (APAC FO lead). DC and utility buildout logistics. Family office collaboration Asia."
+    },
+    {
+      "name": "Vitae Integro / Skyron FO",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Bret Farris. Invested in Synergis Critical Infrastructure I LP. Active CE LP."
+    },
+    {
+      "name": "Helios Energy",
+      "orgType": "developer",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Jose Rojas CEO. Modular AI data centers at power plants. Behind-the-meter, bypassing grid queues. Claymore pitched $50M SPV."
+    },
+    {
+      "name": "Claymore Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Jake Valentine, Luca Pantaleo. Pitched $50M SPV for Helios modular AI DCs."
+    },
+    {
+      "name": "Taycho",
+      "orgType": "developer",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Kyle Giddens co-founder. Building DCs in emerging markets. Energy campuses + AI infra."
+    },
+    {
+      "name": "Samba Energy",
+      "orgType": "developer",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Michael Wang. Energy company."
+    },
+    {
+      "name": "Lumida Ventures",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "John Cutrone CSO/CFA. Leading New West Data round ($45M val). Energy tech for DCs with stranded nat gas."
+    },
+    {
+      "name": "Exowatt",
+      "orgType": "prospect",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "CE",
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Power, heat, energy storage for AI DCs at $0.04/kWh. Backed by Felicis + a16z. 8090 co-invest opportunity."
+    },
+    {
+      "name": "Energy Robotics",
+      "orgType": "prospect",
+      "headquarters": "Germany",
+      "country": "Germany",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Marc Dassler CEO. AI-driven autonomous robotic inspection. Shell, BP, Total, Chevron, Aramco clients."
+    },
+    {
+      "name": "DivineGrace Energy",
+      "orgType": "prospect",
+      "headquarters": "India",
+      "country": "India",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Dharam Vijay Singh Parihar co-founder/CEO. Clean infra, solar in India, ₹800 Cr portfolio."
+    },
+    {
+      "name": "N4XT Experiences",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Keith Abell. Events/entertainment."
+    },
+    {
+      "name": "S2 Data",
+      "orgType": "prospect",
+      "headquarters": "Austria",
+      "country": "Austria",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Stefan Kremsner. Data company."
+    },
+    {
+      "name": "Terminal Industries",
+      "orgType": "prospect",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Darin Brannan."
+    },
+    {
+      "name": "8-Bit Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Kent. VC."
+    },
+    {
+      "name": "Freight VC",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN",
+        "UUL"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Max. Logistics-focused VC."
+    },
+    {
+      "name": "Trest Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Jim."
+    },
+    {
+      "name": "Seguin Ventures",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Alex Tong."
+    },
+    {
+      "name": "Private Fleet NZ",
+      "orgType": "prospect",
+      "headquarters": "New Zealand",
+      "country": "New Zealand",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Russell Jones. Logistics."
+    },
+    {
+      "name": "Ranger RFX",
+      "orgType": "prospect",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "James Zhan."
+    },
+    {
+      "name": "Destro AI",
+      "orgType": "prospect",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Manthan Pawar."
+    },
+    {
+      "name": "Roboforce",
+      "orgType": "prospect",
+      "headquarters": "Hong Kong",
+      "country": "Hong Kong",
+      "entityTags": [
+        "CE",
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Leo Ma. Fireside chat at HK Roundtable."
+    },
+    {
+      "name": "Foxconn",
+      "nameZh": "富士康",
+      "orgType": "corporate",
+      "headquarters": "Shenzhen",
+      "country": "China",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "ray",
+      "lpType": "corporate",
+      "targetCommitment": "10000000",
+      "notes": "CDO 史喆 is key contact. Fortune 100 network. Houston power division."
+    },
+    {
+      "name": "Dongshan Precision",
+      "nameZh": "东山精密",
+      "orgType": "corporate",
+      "headquarters": "Suzhou",
+      "country": "China",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "ray",
+      "lpType": "corporate",
+      "targetCommitment": "5000000",
+      "notes": "PCB/FPC leader. GMD acquisition = NA market. 赵总 overseas head."
+    },
+    {
+      "name": "Mindray",
+      "nameZh": "迈瑞医疗",
+      "orgType": "corporate",
+      "headquarters": "Shenzhen",
+      "country": "China",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "lpType": "corporate",
+      "targetCommitment": "5000000",
+      "notes": "Relationship needs repair. Daniel is LP contact."
+    },
+    {
+      "name": "BYD Electronics",
+      "nameZh": "比亚迪电子",
+      "orgType": "corporate",
+      "headquarters": "Shenzhen",
+      "country": "China",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "ray",
+      "notes": "Potential AIDC equipment supplier. Oleg Vorontsov (Dezzai) has BYD ecosystem connections."
+    },
+    {
+      "name": "Century Huatong",
+      "nameZh": "世纪华通",
+      "orgType": "corporate",
+      "headquarters": "Shanghai",
+      "country": "China",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "lpType": "corporate",
+      "targetCommitment": "5000000",
+      "notes": "AIDC operator. Megaspeed exit."
+    },
+    {
+      "name": "Empower/EP",
+      "orgType": "corporate",
+      "headquarters": "China",
+      "country": "China",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "ray",
+      "lpType": "corporate",
+      "targetCommitment": "3000000",
+      "notes": "EPC contractor + strategic investor. 孟总."
+    },
+    {
+      "name": "Meixing/Alic",
+      "nameZh": "美行",
+      "orgType": "corporate",
+      "headquarters": "Ningbo",
+      "country": "China",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "lpType": "hnwi",
+      "targetCommitment": "3000000",
+      "notes": "Alic — ~1B+ RMB cash. Ningbo network connector."
+    },
+    {
+      "name": "Cucoro",
+      "orgType": "developer",
+      "headquarters": "New York",
+      "country": "USA",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "ray",
+      "notes": "1 GW France AIDC energy campus. Co-GP opportunity."
+    },
+    {
+      "name": "Adidas Family Office",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "Germany",
+      "country": "Germany",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "targetCommitment": "5000000",
+      "notes": "Alex Benete 3rd gen. HK roundtable."
+    },
+    {
+      "name": "Swiss SFO (Jonas)",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "Zurich",
+      "country": "Switzerland",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "targetCommitment": "10000000",
+      "notes": "Jonas Anker. ME DC investor."
+    },
+    {
+      "name": "Du Ge Server Co",
+      "nameZh": "杜哥服务器",
+      "orgType": "corporate",
+      "headquarters": "Sichuan",
+      "country": "China",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "ray",
+      "notes": "杜哥 server business. AIDC supply chain."
+    },
+    {
+      "name": "Asian Family Legacy Foundation (AFLF)",
+      "orgType": "other",
+      "orgSubtype": "fo_network",
+      "headquarters": "Hong Kong",
+      "country": "Hong Kong",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "FO membership org. Annual conferences in HK/Macau. Jerry attended 2024 New Wealth Horizon, 2025 Global Wealth & Legacy Week, HK FO Symposium London."
+    },
+    {
+      "name": "Milken Institute",
+      "orgType": "other",
+      "orgSubtype": "fo_network",
+      "headquarters": "Los Angeles",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Global conference. Jerry attended 2023 Asia Summit (Singapore), 2025 Global (LA), 2026 Milken Happy Hour. Guanfeng Zhou is Asia Center director."
+    },
+    {
+      "name": "1640 Society",
+      "orgType": "other",
+      "orgSubtype": "fo_network",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Ultra-exclusive FO forums. Jerry attended/invited: Hamptons 2023, Latam Guatemala 2023, Palm Beach 2024, Sports Summit FL 2025."
+    },
+    {
+      "name": "Spark Family Offices",
+      "orgType": "other",
+      "orgSubtype": "fo_network",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "FO community events. LA Impact Investing, Israel Trip, Denver Tour, NYC Best Practices (Morgan Stanley hosted)."
+    },
+    {
+      "name": "Lockton Companies",
+      "orgType": "service_provider",
+      "orgSubtype": "fo_advisory",
+      "headquarters": "Kansas City",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Fernando Silva runs FO network. Bi-weekly FO calls with prominent speakers."
+    },
+    {
+      "name": "Moss Family Office",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "South Florida",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Chad, Bob, Scott Moss. Hosted Bernstein SFO Roundtable Sept 2025."
+    },
+    {
+      "name": "CARPA Family Office",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "São Paulo",
+      "country": "Brazil",
+      "entityTags": [
+        "FO",
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Celso Colombo Neto, Arthur Levy. Invested $200K in Synergis Agile Global fund. SP + Rio offices."
+    },
+    {
+      "name": "Platform Ventures",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Chris Barkley, Geoff Jackson. Met at Bernstein FL Roundtable."
+    },
+    {
+      "name": "Sky and Ray",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Aaron Hatton, Michael Sikorsky. Bernstein FL Roundtable attendee."
+    },
+    {
+      "name": "Hidrock Properties",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "New York",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Abie Hidary. Bernstein FL Roundtable attendee."
+    },
+    {
+      "name": "El Trueno",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "Latin America",
+      "country": "Mexico",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Andrés Lang. Bernstein FL Roundtable attendee."
+    },
+    {
+      "name": "MSQ Invest",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "Europe",
+      "country": "Switzerland",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Anna Mochkarova. Bernstein FL Roundtable attendee."
+    },
+    {
+      "name": "ABO Ventures / Empire",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Travis Steele, Trey Yates. Bernstein FL Roundtable attendee."
+    },
+    {
+      "name": "FourFins",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Jeremy Fehr. Bernstein FL Roundtable attendee."
+    },
+    {
+      "name": "Shipston Group",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "David Dingman. Bernstein FL Roundtable attendee."
+    },
+    {
+      "name": "Advantage VC",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Alex Bente. Bernstein FL Roundtable."
+    },
+    {
+      "name": "MFO Worldwide",
+      "orgType": "service_provider",
+      "orgSubtype": "fo_advisory",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Rhonda Bevan. Multi-family office."
+    },
+    {
+      "name": "VMS Family Office",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "Hong Kong",
+      "country": "Hong Kong",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Hosted FO Event Series: Digital Assets 2025 (Feb 2025 HK). Location visit at HK Roundtable."
+    },
+    {
+      "name": "Solamere Capital",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Tagg Romney. Fernando Silva FO network speaker."
+    },
+    {
+      "name": "Expanse Venture Partners",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Connor Crown (Crown Family). Fernando Silva FO network speaker."
+    },
+    {
+      "name": "von Siemens Family Office",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "Germany",
+      "country": "Germany",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Björn von Siemens (CareSyntax), Bracy Fertig. AFLF speaker connection."
+    },
+    {
+      "name": "Coeur Renewables",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO",
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Henry Park. Serial energy entrepreneur — sold Energy Power Partners to NextEra 2023. Intro via Ian Zinn."
+    },
+    {
+      "name": "Shi Family Office",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "Shanghai",
+      "country": "China",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Thomas Shi (Jerry father). 1st gen. Founded after exit from outdoor media in Shanghai."
+    },
+    {
+      "name": "Vektor Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "Turkey",
+      "country": "Turkey",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Haluk Sabanci Dincer, Dominic Moore. Investment firm."
+    },
+    {
+      "name": "Kline Hill Partners",
+      "orgType": "strategic_partner",
+      "orgSubtype": "secondary_fund",
+      "headquarters": "New York",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Alyson Seufert, Chris Bull, Rachel Eberhart, Christoph Bub. Secondary market."
+    },
+    {
+      "name": "First Analysis",
+      "orgType": "strategic_partner",
+      "headquarters": "Chicago",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Walid Elmekki, Corey Greendale."
+    },
+    {
+      "name": "MANIV",
+      "orgType": "strategic_partner",
+      "headquarters": "Israel",
+      "country": "Israel",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Kyle Spottiswood. Mobility/logistics VC."
+    },
+    {
+      "name": "Sterry Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Kenan Jiang."
+    },
+    {
+      "name": "Arkane Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Arkady Kulik."
+    },
+    {
+      "name": "Kharis Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Manuel Roumain MP, Deborah Panarello."
+    },
+    {
+      "name": "Persistence Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "Canada",
+      "country": "Canada",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Nancy Battaglia."
+    },
+    {
+      "name": "Broadway VP",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Jeffrey Truong."
+    },
+    {
+      "name": "Golden Ventures",
+      "orgType": "strategic_partner",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Ameet Shah. Toronto VC."
+    },
+    {
+      "name": "Setter Capital",
+      "orgType": "strategic_partner",
+      "orgSubtype": "secondary",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Yash Kavi. Secondary market."
+    },
+    {
+      "name": "Polimode",
+      "orgType": "prospect",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Prasad Boppana, Avi Boppana."
+    },
+    {
+      "name": "Falcon Investor Group",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Emma Sokoloff."
+    },
+    {
+      "name": "Y Combinator",
+      "orgType": "strategic_partner",
+      "orgSubtype": "accelerator",
+      "headquarters": "San Francisco",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Carolynn Levy, Jonathan Levy. YC counsel contacts."
+    },
+    {
+      "name": "Volt Capital",
+      "orgType": "strategic_partner",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Soona Amhaz, Corinne Thomas, Devin Errico. Crypto VC."
+    },
+    {
+      "name": "K50 Ventures",
+      "orgType": "strategic_partner",
+      "headquarters": "Latin America",
+      "country": "Mexico",
+      "entityTags": [
+        "SYN",
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Eduardo. Latam VC."
+    },
+    {
+      "name": "Al Mulla Capital",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "Kuwait",
+      "country": "Kuwait",
+      "entityTags": [
+        "FO",
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Jorge Felippe. HK Roundtable attendee. Middle East FO."
+    },
+    {
+      "name": "Anker Capital",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "Zurich",
+      "country": "Switzerland",
+      "entityTags": [
+        "FO",
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Jonas Anker personal vehicle. Swiss SFO."
+    },
+    {
+      "name": "Copia Wealth Studios",
+      "orgType": "lp",
+      "lpType": "family_office",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Aaron Hatton, Michelle Kushevsky. Wealth management."
+    },
+    {
+      "name": "Norton Rose Fulbright",
+      "orgType": "service_provider",
+      "orgSubtype": "law_firm",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "SYN",
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Bruce Sheiner, James Renihan. International law firm."
+    },
+    {
+      "name": "Han Kun Law",
+      "nameZh": "汉坤律师事务所",
+      "orgType": "service_provider",
+      "orgSubtype": "law_firm",
+      "headquarters": "Beijing",
+      "country": "China",
+      "entityTags": [
+        "SYN",
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Bing Huang, Chengze Xu, Min Luo. Chinese law firm for cross-border."
+    },
+    {
+      "name": "NAV Fund Services",
+      "orgType": "service_provider",
+      "orgSubtype": "fund_admin",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "josie",
+      "notes": "Fund administration and investor relations."
+    },
+    {
+      "name": "Heliuman",
+      "orgType": "prospect",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Jesse Seligman. Helium-related startup."
+    },
+    {
+      "name": "KaBeNa Group",
+      "orgType": "prospect",
+      "headquarters": "Germany",
+      "country": "Germany",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Karl-Benno Nagy, Marcel Wroblewski. Helium deal."
+    },
+    {
+      "name": "Ground Floor Energy",
+      "orgType": "prospect",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Patrick Flannery. Energy investment."
+    },
+    {
+      "name": "Advance Enterprise Inc",
+      "orgType": "service_provider",
+      "orgSubtype": "logistics",
+      "headquarters": "USA",
+      "country": "USA",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Chris Jun, Justin Kang. Shipping/logistics partner."
+    },
+    {
+      "name": "Prestigium Real Estate",
+      "orgType": "service_provider",
+      "orgSubtype": "real_estate",
+      "headquarters": "Toronto",
+      "country": "Canada",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipOwner": "jerry",
+      "notes": "Elvis Ge. Real estate broker."
+    }
+  ],
+  "people": [
+    {
+      "fullName": "Jason Likens",
+      "email": "jhl@uulglobal.com",
+      "title": "CEO",
+      "org": "UUL Global",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 95,
+      "notes": "UUL CEO. 80+ interactions in 6 months."
+    },
+    {
+      "fullName": "Angel Zhou",
+      "email": "angel@synergiscap.com",
+      "title": "Principal",
+      "org": "Synergis Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 95,
+      "notes": "Synergis principal. Also angel@neuronvc.io."
+    },
+    {
+      "fullName": "Matthew Kosiewska",
+      "email": "matthewk@synergiscap.com",
+      "title": "Partner",
+      "org": "Synergis Capital",
+      "entityTags": [
+        "SYN",
+        "CE"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 95,
+      "notes": "Matt. Attended DCD conference. DC supply chain contacts."
+    },
+    {
+      "fullName": "Hao Wei",
+      "email": "haowei@synergiscap.com",
+      "title": "Head of Platform",
+      "org": "Synergis Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 90,
+      "notes": "Supporting CE fund ops and LP relationships."
+    },
+    {
+      "fullName": "Steven Hartanto",
+      "email": "steven@synergiscap.com",
+      "title": "Partner",
+      "org": "Synergis Capital",
+      "entityTags": [
+        "SYN",
+        "FO"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 90,
+      "notes": "SFO principal. Co-managing HK roadshow and FO events."
+    },
+    {
+      "fullName": "Josie Rao",
+      "email": "josierao@synergiscap.com",
+      "title": "CFO/COO, CFA, FRM",
+      "org": "Synergis Capital",
+      "entityTags": [
+        "SYN",
+        "CE"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 90,
+      "notes": "Managing LP relationships, fund admin for Critical Infrastructure I LP."
+    },
+    {
+      "fullName": "David Wu",
+      "email": "davidwu@synergiscap.com",
+      "title": "Engineer",
+      "org": "Synergis Capital",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 80,
+      "notes": "Building Orbit. Deployed to Vercel."
+    },
+    {
+      "fullName": "Ray Mao",
+      "email": "raymao@currentequities.com",
+      "title": "Partner",
+      "org": "Current Equities",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 95,
+      "notes": "CE co-founder. Roadshow co-traveler. LP relationship lead."
+    },
+    {
+      "fullName": "Ian Zinn",
+      "email": "Ian.Zinn@bernstein.com",
+      "title": "Principal",
+      "org": "Bernstein",
+      "entityTags": [
+        "CE",
+        "FO"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 80,
+      "notes": "Hosting HK SFO Roundtable Apr 12-13. Key LP intro partner. 25+ interactions."
+    },
+    {
+      "fullName": "Ben Wunderman",
+      "email": "ben@packsmith.ai",
+      "title": "CEO & Co-Founder",
+      "org": "Packsmith",
+      "entityTags": [
+        "SYN",
+        "UUL"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 75,
+      "notes": "Packsmith CEO. UUL logistics partnership. 20+ interactions."
+    },
+    {
+      "fullName": "Tony Ayaz",
+      "email": "tony@voicebrain.ai",
+      "title": "CEO",
+      "org": "VoiceBrain",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 70,
+      "notes": "VoiceBrain CEO. 18+ interactions."
+    },
+    {
+      "fullName": "Dean Gardner",
+      "email": "dean@crossovercapital.com",
+      "title": "Founder",
+      "org": "Crossover Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 70,
+      "notes": "Also co-founded VoiceBrain. dean@voicebrain.ai. 18+ interactions."
+    },
+    {
+      "fullName": "Albert Lin",
+      "email": "alin@northviewlaw.com",
+      "title": "Attorney",
+      "org": "Northview Law",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 65,
+      "notes": "Ex-McCarthy, Brookfield. Counsel for Stratum board matters. 16+ interactions."
+    },
+    {
+      "fullName": "Wes Mendenhall",
+      "email": "wes@8090industries.com",
+      "title": "Partner",
+      "org": "8090 Industries",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 70,
+      "notes": "Co-investor. Nscale SPV. Exowatt. 14+ interactions."
+    },
+    {
+      "fullName": "Aaron Nathan",
+      "email": "aaron.nathan@rethinkventures.com",
+      "title": "Partner",
+      "org": "Rethink Ventures",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 55,
+      "notes": "15+ interactions."
+    },
+    {
+      "fullName": "Daniel Mogilny",
+      "email": "danielmogilny@gmail.com",
+      "title": "Former Co-founder",
+      "org": "Stratum",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 50,
+      "notes": "Departed Stratum. Board dispute. 14+ interactions."
+    },
+    {
+      "fullName": "Farzi Yusufali",
+      "email": "farzi@stratum.ai",
+      "title": "CEO/Co-founder",
+      "org": "Stratum",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 55,
+      "notes": "Stratum CEO. Governance challenges. 12+ interactions."
+    },
+    {
+      "fullName": "Yotis Tonnelier",
+      "email": "yotis@yxscapital.com",
+      "title": "Managing Partner",
+      "org": "YXS Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 55,
+      "notes": "Co-investor on Nscale. 12+ interactions."
+    },
+    {
+      "fullName": "Eddie Chan",
+      "email": "eddie@ldvpartners.com",
+      "title": "Partner",
+      "org": "LDV Partners",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 50,
+      "notes": "Co-investor. 12+ interactions."
+    },
+    {
+      "fullName": "Sebastian Zhou",
+      "email": "sebastian.zhou@alphasquaregroup.com",
+      "title": "Partner",
+      "org": "Alpha Square Group",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 50,
+      "notes": "Co-investor on Stratum (2nd largest). 12+ interactions."
+    },
+    {
+      "fullName": "Manthan Pawar",
+      "email": "manthan.pawar@destroai.com",
+      "title": "Founder",
+      "org": "Destro AI",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 45,
+      "notes": "12+ interactions."
+    },
+    {
+      "fullName": "Michael Wang",
+      "email": "michael@sambaenergy.com",
+      "title": "Founder",
+      "org": "Samba Energy",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 45,
+      "notes": "Energy company. 11+ interactions."
+    },
+    {
+      "fullName": "Alex Kassan",
+      "email": "akassan77@gmail.com",
+      "title": "Partner",
+      "org": "Corner Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 45,
+      "notes": "11+ interactions."
+    },
+    {
+      "fullName": "Lisa",
+      "email": "lisa@pallet.com",
+      "title": "Team",
+      "org": "Pallet",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 45,
+      "notes": "11+ interactions."
+    },
+    {
+      "fullName": "Ishan Lakhani",
+      "email": "ishan.lakhani@pallet.com",
+      "title": "Team",
+      "org": "Pallet",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 45,
+      "notes": "11+ interactions."
+    },
+    {
+      "fullName": "Krishna Manda",
+      "email": "krishna@nuel.ai",
+      "title": "Co-founder & CEO",
+      "org": "Nuel",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 40,
+      "notes": "10+ interactions."
+    },
+    {
+      "fullName": "Alan Kartchner",
+      "email": "alan@nuel.ai",
+      "title": "Co-founder",
+      "org": "Nuel",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 40,
+      "notes": "10+ interactions."
+    },
+    {
+      "fullName": "Zac Choi",
+      "email": "zac@puller.ai",
+      "title": "CEO & Co-founder",
+      "org": "Puller AI",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 45,
+      "notes": "Puller CEO. Also zac@passage.xyz. 10+ interactions."
+    },
+    {
+      "fullName": "Keith Abell",
+      "email": "keith@n4xtexperiences.com",
+      "title": "Founder",
+      "org": "N4XT Experiences",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 40,
+      "notes": "Events/entertainment. Connected to Dongshan Precision deal. 10+ interactions."
+    },
+    {
+      "fullName": "Joseph",
+      "email": "joseph@gammapointadvisory.com",
+      "title": "Partner",
+      "org": "Gamma Point Advisory",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 40,
+      "notes": "10+ interactions."
+    },
+    {
+      "fullName": "Josh Foster",
+      "email": "jlfoster@uulglobal.com",
+      "title": "Team Member",
+      "org": "UUL Global",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 70,
+      "notes": "25+ interactions."
+    },
+    {
+      "fullName": "Stefan Kremsner",
+      "email": "stefan.kremsner@s2-data.at",
+      "title": "Founder",
+      "org": "S2 Data",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "9+ interactions."
+    },
+    {
+      "fullName": "Russell Jones",
+      "email": "rjones@privatefleetnz.com",
+      "title": "Founder",
+      "org": "Private Fleet NZ",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "9+ interactions."
+    },
+    {
+      "fullName": "Matthias Schanze",
+      "email": "matthias@rethinkventures.com",
+      "title": "Partner",
+      "org": "Rethink Ventures",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "9+ interactions."
+    },
+    {
+      "fullName": "Aneel Ranadive",
+      "email": "aneel@somacap.com",
+      "title": "Partner",
+      "org": "Soma Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "9+ interactions."
+    },
+    {
+      "fullName": "James Zhan",
+      "email": "james@rangerrfx.com",
+      "title": "Founder",
+      "org": "Ranger RFX",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "9+ interactions."
+    },
+    {
+      "fullName": "Bernie Li",
+      "email": "bernie.li@antler.co",
+      "title": "Partner",
+      "org": "Antler",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 30,
+      "notes": "8+ interactions."
+    },
+    {
+      "fullName": "Jeff Wong",
+      "email": "jewong@apollo.com",
+      "title": "APAC Family Office Lead",
+      "org": "Apollo Global",
+      "entityTags": [
+        "CE",
+        "FO"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 40,
+      "notes": "DC and utility buildout logistics. FO collaboration Asia. 8+ interactions."
+    },
+    {
+      "fullName": "Will Bocking",
+      "email": "wbocking@apollo.com",
+      "title": "Director Global Family Office",
+      "org": "Apollo Global",
+      "entityTags": [
+        "CE",
+        "FO"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 40,
+      "notes": "Introduced Jeff Wong for infrastructure collab. 8+ interactions."
+    },
+    {
+      "fullName": "Kenan Jiang",
+      "email": "kenan.jiang1@gmail.com",
+      "title": null,
+      "org": null,
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 30,
+      "notes": "8+ interactions."
+    },
+    {
+      "fullName": "Darin Brannan",
+      "email": "darin.brannan@terminal-industries.com",
+      "title": "Founder",
+      "org": "Terminal Industries",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 30,
+      "notes": "8+ interactions."
+    },
+    {
+      "fullName": "Ben Fogarty",
+      "email": "ben@departure.is",
+      "title": "Founding Partner, CDO",
+      "org": "Departure",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "Design/creative partner. 8+ interactions."
+    },
+    {
+      "fullName": "Anuraag Jain",
+      "email": "anuraag@zensors.com",
+      "title": "Founder/CEO",
+      "org": "Zensors",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "SAFE investment. 8+ interactions."
+    },
+    {
+      "fullName": "Andrew Chan",
+      "email": "andrew@achan.cc",
+      "title": "Fund Manager",
+      "org": "Atas VC",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 40,
+      "notes": "Former Builders VC. Board advisor for Stratum. 8+ interactions."
+    },
+    {
+      "fullName": "Mike Oshiro",
+      "email": "moshiro@caplinksecurities.com",
+      "title": "Partner",
+      "org": "Caplink Securities",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 30,
+      "notes": "8+ interactions."
+    },
+    {
+      "fullName": "Peter Lin",
+      "email": "Peter.lin@alphasquaregroup.com",
+      "title": "Partner",
+      "org": "Alpha Square Group",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 30,
+      "notes": "Co-investor on Stratum. 8+ interactions."
+    },
+    {
+      "fullName": "Renee Li",
+      "email": "renee.li@alphasquaregroup.com",
+      "title": "Partner",
+      "org": "Alpha Square Group",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 30,
+      "notes": "Co-investor on Stratum. 8+ interactions."
+    },
+    {
+      "fullName": "Michelle Lord",
+      "email": "mlord@cornercapitalmgmt.com",
+      "title": "Partner",
+      "org": "Corner Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "7+ interactions."
+    },
+    {
+      "fullName": "Wojciech Wenta",
+      "email": "wojciech.wenta@wisor.ai",
+      "title": "Founder",
+      "org": "Wisor AI",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "Evaluating for UUL partnership. 7+ interactions."
+    },
+    {
+      "fullName": "Eva Lau",
+      "email": "eva@twosmallfish.vc",
+      "title": "GP",
+      "org": "Two Small Fish VC",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 30,
+      "notes": "Co-investor on Stratum. 7+ interactions."
+    },
+    {
+      "fullName": "Nikhil Kalghatgi",
+      "email": "n@nikhilkal.com",
+      "title": null,
+      "org": null,
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "7+ interactions."
+    },
+    {
+      "fullName": "Bret Farris",
+      "email": "bret@vitaeintegro.com",
+      "title": "Founder/CEO, CFP, CIMA, CPWA",
+      "org": "Vitae Integro / Skyron FO",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 50,
+      "notes": "Family office. Invested in Synergis Critical Infrastructure I LP. Active CE LP."
+    },
+    {
+      "fullName": "Jake Valentine",
+      "email": "jake.d@claymorecapitalholdings.co",
+      "title": "Associate",
+      "org": "Claymore Capital",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 30,
+      "notes": "Pitched $50M SPV for Helios modular AI DCs."
+    },
+    {
+      "fullName": "Luca Pantaleo",
+      "email": "lb@claymorecapassets.co",
+      "title": "Partner",
+      "org": "Claymore Capital",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "Claymore partner."
+    },
+    {
+      "fullName": "Kyle Giddens",
+      "email": "kyle@taycho.com",
+      "title": "Co-founder",
+      "org": "Taycho",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "Building DCs in emerging markets. Energy campuses + AI infra."
+    },
+    {
+      "fullName": "John Cutrone",
+      "email": "john@lumida.com",
+      "title": "CSO, CFA",
+      "org": "Lumida Ventures",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 30,
+      "notes": "New West Data round. Energy tech for DCs."
+    },
+    {
+      "fullName": "Marc Dassler",
+      "email": "dassler@energy-robotics.com",
+      "title": "CEO & Co-founder",
+      "org": "Energy Robotics",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "AI robotic inspection. Shell/BP/Total/Aramco clients."
+    },
+    {
+      "fullName": "Oleg Vorontsov",
+      "email": "oleg@bydezzai.com",
+      "title": "Senior Strategic Advisor",
+      "org": "BYD Electronics",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Dezzai. BYD ecosystem connections."
+    },
+    {
+      "fullName": "Loralee Soto",
+      "email": "Loralee.Soto@bernstein.com",
+      "title": "Client Operations Manager",
+      "org": "Bernstein",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "Coordinating HK SFO Roundtable logistics."
+    },
+    {
+      "fullName": "Mikala Merey",
+      "email": "Mikala.Merey@bernstein.com",
+      "title": "AVP",
+      "org": "Bernstein",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "HK Roundtable coordination."
+    },
+    {
+      "fullName": "Christie Allardyce",
+      "email": "christie@8090industries.com",
+      "title": "Director of Investor Relations",
+      "org": "8090 Industries",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "Nscale SPV allocation + side letter."
+    },
+    {
+      "fullName": "Sunny Patel",
+      "email": "sunny@yxscapital.com",
+      "title": "Managing Partner",
+      "org": "YXS Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "Co-investor on Nscale."
+    },
+    {
+      "fullName": "Frank Zhao",
+      "email": "frank.z@j17capital.com",
+      "title": "Partner",
+      "org": "J17 Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Co-investor on Stratum."
+    },
+    {
+      "fullName": "Rawan Farwana",
+      "email": "rawan.farwana@waed.com",
+      "title": "Partner",
+      "org": "Waed (Aramco VC)",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Co-investor on Stratum."
+    },
+    {
+      "fullName": "Wally Wang",
+      "email": "wally.wang@alphasquaregroup.com",
+      "title": "Partner",
+      "org": "Alpha Square Group",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Co-investor."
+    },
+    {
+      "fullName": "Kevin Tung",
+      "email": "k@interplay.vc",
+      "title": "Senior Partner",
+      "org": "Interplay VC",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "VC contact."
+    },
+    {
+      "fullName": "Michael Zhu",
+      "email": "michaelzhu@accathon.com",
+      "title": "CIO",
+      "org": "Accathon Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Fund manager."
+    },
+    {
+      "fullName": "Michelle Ash",
+      "email": "michelle.j.ash@gmail.com",
+      "title": "Independent Board Director",
+      "org": "Stratum",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "Portfolio governance."
+    },
+    {
+      "fullName": "Kinu Masaki",
+      "email": "kinu@voicebrain.ai",
+      "title": "Team",
+      "org": "VoiceBrain",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "VoiceBrain investor updates."
+    },
+    {
+      "fullName": "Rohan Sharma",
+      "email": "rohan@puller.ai",
+      "title": "CTO",
+      "org": "Puller AI",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "Technical co-founder, joined 2025."
+    },
+    {
+      "fullName": "Bettina Eyales",
+      "email": "bettina@packsmith.ai",
+      "title": "EA to CEO",
+      "org": "Packsmith",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Coordinates meetings for Ben."
+    },
+    {
+      "fullName": "Dharam Vijay Singh Parihar",
+      "email": "dharmvijay@divinegrace-energy.com",
+      "title": "Co-Founder & CEO",
+      "org": "DivineGrace Energy",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 15,
+      "notes": "Clean infra India. ₹800 Cr portfolio."
+    },
+    {
+      "fullName": "Leo Ma",
+      "title": "Founder",
+      "org": "Roboforce",
+      "entityTags": [
+        "CE",
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Fireside chat at HK Roundtable."
+    },
+    {
+      "fullName": "史喆",
+      "fullNameZh": "史喆",
+      "title": "CDO",
+      "org": "Foxconn",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 85,
+      "introducedByName": "水哥",
+      "introChain": "Ray → 水哥 → 史喆",
+      "wechat": "shizhe_foxconn",
+      "notes": "Foxconn CDO. Fortune 100 network. 喆 = two 吉."
+    },
+    {
+      "fullName": "Kelvin Wong",
+      "title": "BD Contact",
+      "org": "Dongshan Precision",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 60,
+      "introducedByName": "Ray Mao",
+      "introChain": "Ray → Kelvin → 东山精密",
+      "notes": "Bridge to Dongshan founder."
+    },
+    {
+      "fullName": "赵总",
+      "fullNameZh": "赵总",
+      "title": "Head of Overseas Operations",
+      "org": "Dongshan Precision",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 55,
+      "notes": "In France till 4/28. Can arrange French energy ministry meeting."
+    },
+    {
+      "fullName": "Daniel (Mindray)",
+      "title": "LP Contact",
+      "org": "Mindray",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 30,
+      "notes": "Relationship needs repair — World Labs/Figure incident."
+    },
+    {
+      "fullName": "杜哥",
+      "fullNameZh": "杜哥",
+      "title": "Owner",
+      "org": "Du Ge Server Co",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 50,
+      "notes": "Server business in Sichuan."
+    },
+    {
+      "fullName": "Alic",
+      "title": "Owner/Investor",
+      "org": "Meixing/Alic",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 75,
+      "wechat": "alic_ningbo",
+      "notes": "~1B+ RMB cash. Key Ningbo network connector."
+    },
+    {
+      "fullName": "孟总",
+      "fullNameZh": "孟总",
+      "title": "Strategic Investment + EPC",
+      "org": "Empower/EP",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 50,
+      "notes": "Dual: EPC + LP."
+    },
+    {
+      "fullName": "Alex Benete",
+      "title": "Sports Tech Investor",
+      "org": "Adidas Family Office",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "3rd gen Adidas family. HK roundtable."
+    },
+    {
+      "fullName": "Jonas Anker",
+      "title": "DC Investor",
+      "org": "Swiss SFO (Jonas)",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 30,
+      "notes": "Swiss SFO. ME DC investor."
+    },
+    {
+      "fullName": "Cucoro Founder",
+      "title": "CEO",
+      "org": "Cucoro",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 55,
+      "notes": "NYC-based. 10+ years solar. Early Crusoe investor."
+    },
+    {
+      "fullName": "Alice",
+      "title": "AIDC Operations",
+      "org": "Century Huatong",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Bridge to AIDC ops team."
+    },
+    {
+      "fullName": "Shawn",
+      "title": "Co-host",
+      "org": "Avenir",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 45,
+      "notes": "Industry Reborn roundtable co-host."
+    },
+    {
+      "fullName": "Thomas Shi",
+      "title": "Founder",
+      "org": "Shi Family Office",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "strong",
+      "relationshipScore": 95,
+      "notes": "Jerry's father. 1st generation. Founded FO after exit from outdoor media in Shanghai."
+    },
+    {
+      "fullName": "Fei Bo",
+      "email": "fei@asianfamilylegacy.org",
+      "title": "Executive Director",
+      "org": "Asian Family Legacy Foundation (AFLF)",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 45,
+      "notes": "AFLF ED. Conference organizer."
+    },
+    {
+      "fullName": "Michael Zhu",
+      "email": "michael@asianfamilylegacy.org",
+      "title": "Chair of the Board",
+      "org": "Asian Family Legacy Foundation (AFLF)",
+      "entityTags": [
+        "FO",
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 50,
+      "notes": "Also CIO Accathon Capital (michaelzhu@accathon.com). AFLF board chair."
+    },
+    {
+      "fullName": "Kevin Qin",
+      "email": "kevin@asianfamilylegacy.org",
+      "title": "President, Vice Chair",
+      "org": "Asian Family Legacy Foundation (AFLF)",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 45,
+      "notes": "AFLF president. Connected Peter Sasaki (PPLI specialist)."
+    },
+    {
+      "fullName": "Guanfeng Zhou",
+      "email": "gzhou@milkeninstitute.org",
+      "title": "Director, Asia Center",
+      "org": "Milken Institute",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "Milken Asia Center director."
+    },
+    {
+      "fullName": "Cindy Scholz",
+      "email": "cindy.scholz@compass.com",
+      "title": "Licensed RE Broker, FO Division",
+      "org": "Milken Institute",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Hosts Milken kick-off dinners."
+    },
+    {
+      "fullName": "Fernando Silva",
+      "email": "FSilva@lockton.com",
+      "title": "Director, FO & Transaction Advisory",
+      "org": "Lockton Companies",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 50,
+      "notes": "Runs bi-weekly FO network calls. Prominent speakers (Romney, Crown, Medina). 917.754.5330."
+    },
+    {
+      "fullName": "Celso Colombo Neto",
+      "email": "celso.colombo@carpafamily.com",
+      "title": "Principal",
+      "org": "CARPA Family Office",
+      "entityTags": [
+        "FO",
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 40,
+      "notes": "Brazilian FO. Invested K in Synergis Agile Global."
+    },
+    {
+      "fullName": "Arthur Levy",
+      "email": "arthur@carpafamily.com",
+      "title": "Partner",
+      "org": "CARPA Family Office",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "CARPA partner."
+    },
+    {
+      "fullName": "Chad Moss",
+      "title": "Principal",
+      "org": "Moss Family Office",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 30,
+      "notes": "Hosted Bernstein FL SFO Roundtable Sept 2025."
+    },
+    {
+      "fullName": "Rhonda Bevan",
+      "email": "rbevan@mfoworldwide.com",
+      "title": "Partner",
+      "org": "MFO Worldwide",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Multi-family office. Bernstein FL Roundtable."
+    },
+    {
+      "fullName": "Chris Barkley",
+      "title": "Partner",
+      "org": "Platform Ventures",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Bernstein FL Roundtable."
+    },
+    {
+      "fullName": "David Dingman",
+      "title": "Principal",
+      "org": "Shipston Group",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Bernstein FL Roundtable."
+    },
+    {
+      "fullName": "Aaron Hatton",
+      "title": "Co-founder",
+      "org": "Sky and Ray",
+      "entityTags": [
+        "FO",
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25,
+      "notes": "Also confirmed HK Roundtable attendee."
+    },
+    {
+      "fullName": "Michael Sikorsky",
+      "title": "Co-founder",
+      "org": "Sky and Ray",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Bernstein FL Roundtable."
+    },
+    {
+      "fullName": "Abie Hidary",
+      "title": "Principal",
+      "org": "Hidrock Properties",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Real estate FO. Bernstein FL Roundtable."
+    },
+    {
+      "fullName": "Andrés Lang",
+      "title": "Principal",
+      "org": "El Trueno",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Latam FO. Bernstein FL Roundtable."
+    },
+    {
+      "fullName": "Anna Mochkarova",
+      "title": "Principal",
+      "org": "MSQ Invest",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "European FO. Bernstein FL Roundtable."
+    },
+    {
+      "fullName": "Travis Steele",
+      "title": "Partner",
+      "org": "ABO Ventures / Empire",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Bernstein FL Roundtable."
+    },
+    {
+      "fullName": "Jeremy Fehr",
+      "title": "Principal",
+      "org": "FourFins",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Bernstein FL Roundtable."
+    },
+    {
+      "fullName": "Björn von Siemens",
+      "email": "bvonsiemens@surgical.ai",
+      "title": "CEO, CareSyntax",
+      "org": "von Siemens Family Office",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Siemens family. AFLF speaker connection."
+    },
+    {
+      "fullName": "Bracy Fertig",
+      "email": "bfertig@vsiemens.com",
+      "title": "FO Manager",
+      "org": "von Siemens Family Office",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 15,
+      "notes": "von Siemens FO staff."
+    },
+    {
+      "fullName": "Henry Park",
+      "title": "Founder",
+      "org": "Coeur Renewables",
+      "entityTags": [
+        "FO",
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 30,
+      "notes": "Serial energy entrepreneur. Sold Energy Power Partners to NextEra 2023. Intro via Ian Zinn."
+    },
+    {
+      "fullName": "Peter Sasaki",
+      "email": "peter.sasaki@cgsassociates.com",
+      "title": "PPLI Specialist",
+      "org": "CGS Associates",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 15,
+      "notes": "Connected via Kevin Qin/AFLF."
+    },
+    {
+      "fullName": "Amy Zaghloul",
+      "email": "amy.zaghloul@antler.co",
+      "title": "Director, Capital",
+      "org": "Antler",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Invited Jerry to FO event at Rosedale Golf Club (70+ FOs). Apr 2023."
+    },
+    {
+      "fullName": "Jorge Felippe",
+      "title": "Attendee",
+      "org": null,
+      "entityTags": [
+        "FO",
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Confirmed HK Roundtable attendee."
+    },
+    {
+      "fullName": "MJ Sikorsky",
+      "title": "Attendee",
+      "org": null,
+      "entityTags": [
+        "FO",
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Confirmed HK Roundtable attendee."
+    },
+    {
+      "fullName": "Haluk Sabanci Dincer",
+      "email": "haluk@vektor.capital",
+      "title": "Partner",
+      "org": "Vektor Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25
+    },
+    {
+      "fullName": "Alyson Seufert",
+      "email": "ally.seufert@klinehill.com",
+      "title": "Partner",
+      "org": "Kline Hill Partners",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25
+    },
+    {
+      "fullName": "Chris Bull",
+      "email": "chris.bull@klinehill.com",
+      "title": "Partner",
+      "org": "Kline Hill Partners",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25
+    },
+    {
+      "fullName": "Walid Elmekki",
+      "email": "WElmekki@firstanalysis.com",
+      "title": "Partner",
+      "org": "First Analysis",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Kyle Spottiswood",
+      "email": "kyle@maniv.com",
+      "title": "Partner",
+      "org": "MANIV",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25
+    },
+    {
+      "fullName": "Arkady Kulik",
+      "email": "arkady@arkane.capital",
+      "title": "Partner",
+      "org": "Arkane Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Manuel Roumain",
+      "email": "mr@khariscapital.com",
+      "title": "Managing Partner",
+      "org": "Kharis Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25
+    },
+    {
+      "fullName": "Nancy Battaglia",
+      "email": "nancy.battaglia@persistencecapital.com",
+      "title": "Partner",
+      "org": "Persistence Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Jeffrey Truong",
+      "email": "jeff@broadwayvp.com",
+      "title": "Partner",
+      "org": "Broadway VP",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Ameet Shah",
+      "email": "ameed@golden.ventures",
+      "title": "Partner",
+      "org": "Golden Ventures",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25
+    },
+    {
+      "fullName": "Yash Kavi",
+      "email": "yashk@settercap.com",
+      "title": "Partner",
+      "org": "Setter Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Carolynn Levy",
+      "email": "clevy@ycombinator.com",
+      "title": "Counsel",
+      "org": "Y Combinator",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Soona Amhaz",
+      "email": "soona@volt.capital",
+      "title": "GP",
+      "org": "Volt Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Adam Struck",
+      "email": "adam@struckcapital.com",
+      "title": "GP",
+      "org": "Struck Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "LP/investor relations."
+    },
+    {
+      "fullName": "Marvin Tien",
+      "email": "Marvin@cornercapitalmgmt.com",
+      "title": "Partner",
+      "org": "Corner Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25
+    },
+    {
+      "fullName": "Jane Mathieu",
+      "email": "Jane@cornercapitalmgmt.com",
+      "title": "Partner",
+      "org": "Corner Capital",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 25
+    },
+    {
+      "fullName": "Jesse Seligman",
+      "email": "js@heliuman.com",
+      "title": "Founder",
+      "org": "Heliuman",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Karl-Benno Nagy",
+      "email": "karl-benno.nagy@kabenagroup.com",
+      "title": "Partner",
+      "org": "KaBeNa Group",
+      "entityTags": [
+        "SYN"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Patrick Flannery",
+      "email": "patrick@groundfloor.energy",
+      "title": "Founder",
+      "org": "Ground Floor Energy",
+      "entityTags": [
+        "CE"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Bruce Sheiner",
+      "email": "bruce.sheiner@nortonrosefulbright.com",
+      "title": "Partner",
+      "org": "Norton Rose Fulbright",
+      "entityTags": [
+        "SYN",
+        "CE"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35
+    },
+    {
+      "fullName": "Bing Huang",
+      "email": "bing.huang@hankunlaw.com",
+      "title": "Partner",
+      "org": "Han Kun Law",
+      "entityTags": [
+        "SYN",
+        "CE"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "Chinese cross-border law."
+    },
+    {
+      "fullName": "Chris Jun",
+      "email": "chrisjun@aei2000.com",
+      "title": "Partner",
+      "org": "Advance Enterprise Inc",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 30
+    },
+    {
+      "fullName": "Elvis Ge",
+      "email": "elvis.ge@live.com",
+      "title": "Broker",
+      "org": "Prestigium Real Estate",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Michelle Kushevsky",
+      "email": "michelle.kushevsky@copiawealthstudios.com",
+      "title": "Partner",
+      "org": "Copia Wealth Studios",
+      "entityTags": [
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20
+    },
+    {
+      "fullName": "Eduardo",
+      "email": "eduardo@k50ventures.com",
+      "title": "Partner",
+      "org": "K50 Ventures",
+      "entityTags": [
+        "SYN",
+        "FO"
+      ],
+      "relationshipStrength": "weak",
+      "relationshipScore": 20,
+      "notes": "Latam VC."
+    },
+    {
+      "fullName": "Serena Lin",
+      "email": "serena.lin@cnuul.com",
+      "title": "Operations",
+      "org": "UUL Global",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 40,
+      "notes": "UUL China operations."
+    },
+    {
+      "fullName": "Emily Cheung",
+      "email": "emily.cheung@cnuul.com",
+      "title": "Operations",
+      "org": "UUL Global",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 40,
+      "notes": "UUL China payment processing."
+    },
+    {
+      "fullName": "Billy Cheng",
+      "email": "billy.cheng@cnuul.com",
+      "title": "Operations",
+      "org": "UUL Global",
+      "entityTags": [
+        "UUL"
+      ],
+      "relationshipStrength": "medium",
+      "relationshipScore": 35,
+      "notes": "UUL logistics ops."
+    }
+  ]
+}

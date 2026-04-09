@@ -1,0 +1,6026 @@
+[
+  {
+    "fullName": "Concolino, Alexandra",
+    "email": "alexandra.concolino@bernstein.com",
+    "organizationName": "Bernstein",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "4/7/2026"
+  },
+  {
+    "fullName": "Mikala Merey",
+    "email": "mikala.merey@bernstein.com",
+    "title": "AVP",
+    "organizationName": "Bernstein",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Calendar",
+    "lastInteraction": "4/7/2026",
+    "notes": "HK Roundtable coordination."
+  },
+  {
+    "fullName": "Williams, Meghan",
+    "email": "meghan.williams@alliancebernstein.com",
+    "organizationName": "AllianceBernstein",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "4/7/2026"
+  },
+  {
+    "fullName": "Alam, Nadine",
+    "email": "nadine.alam@bernstein.com",
+    "organizationName": "Bernstein",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "4/7/2026"
+  },
+  {
+    "fullName": "Loralee Soto",
+    "email": "loralee.soto@bernstein.com",
+    "title": "Client Operations Manager",
+    "organizationName": "Bernstein",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Calendar",
+    "lastInteraction": "4/7/2026",
+    "notes": "Coordinating HK SFO Roundtable logistics."
+  },
+  {
+    "fullName": "Matthias Schanze",
+    "email": "matthias@rethinkventures.com",
+    "title": "Partner",
+    "organizationName": "Rethink Ventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Calendar",
+    "lastInteraction": "4/7/2026",
+    "notes": "9+ interactions."
+  },
+  {
+    "fullName": "Sage Line - Greg Kellert",
+    "email": "gkellert@sagelinelogistics.com",
+    "organizationName": "Sagelinelogistics",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "4/3/2026"
+  },
+  {
+    "fullName": "Lisa",
+    "email": "lisa@pallet.com",
+    "title": "Team",
+    "organizationName": "Pallet",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 45,
+    "source": "Calendar",
+    "lastInteraction": "4/3/2026",
+    "notes": "11+ interactions."
+  },
+  {
+    "fullName": "Catherine",
+    "email": "catherine@pallet.com",
+    "organizationName": "Pallet",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "4/3/2026"
+  },
+  {
+    "fullName": "Albert Lin",
+    "email": "alin@northviewlaw.com",
+    "title": "Attorney",
+    "organizationName": "Northview Law",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "strong",
+    "relationshipScore": 65,
+    "source": "Calendar",
+    "lastInteraction": "4/2/2026",
+    "notes": "Ex-McCarthy, Brookfield. Counsel for Stratum board matters. 16+ interactions."
+  },
+  {
+    "fullName": "James Renihan",
+    "email": "james.renihan@nortonrosefulbright.com",
+    "organizationName": "Norton Rose Fulbright",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "4/2/2026"
+  },
+  {
+    "fullName": "Bruce Sheiner",
+    "email": "bruce.sheiner@nortonrosefulbright.com",
+    "title": "Partner",
+    "organizationName": "Norton Rose Fulbright",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN",
+      "CE"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Calendar",
+    "lastInteraction": "4/2/2026"
+  },
+  {
+    "fullName": "Mfc",
+    "email": "mfc@stratum.ai",
+    "organizationName": "Stratum",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "4/2/2026"
+  },
+  {
+    "fullName": "Andrew Chan",
+    "email": "andrew@achan.cc",
+    "title": "Fund Manager",
+    "organizationName": "Atas VC",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 40,
+    "source": "Calendar",
+    "lastInteraction": "4/2/2026",
+    "notes": "Former Builders VC. Board advisor for Stratum. 8+ interactions."
+  },
+  {
+    "fullName": "Guy",
+    "email": "guy@unitailabs.com",
+    "organizationName": "Unitailabs",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "4/2/2026"
+  },
+  {
+    "fullName": "Avihou",
+    "email": "avihou@unitailabs.com",
+    "organizationName": "Unitailabs",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "4/2/2026"
+  },
+  {
+    "fullName": "Avihou",
+    "email": "avihou@unitlabs.com",
+    "organizationName": "Unitlabs",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "4/2/2026"
+  },
+  {
+    "fullName": "Tony Ayaz",
+    "email": "tony@voicebrain.ai",
+    "title": "CEO",
+    "organizationName": "VoiceBrain",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "strong",
+    "relationshipScore": 70,
+    "source": "Calendar",
+    "lastInteraction": "4/1/2026",
+    "notes": "VoiceBrain CEO. 18+ interactions."
+  },
+  {
+    "fullName": "Henry Sun",
+    "email": "henry.sun@aispex.com",
+    "organizationName": "Aispex",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Andy Moy",
+    "email": "andy.moy@aispex.com",
+    "organizationName": "Aispex",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Paul Nie",
+    "email": "paul.nie@aispex.com",
+    "organizationName": "Aispex",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Alex Kassan",
+    "email": "akassan77@gmail.com",
+    "title": "Partner",
+    "organizationName": "Corner Capital",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 45,
+    "source": "Calendar",
+    "lastInteraction": "3/27/2026",
+    "notes": "11+ interactions."
+  },
+  {
+    "fullName": "Rosalia Luque",
+    "email": "rosalialuque17@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/27/2026"
+  },
+  {
+    "fullName": "Marvin Tien",
+    "email": "marvin@cornercapitalmgmt.com",
+    "title": "Partner",
+    "organizationName": "Corner Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Calendar",
+    "lastInteraction": "3/27/2026"
+  },
+  {
+    "fullName": "Jane Mathieu",
+    "email": "jane@cornercapitalmgmt.com",
+    "title": "Partner",
+    "organizationName": "Corner Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Calendar",
+    "lastInteraction": "3/27/2026"
+  },
+  {
+    "fullName": "Imad",
+    "email": "imad@n4xtexperiences.com",
+    "organizationName": "N4XT Experiences",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/27/2026"
+  },
+  {
+    "fullName": "Keith Abell",
+    "email": "keith@n4xtexperiences.com",
+    "title": "Founder",
+    "organizationName": "N4XT Experiences",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 40,
+    "source": "Calendar",
+    "lastInteraction": "3/27/2026",
+    "notes": "Events/entertainment. Connected to Dongshan Precision deal. 10+ interactions."
+  },
+  {
+    "fullName": "Isabelle Raphael",
+    "email": "isabelle@n4xtexperiences.com",
+    "organizationName": "N4XT Experiences",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/27/2026"
+  },
+  {
+    "fullName": "Christoph Bub",
+    "email": "christoph.bub@klinehill.com",
+    "organizationName": "Kline Hill Partners",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/26/2026"
+  },
+  {
+    "fullName": "Chris Bull",
+    "email": "chris.bull@klinehill.com",
+    "title": "Partner",
+    "organizationName": "Kline Hill Partners",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Calendar",
+    "lastInteraction": "3/26/2026"
+  },
+  {
+    "fullName": "rachel.eberhart",
+    "email": "rachel.eberhart@klinehill.com",
+    "organizationName": "Kline Hill Partners",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/26/2026"
+  },
+  {
+    "fullName": "Annie Hung",
+    "email": "annie.hung@lc-worldwide.com",
+    "organizationName": "Lc-worldwide",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/25/2026"
+  },
+  {
+    "fullName": "Xing Chen",
+    "email": "xing.chen@lc-worldwide.com",
+    "organizationName": "Lc-worldwide",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/25/2026"
+  },
+  {
+    "fullName": "Dean Gardner",
+    "email": "dean@crossovercapital.com",
+    "title": "Founder",
+    "organizationName": "Crossover Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "strong",
+    "relationshipScore": 70,
+    "source": "Calendar",
+    "lastInteraction": "3/18/2026",
+    "notes": "Also co-founded VoiceBrain. dean@voicebrain.ai. 18+ interactions."
+  },
+  {
+    "fullName": "Dean",
+    "email": "dean@deangardner.com",
+    "organizationName": "Deangardner",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/18/2026"
+  },
+  {
+    "fullName": "Jerry",
+    "email": "jerry@reforgepower.com",
+    "organizationName": "Reforgepower",
+    "orgType": "developer",
+    "entityTags": [
+      "CE"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/18/2026"
+  },
+  {
+    "fullName": "Kyle Giddens",
+    "email": "kyle@taycho.com",
+    "title": "Co-founder",
+    "organizationName": "Taycho",
+    "orgType": "developer",
+    "entityTags": [
+      "CE"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Calendar",
+    "lastInteraction": "3/17/2026",
+    "notes": "Building DCs in emerging markets. Energy campuses + AI infra."
+  },
+  {
+    "fullName": "Jake",
+    "email": "jake@taycho.com",
+    "organizationName": "Taycho",
+    "orgType": "developer",
+    "entityTags": [
+      "CE"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/17/2026"
+  },
+  {
+    "fullName": "Chad",
+    "email": "chad@beliron.com",
+    "organizationName": "Beliron",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/17/2026"
+  },
+  {
+    "fullName": "Laurent Asscher",
+    "email": "laurent.asscher@me.com",
+    "organizationName": "Me",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/16/2026"
+  },
+  {
+    "fullName": "Manuel Roumain",
+    "email": "mr@khariscapital.com",
+    "title": "Managing Partner",
+    "organizationName": "Kharis Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Calendar",
+    "lastInteraction": "3/16/2026"
+  },
+  {
+    "fullName": "Will",
+    "email": "will@breakersrowcapital.com",
+    "organizationName": "Breakersrowcapital",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/13/2026"
+  },
+  {
+    "fullName": "Sezaki,ShogoNYCFM",
+    "email": "sh.sezaki@mitsui.com",
+    "organizationName": "Mitsui",
+    "orgType": "corporate",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/13/2026"
+  },
+  {
+    "fullName": "Ota,TomonoriNYCFM",
+    "email": "to.ota@mitsui.com",
+    "organizationName": "Mitsui",
+    "orgType": "corporate",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/13/2026"
+  },
+  {
+    "fullName": "NYC_LEXINGTON",
+    "email": "nyc_lexington@mitsui.com",
+    "organizationName": "Mitsui",
+    "orgType": "corporate",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/13/2026"
+  },
+  {
+    "fullName": "Michael Sonnenshein",
+    "email": "michael@cornercapitalmgmt.com",
+    "organizationName": "Corner Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/11/2026"
+  },
+  {
+    "fullName": "Michael Wang",
+    "email": "michael@sambaenergy.com",
+    "title": "Founder",
+    "organizationName": "Samba Energy",
+    "orgType": "developer",
+    "entityTags": [
+      "CE"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 45,
+    "source": "Calendar",
+    "lastInteraction": "3/11/2026",
+    "notes": "Energy company. 11+ interactions."
+  },
+  {
+    "fullName": "Szhang",
+    "email": "szhang@youheinvest.com",
+    "organizationName": "Youheinvest",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Kerem",
+    "email": "kerem@8090industries.com",
+    "organizationName": "8090 Industries",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Rayyan",
+    "email": "rayyan@8090industries.com",
+    "organizationName": "8090 Industries",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Chris Jun",
+    "email": "chrisjun@aei2000.com",
+    "title": "Partner",
+    "organizationName": "Advance Enterprise Inc",
+    "orgType": "prospect",
+    "entityTags": [
+      "UUL"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 30,
+    "source": "Calendar",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Trisha Bouthot",
+    "email": "tbouthot@goddardtech.com",
+    "organizationName": "Goddardtech",
+    "orgType": "prospect",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/6/2026"
+  },
+  {
+    "fullName": "Sean Albert",
+    "email": "salbert@goddardtech.com",
+    "organizationName": "Goddardtech",
+    "orgType": "prospect",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/6/2026"
+  },
+  {
+    "fullName": "Droid",
+    "email": "droid24601@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/6/2026"
+  },
+  {
+    "fullName": "Thomas Shi",
+    "email": "thomas.s@j17capital.com",
+    "organizationName": "J17 Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/4/2026"
+  },
+  {
+    "fullName": "Richard H",
+    "email": "richard.h@j17capital.com",
+    "organizationName": "J17 Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/4/2026"
+  },
+  {
+    "fullName": "Dave Sprosty",
+    "email": "dave@sprosty.net",
+    "organizationName": "Sprosty",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/4/2026"
+  },
+  {
+    "fullName": "John Bay",
+    "email": "john.bay@sprosty.net",
+    "organizationName": "Sprosty",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/4/2026"
+  },
+  {
+    "fullName": "Corpdev",
+    "email": "corpdev@northviewlaw.com",
+    "organizationName": "Northview Law",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/3/2026"
+  },
+  {
+    "fullName": "Daniel Mogilny",
+    "email": "danielmogilny@gmail.com",
+    "title": "Former Co-founder",
+    "organizationName": "Stratum",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 50,
+    "source": "Calendar",
+    "lastInteraction": "3/3/2026",
+    "notes": "Departed Stratum. Board dispute. 14+ interactions."
+  },
+  {
+    "fullName": "Adam Botterill",
+    "email": "adam@stiq.ltd",
+    "organizationName": "Stiq",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "3/2/2026"
+  },
+  {
+    "fullName": "Ben",
+    "email": "ben@shuffle.nyc",
+    "organizationName": "Shuffle",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/24/2026"
+  },
+  {
+    "fullName": "Kelvin Chen",
+    "email": "kelvin.chen@harpers-tech.ca",
+    "organizationName": "Harpers-tech",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/24/2026"
+  },
+  {
+    "fullName": "Joshua Blinick",
+    "email": "joshua.blinick@3rdwave.co",
+    "organizationName": "3rdwave",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/24/2026"
+  },
+  {
+    "fullName": "Walid Elmekki",
+    "email": "welmekki@firstanalysis.com",
+    "title": "Partner",
+    "organizationName": "First Analysis",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Calendar",
+    "lastInteraction": "2/24/2026"
+  },
+  {
+    "fullName": "Ian Zinn",
+    "email": "ian.zinn@bernstein.com",
+    "title": "Principal",
+    "organizationName": "Bernstein",
+    "orgType": "service_provider",
+    "entityTags": [
+      "CE",
+      "FO"
+    ],
+    "relationshipStrength": "strong",
+    "relationshipScore": 80,
+    "source": "Calendar",
+    "lastInteraction": "2/24/2026",
+    "notes": "Hosting HK SFO Roundtable Apr 12-13. Key LP intro partner. 25+ interactions."
+  },
+  {
+    "fullName": "Zac Choi",
+    "email": "zac@puller.ai",
+    "title": "CEO & Co-founder",
+    "organizationName": "Puller AI",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 45,
+    "source": "Calendar",
+    "lastInteraction": "2/21/2026",
+    "notes": "Puller CEO. Also zac@passage.xyz. 10+ interactions."
+  },
+  {
+    "fullName": "Jebb",
+    "email": "jebb@puller.ai",
+    "organizationName": "Puller AI",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/21/2026"
+  },
+  {
+    "fullName": "Michael",
+    "email": "michael@stratum.ai",
+    "organizationName": "Stratum",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/19/2026"
+  },
+  {
+    "fullName": "Jan Carlos Boscan Valdeblanquez",
+    "email": "jcboscan@auteco.com",
+    "organizationName": "Auteco",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/13/2026"
+  },
+  {
+    "fullName": "Carlos Andres Abello Henao",
+    "email": "caabello@auteco.com",
+    "organizationName": "Auteco",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/13/2026"
+  },
+  {
+    "fullName": "Perry",
+    "email": "perry@drumkit.ai",
+    "organizationName": "Drumkit",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/12/2026"
+  },
+  {
+    "fullName": "Dhruv",
+    "email": "dhruv@drumkit.ai",
+    "organizationName": "Drumkit",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/12/2026"
+  },
+  {
+    "fullName": "Jmullen",
+    "email": "jmullen@jimmullenconsulting.com",
+    "organizationName": "Jimmullenconsulting",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/10/2026"
+  },
+  {
+    "fullName": "Jerry",
+    "email": "jerry@driverdoc.io",
+    "organizationName": "Driverdoc",
+    "orgType": "prospect",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/10/2026"
+  },
+  {
+    "fullName": "Vishal",
+    "email": "vishal@thisisocean.com",
+    "organizationName": "Thisisocean",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/10/2026"
+  },
+  {
+    "fullName": "David",
+    "email": "david@marbex.info",
+    "organizationName": "Marbex",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/9/2026"
+  },
+  {
+    "fullName": "Anuraag Jain",
+    "email": "anuraag@zensors.com",
+    "title": "Founder/CEO",
+    "organizationName": "Zensors",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Calendar",
+    "lastInteraction": "2/7/2026",
+    "notes": "SAFE investment. 8+ interactions."
+  },
+  {
+    "fullName": "Joe Ma",
+    "email": "joe.ma@oliveam.com",
+    "organizationName": "Olive Asset Management",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/7/2026"
+  },
+  {
+    "fullName": "Eric Zhou",
+    "email": "eric.zhou@oliveam.com",
+    "organizationName": "Olive Asset Management",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/7/2026"
+  },
+  {
+    "fullName": "Andrew",
+    "email": "andrew@pallet.com",
+    "organizationName": "Pallet",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/6/2026"
+  },
+  {
+    "fullName": "Ishan Lakhani",
+    "email": "ishan.lakhani@pallet.com",
+    "title": "Team",
+    "organizationName": "Pallet",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 45,
+    "source": "Calendar",
+    "lastInteraction": "2/6/2026",
+    "notes": "11+ interactions."
+  },
+  {
+    "fullName": "Sushanth",
+    "email": "sushanth@pallet.com",
+    "organizationName": "Pallet",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/6/2026"
+  },
+  {
+    "fullName": "Christian",
+    "email": "christian@pallet.com",
+    "organizationName": "Pallet",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/5/2026"
+  },
+  {
+    "fullName": "Ben Wunderman",
+    "email": "ben@packsmith.ai",
+    "title": "CEO & Co-Founder",
+    "organizationName": "Packsmith",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN",
+      "UUL"
+    ],
+    "relationshipStrength": "strong",
+    "relationshipScore": 75,
+    "source": "Calendar",
+    "lastInteraction": "2/3/2026",
+    "notes": "Packsmith CEO. UUL logistics partnership. 20+ interactions."
+  },
+  {
+    "fullName": "Wangludi",
+    "email": "wangludi61@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "2/2/2026"
+  },
+  {
+    "fullName": "(unknown)",
+    "email": "21304323@bcc.hubspot.com",
+    "organizationName": "Bcc",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/31/2026"
+  },
+  {
+    "fullName": "Mark",
+    "email": "mark@atoneventures.com",
+    "organizationName": "Atoneventures",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/29/2026"
+  },
+  {
+    "fullName": "Jake Parrish",
+    "email": "jake.parrish@airwallex.com",
+    "organizationName": "Airwallex",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/29/2026"
+  },
+  {
+    "fullName": "A N Khoory",
+    "email": "a.n.khoory@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/29/2026"
+  },
+  {
+    "fullName": "Ryan",
+    "email": "ryan@actions.capital",
+    "organizationName": "Actions",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/27/2026"
+  },
+  {
+    "fullName": "Jean Nehme",
+    "email": "nehmejean3@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/26/2026"
+  },
+  {
+    "fullName": "Paolo Rigutto",
+    "email": "paolo@qubithealthcapital.com",
+    "organizationName": "Qubithealthcapital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/26/2026"
+  },
+  {
+    "fullName": "Mhamilton",
+    "email": "mhamilton@lahzo.com",
+    "organizationName": "Lahzo",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/22/2026"
+  },
+  {
+    "fullName": "Serena Lin",
+    "email": "serena.lin@cnuul.com",
+    "title": "Operations",
+    "organizationName": "UUL Global",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "UUL"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 40,
+    "source": "Calendar",
+    "lastInteraction": "1/20/2026",
+    "notes": "UUL China operations."
+  },
+  {
+    "fullName": "Olivia Harbin",
+    "email": "olivia.harbin@rho.co",
+    "organizationName": "Rho",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/20/2026"
+  },
+  {
+    "fullName": "Dean",
+    "email": "dean@voicebrain.ai",
+    "organizationName": "VoiceBrain",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/16/2026"
+  },
+  {
+    "fullName": "Irisvargas",
+    "email": "irisvargas@xwf.google.com",
+    "organizationName": "Xwf",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/16/2026"
+  },
+  {
+    "fullName": "Krishna Manda",
+    "email": "krishna@nuel.ai",
+    "title": "Co-founder & CEO",
+    "organizationName": "Nuel",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 40,
+    "source": "Calendar",
+    "lastInteraction": "1/14/2026",
+    "notes": "10+ interactions."
+  },
+  {
+    "fullName": "Robdas",
+    "email": "robdas@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/14/2026"
+  },
+  {
+    "fullName": "Ombakr",
+    "email": "ombakr@ombakr.com",
+    "organizationName": "Ombakr",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/14/2026"
+  },
+  {
+    "fullName": "Abdulaziz",
+    "email": "abdulaziz@addiriyaham.com",
+    "organizationName": "Addiriyaham",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/14/2026"
+  },
+  {
+    "fullName": "Sean",
+    "email": "sean@magic.link",
+    "organizationName": "Magic",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/8/2026"
+  },
+  {
+    "fullName": "Jed Kim",
+    "email": "jed.kim@magic.link",
+    "organizationName": "Magic",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/8/2026"
+  },
+  {
+    "fullName": "Ashbyj",
+    "email": "ashbyj@xwf.google.com",
+    "organizationName": "Xwf",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/6/2026"
+  },
+  {
+    "fullName": "Jasonlikensnc",
+    "email": "jasonlikensnc@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/3/2026"
+  },
+  {
+    "fullName": "Keith",
+    "email": "keith@birdstop.io",
+    "organizationName": "Birdstop",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/3/2026"
+  },
+  {
+    "fullName": "Alex",
+    "email": "alex@saxecap.com",
+    "organizationName": "Saxecap",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/3/2026"
+  },
+  {
+    "fullName": "Todd Papau",
+    "email": "todd.papau@northleafcapital.com",
+    "organizationName": "Northleafcapital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/2/2026"
+  },
+  {
+    "fullName": "An Yan",
+    "email": "an.yan@airwallex.com",
+    "organizationName": "Airwallex",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/2/2026"
+  },
+  {
+    "fullName": "Shivani Singh",
+    "email": "shivani.singh@airwallex.com",
+    "organizationName": "Airwallex",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/2/2026"
+  },
+  {
+    "fullName": "Dan",
+    "email": "dan@pitbull-accounting.com",
+    "organizationName": "Pitbull-accounting",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "1/2/2026"
+  },
+  {
+    "fullName": "Ian Carew",
+    "email": "ian.carew@northleafcapital.com",
+    "organizationName": "Northleafcapital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/31/2025"
+  },
+  {
+    "fullName": "Billy Cheng",
+    "email": "billy.cheng@cnuul.com",
+    "title": "Operations",
+    "organizationName": "UUL Global",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "UUL"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Calendar",
+    "lastInteraction": "12/31/2025",
+    "notes": "UUL logistics ops."
+  },
+  {
+    "fullName": "Scottgosnell",
+    "email": "scottgosnell@bellsouth.net",
+    "organizationName": "Bellsouth",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/31/2025"
+  },
+  {
+    "fullName": "Ksnr",
+    "email": "ksnr97@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/31/2025"
+  },
+  {
+    "fullName": "Nikhil Kalghatgi",
+    "email": "n@nikhilkal.com",
+    "organizationName": "Nikhilkal",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Calendar",
+    "lastInteraction": "12/20/2025",
+    "notes": "7+ interactions."
+  },
+  {
+    "fullName": "Alan Kartchner",
+    "email": "alan@nuel.ai",
+    "title": "Co-founder",
+    "organizationName": "Nuel",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 40,
+    "source": "Calendar",
+    "lastInteraction": "12/20/2025",
+    "notes": "10+ interactions."
+  },
+  {
+    "fullName": "Winston Fu",
+    "email": "winston@ldvpartners.com",
+    "organizationName": "LDV Partners",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/18/2025"
+  },
+  {
+    "fullName": "Eva Lau",
+    "email": "eva@twosmallfish.vc",
+    "title": "GP",
+    "organizationName": "Two Small Fish VC",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 30,
+    "source": "Calendar",
+    "lastInteraction": "12/18/2025",
+    "notes": "Co-investor on Stratum. 7+ interactions."
+  },
+  {
+    "fullName": "Sebastian Zhou",
+    "email": "sebastian.zhou@alphasquaregroup.com",
+    "title": "Partner",
+    "organizationName": "Alpha Square Group",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 50,
+    "source": "Calendar",
+    "lastInteraction": "12/18/2025",
+    "notes": "Co-investor on Stratum (2nd largest). 12+ interactions."
+  },
+  {
+    "fullName": "Aneel Ranadive",
+    "email": "aneel@somacap.com",
+    "title": "Partner",
+    "organizationName": "Soma Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Calendar",
+    "lastInteraction": "12/18/2025",
+    "notes": "9+ interactions."
+  },
+  {
+    "fullName": "Emma",
+    "email": "emma@falconinvestorgroup.com",
+    "organizationName": "Falcon Investor Group",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/18/2025"
+  },
+  {
+    "fullName": "Eddie Chan",
+    "email": "eddie@ldvpartners.com",
+    "title": "Partner",
+    "organizationName": "LDV Partners",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 50,
+    "source": "Calendar",
+    "lastInteraction": "12/18/2025",
+    "notes": "Co-investor. 12+ interactions."
+  },
+  {
+    "fullName": "Qamar Aftab",
+    "email": "qamar.aftab@waed.com",
+    "organizationName": "Waed (Aramco VC)",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/18/2025"
+  },
+  {
+    "fullName": "Renee Li",
+    "email": "renee.li@alphasquaregroup.com",
+    "title": "Partner",
+    "organizationName": "Alpha Square Group",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 30,
+    "source": "Calendar",
+    "lastInteraction": "12/18/2025",
+    "notes": "Co-investor on Stratum. 8+ interactions."
+  },
+  {
+    "fullName": "Frank Zhao",
+    "email": "frank.z@j17capital.com",
+    "title": "Partner",
+    "organizationName": "J17 Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Calendar",
+    "lastInteraction": "12/18/2025",
+    "notes": "Co-investor on Stratum."
+  },
+  {
+    "fullName": "Peter Lin",
+    "email": "peter.lin@alphasquaregroup.com",
+    "title": "Partner",
+    "organizationName": "Alpha Square Group",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 30,
+    "source": "Calendar",
+    "lastInteraction": "12/12/2025",
+    "notes": "Co-investor on Stratum. 8+ interactions."
+  },
+  {
+    "fullName": "Julian",
+    "email": "julian@superordinaryusa.com",
+    "organizationName": "Superordinary",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/10/2025"
+  },
+  {
+    "fullName": "Kinu Masaki",
+    "email": "kinu@voicebrain.ai",
+    "title": "Team",
+    "organizationName": "VoiceBrain",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Calendar",
+    "lastInteraction": "12/10/2025",
+    "notes": "VoiceBrain investor updates."
+  },
+  {
+    "fullName": "Chase Barlow",
+    "email": "chase@industryventures.com",
+    "organizationName": "Industryventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/9/2025"
+  },
+  {
+    "fullName": "Jonathan Roosevelt",
+    "email": "jr@industryventures.com",
+    "organizationName": "Industryventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/9/2025"
+  },
+  {
+    "fullName": "Marcos",
+    "email": "marcos@accoladepartners.com",
+    "organizationName": "Accoladepartners",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/9/2025"
+  },
+  {
+    "fullName": "Wenting",
+    "email": "wenting@canulife.com",
+    "organizationName": "Canulife",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/8/2025"
+  },
+  {
+    "fullName": "Dorajiang",
+    "email": "dorajiang05@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/8/2025"
+  },
+  {
+    "fullName": "Aja",
+    "email": "aja@tlcfertility.com",
+    "organizationName": "Tlcfertility",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/8/2025"
+  },
+  {
+    "fullName": "Matt",
+    "email": "matt@theultimatesnooze.com",
+    "organizationName": "Theultimatesnooze",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/4/2025"
+  },
+  {
+    "fullName": "GoodTime Sync",
+    "email": "c_b49d67ec523812991d13283ddfed4eef44f94579b677a846f55e0e08660501be@group.calendar.google.com",
+    "organizationName": "Group",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/4/2025"
+  },
+  {
+    "fullName": "Janet",
+    "email": "janet@staircaseventures.com",
+    "organizationName": "Staircaseventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "12/2/2025"
+  },
+  {
+    "fullName": "John K Trang",
+    "email": "john.k.trang@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "11/27/2025"
+  },
+  {
+    "fullName": "Ray Newal",
+    "email": "ray.newal@cstn.ca",
+    "organizationName": "Cstn",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "11/26/2025"
+  },
+  {
+    "fullName": "Kelvin Chen",
+    "email": "kelvin.chen@harpers-capital.com",
+    "organizationName": "Harpers Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "11/24/2025"
+  },
+  {
+    "fullName": "Stephen Brown",
+    "email": "stbrown830@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "11/24/2025"
+  },
+  {
+    "fullName": "Daniel",
+    "email": "daniel@stratum.ai",
+    "organizationName": "Stratum",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "11/14/2025"
+  },
+  {
+    "fullName": "Michelle Ash",
+    "email": "michelle.j.ash@gmail.com",
+    "title": "Independent Board Director",
+    "organizationName": "Stratum",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Calendar",
+    "lastInteraction": "11/14/2025",
+    "notes": "Portfolio governance."
+  },
+  {
+    "fullName": "Wally Wang",
+    "email": "wally.wang@alphasquaregroup.com",
+    "title": "Partner",
+    "organizationName": "Alpha Square Group",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Calendar",
+    "lastInteraction": "11/14/2025",
+    "notes": "Co-investor."
+  },
+  {
+    "fullName": "Rawan Farwana",
+    "email": "rawan.farwana@waed.com",
+    "title": "Partner",
+    "organizationName": "Waed (Aramco VC)",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Calendar",
+    "lastInteraction": "11/14/2025",
+    "notes": "Co-investor on Stratum."
+  },
+  {
+    "fullName": "Farzi",
+    "email": "farzi@stratum.gs",
+    "organizationName": "Stratum",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "11/14/2025"
+  },
+  {
+    "fullName": "Haluk SD",
+    "email": "haluk@8090industries.com",
+    "organizationName": "8090 Industries",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "11/13/2025"
+  },
+  {
+    "fullName": "Shabnam Akhter",
+    "email": "shabnam.akhter@mastercard.com",
+    "organizationName": "Mastercard",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "11/3/2025"
+  },
+  {
+    "fullName": "Ajay Nwosu <ajaynwosu22@gmail.com>",
+    "email": "ajaynwosu22@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/31/2025"
+  },
+  {
+    "fullName": "Mark Blackwell",
+    "email": "mark.blackwell@builders.vc",
+    "organizationName": "Builders",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/31/2025"
+  },
+  {
+    "fullName": "Knashert",
+    "email": "knashert@privatefleetnz.com",
+    "organizationName": "Privatefleetnz",
+    "orgType": "prospect",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/31/2025"
+  },
+  {
+    "fullName": "Makkawi",
+    "email": "makkawi@mintz.com",
+    "organizationName": "Mintz",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/31/2025"
+  },
+  {
+    "fullName": "Synergis",
+    "email": "synergis@navbackoffice.com",
+    "organizationName": "Navbackoffice",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/30/2025"
+  },
+  {
+    "fullName": "Audit",
+    "email": "audit@navbackoffice.com",
+    "organizationName": "Navbackoffice",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/30/2025"
+  },
+  {
+    "fullName": "Liam Babwah",
+    "email": "liam.babwah@mhacayman.ky",
+    "organizationName": "Mhacayman",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/30/2025"
+  },
+  {
+    "fullName": "Clever Mawarire",
+    "email": "clever.mawarire@mhacayman.ky",
+    "organizationName": "Mhacayman",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/30/2025"
+  },
+  {
+    "fullName": "Fsvrc",
+    "email": "fsvrc@navbackoffice.com",
+    "organizationName": "Navbackoffice",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/30/2025"
+  },
+  {
+    "fullName": "Minje",
+    "email": "minje@rotatecapital.com",
+    "organizationName": "Rotatecapital",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/30/2025"
+  },
+  {
+    "fullName": "Mark",
+    "email": "mark@copiawealthstudios.com",
+    "organizationName": "Copia Wealth Studios",
+    "orgType": "lp",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/29/2025"
+  },
+  {
+    "fullName": "(unknown)",
+    "email": "df@aam.xyz",
+    "organizationName": "Aam",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/29/2025"
+  },
+  {
+    "fullName": "Henry",
+    "email": "henry@hermitage.hk",
+    "organizationName": "Hermitage",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/29/2025"
+  },
+  {
+    "fullName": "(unknown)",
+    "email": "rp@anagram.xyz",
+    "organizationName": "Anagram",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/29/2025"
+  },
+  {
+    "fullName": "(unknown)",
+    "email": "jj@anagram.xyz",
+    "organizationName": "Anagram",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/29/2025"
+  },
+  {
+    "fullName": "Bryan Deng",
+    "email": "bryan.deng@lc-worldwide.com",
+    "organizationName": "Lc-worldwide",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/25/2025"
+  },
+  {
+    "fullName": "Sdolan",
+    "email": "sdolan@dakota.com",
+    "organizationName": "Dakota",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/24/2025"
+  },
+  {
+    "fullName": "Calendar",
+    "email": "calendar@dakotalive.com",
+    "organizationName": "Dakotalive",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/24/2025"
+  },
+  {
+    "fullName": "Vijay S",
+    "email": "vijay_s@trigent.com",
+    "organizationName": "Trigent",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/23/2025"
+  },
+  {
+    "fullName": "Vinoth A",
+    "email": "vinoth_a@trigent.com",
+    "organizationName": "Trigent",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/23/2025"
+  },
+  {
+    "fullName": "Abishek B",
+    "email": "abishek_b@trigent.com",
+    "organizationName": "Trigent",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/23/2025"
+  },
+  {
+    "fullName": "Conference Room",
+    "email": "conference_room@trigent.com",
+    "organizationName": "Trigent",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/23/2025"
+  },
+  {
+    "fullName": "Steven Hartanto",
+    "email": "steven.hartanto@techcapasia.com",
+    "organizationName": "Techcapasia",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/23/2025"
+  },
+  {
+    "fullName": "Akash",
+    "email": "akash@mainframe.holdings",
+    "organizationName": "Mainframe",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/23/2025"
+  },
+  {
+    "fullName": "Max",
+    "email": "max@mainframe.holdings",
+    "organizationName": "Mainframe",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/23/2025"
+  },
+  {
+    "fullName": "Ido Deutsch",
+    "email": "ido@argu.ai",
+    "organizationName": "Argu",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/22/2025"
+  },
+  {
+    "fullName": "Lior",
+    "email": "lior@argu.ai",
+    "organizationName": "Argu",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/22/2025"
+  },
+  {
+    "fullName": "Shani",
+    "email": "shani@argu.ai",
+    "organizationName": "Argu",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/22/2025"
+  },
+  {
+    "fullName": "Matt",
+    "email": "matt@snoozesleep.com",
+    "organizationName": "Snoozesleep",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/19/2025"
+  },
+  {
+    "fullName": "Pierre",
+    "email": "pierre@agentastra.ai",
+    "organizationName": "Agentastra",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/17/2025"
+  },
+  {
+    "fullName": "Danielle",
+    "email": "danielle@voicebrain.ai",
+    "organizationName": "VoiceBrain",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/16/2025"
+  },
+  {
+    "fullName": "Steven",
+    "email": "steven@reforgepower.com",
+    "organizationName": "Reforgepower",
+    "orgType": "developer",
+    "entityTags": [
+      "CE"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/16/2025"
+  },
+  {
+    "fullName": "Ben",
+    "email": "ben@opsima.com",
+    "organizationName": "Opsima",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/15/2025"
+  },
+  {
+    "fullName": "Ben",
+    "email": "ben@simaanalytics.com",
+    "organizationName": "Simaanalytics",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/15/2025"
+  },
+  {
+    "fullName": "Aude Planche",
+    "email": "aplanche@gemgroup.ch",
+    "organizationName": "Gemgroup",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/15/2025"
+  },
+  {
+    "fullName": "(unknown)",
+    "email": "z@cct.co",
+    "organizationName": "Cct",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/15/2025"
+  },
+  {
+    "fullName": "Murat Erdem",
+    "email": "murat@nimblepartners.vc",
+    "organizationName": "Nimblepartners",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/15/2025"
+  },
+  {
+    "fullName": "Seth Spalding",
+    "email": "seth@nimblepartners.vc",
+    "organizationName": "Nimblepartners",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/15/2025"
+  },
+  {
+    "fullName": "Sumeet Jain",
+    "email": "sumeet@nimblepartners.vc",
+    "organizationName": "Nimblepartners",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/15/2025"
+  },
+  {
+    "fullName": "Kyle Jordan",
+    "email": "kyle.jordan@rangerrfx.com",
+    "organizationName": "Ranger RFX",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/14/2025"
+  },
+  {
+    "fullName": "Ksk",
+    "email": "ksk@settercap.com",
+    "organizationName": "Setter Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/14/2025"
+  },
+  {
+    "fullName": "Alex",
+    "email": "alex@patternventures.com",
+    "organizationName": "Patternventures",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/14/2025"
+  },
+  {
+    "fullName": "David Schow",
+    "email": "ds-gcm@proton.me",
+    "organizationName": "Proton",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/11/2025"
+  },
+  {
+    "fullName": "Hamilton",
+    "email": "hamilton@hamiltonperkins.com",
+    "organizationName": "Hamiltonperkins",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Calendar",
+    "lastInteraction": "10/11/2025"
+  },
+  {
+    "fullName": "Siu Ki Chiu",
+    "email": "cathy.chiu@ritzcarlton.com",
+    "organizationName": "Ritzcarlton",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/9/2026"
+  },
+  {
+    "fullName": "Ben Fogarty",
+    "email": "ben@departure.is",
+    "title": "Founding Partner, CDO",
+    "organizationName": "Departure",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/9/2026",
+    "notes": "Design/creative partner. 8+ interactions."
+  },
+  {
+    "fullName": "Marc Tuinier",
+    "email": "marc@nuwapen.com",
+    "organizationName": "Nuwapen",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Aaron Nathan",
+    "email": "aaron.nathan@rethinkventures.com",
+    "title": "Partner",
+    "organizationName": "Rethink Ventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 55,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026",
+    "notes": "15+ interactions."
+  },
+  {
+    "fullName": "Jesse Seligman",
+    "email": "js@heliuman.com",
+    "title": "Founder",
+    "organizationName": "Heliuman",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Karl-Benno Nagy",
+    "email": "karl-benno.nagy@kabenagroup.com",
+    "title": "Partner",
+    "organizationName": "KaBeNa Group",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Marcel Wroblewski",
+    "email": "marcel.wroblewski@kabenagroup.com",
+    "organizationName": "KaBeNa Group",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Mariana Velez",
+    "email": "mariana@heliuman.com",
+    "organizationName": "Heliuman",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "(unknown)",
+    "email": "a@arkane.capital",
+    "organizationName": "Arkane Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Sudhanshu Heda",
+    "email": "sudhanshu@usesidecar.com",
+    "organizationName": "Usesidecar",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Joseph",
+    "email": "joseph@gammapointadvisory.com",
+    "title": "Partner",
+    "organizationName": "Gamma Point Advisory",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 40,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026",
+    "notes": "10+ interactions."
+  },
+  {
+    "fullName": "Donovan Bonea",
+    "email": "donovan@gammapointadvisory.com",
+    "organizationName": "Gamma Point Advisory",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "David Tortoriello",
+    "email": "dtortoriello@goddardtech.com",
+    "organizationName": "Goddardtech",
+    "orgType": "prospect",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Eric Ragan",
+    "email": "eragan@goddardtech.com",
+    "organizationName": "Goddardtech",
+    "orgType": "prospect",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Jake",
+    "email": "jake@sambaenergy.com",
+    "organizationName": "Samba Energy",
+    "orgType": "developer",
+    "entityTags": [
+      "CE"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Curtis Shoung",
+    "email": "curtis.shoung@airwallex.com",
+    "organizationName": "Airwallex",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Abrams",
+    "email": "abrams@jabrams.com",
+    "organizationName": "Jabrams",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Kent",
+    "email": "kent@8bitcapital.com",
+    "organizationName": "8bitcapital",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Marc Alba",
+    "email": "marc@gmsecorp.com",
+    "organizationName": "GMSE Corp",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "Patrick Flannery",
+    "email": "patrick@groundfloor.energy",
+    "title": "Founder",
+    "organizationName": "Ground Floor Energy",
+    "orgType": "prospect",
+    "entityTags": [
+      "CE"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/8/2026"
+  },
+  {
+    "fullName": "stregis maldivesvommuli",
+    "email": "stregis.maldivesvommuli@stregis.com",
+    "organizationName": "Stregis",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/5/2026"
+  },
+  {
+    "fullName": "reservations vommuli",
+    "email": "reservations.vommuli@stregis.com",
+    "organizationName": "Stregis",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/4/2026"
+  },
+  {
+    "fullName": "Rochelle Alejo",
+    "email": "rochelle@struckcapital.com",
+    "organizationName": "Struck Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/3/2026"
+  },
+  {
+    "fullName": "Kenan Jiang",
+    "email": "kenan@sterrycapital.com",
+    "organizationName": "Sterry Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "4/1/2026"
+  },
+  {
+    "fullName": "Jiang Chengming",
+    "email": "cajcm66@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Manthan Pawar",
+    "email": "manthan.pawar@destroai.com",
+    "title": "Founder",
+    "organizationName": "Destro AI",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 45,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026",
+    "notes": "12+ interactions."
+  },
+  {
+    "fullName": "Andrea  Cassandro",
+    "email": "andrea@easttowestcapital.com",
+    "organizationName": "Easttowestcapital",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Zach",
+    "email": "zach@indemni.com",
+    "organizationName": "Indemni",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Matt Weiss",
+    "email": "matt.weiss@circuit.ai",
+    "organizationName": "Circuit",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Stefan Kremsner",
+    "email": "stefan.kremsner@s2-data.at",
+    "title": "Founder",
+    "organizationName": "S2 Data",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026",
+    "notes": "9+ interactions."
+  },
+  {
+    "fullName": "Patrick",
+    "email": "patrick@tiberis.com",
+    "organizationName": "Tiberis",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Eric Gilmore",
+    "email": "eric@tiberis.com",
+    "organizationName": "Tiberis",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Ameet Shah",
+    "email": "ameet@golden.ventures",
+    "organizationName": "Golden Ventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Jeffrey Truong",
+    "email": "jeff@broadwayvp.com",
+    "title": "Partner",
+    "organizationName": "Broadway VP",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "J Anker",
+    "email": "j.anker@anker-capital.ch",
+    "organizationName": "Anker Capital",
+    "orgType": "lp",
+    "entityTags": [
+      "CE"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Alex",
+    "email": "alex@advantage.vc",
+    "organizationName": "Advantage VC",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Jfelippe",
+    "email": "jfelippe@almullacapital.com",
+    "organizationName": "Al Mulla Capital",
+    "orgType": "lp",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026"
+  },
+  {
+    "fullName": "Adam Struck",
+    "email": "adam@struckcapital.com",
+    "title": "GP",
+    "organizationName": "Struck Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/31/2026",
+    "notes": "LP/investor relations."
+  },
+  {
+    "fullName": "Avi Boppana",
+    "email": "asboppana@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/29/2026"
+  },
+  {
+    "fullName": "Prasad Boppana",
+    "email": "prasadb@polimode.com",
+    "organizationName": "Polimode",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/29/2026"
+  },
+  {
+    "fullName": "Selene Casabal",
+    "email": "selenecasabal@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/29/2026"
+  },
+  {
+    "fullName": "Yotis Tonnelier",
+    "email": "yotis@yxscapital.com",
+    "title": "Managing Partner",
+    "organizationName": "YXS Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 55,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/28/2026",
+    "notes": "Co-investor on Nscale. 12+ interactions."
+  },
+  {
+    "fullName": "Sunny Patel",
+    "email": "sunny@yxscapital.com",
+    "title": "Managing Partner",
+    "organizationName": "YXS Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/28/2026",
+    "notes": "Co-investor on Nscale."
+  },
+  {
+    "fullName": "Haluk Sabanci Dincer",
+    "email": "haluk@vektor.capital",
+    "title": "Partner",
+    "organizationName": "Vektor Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/26/2026"
+  },
+  {
+    "fullName": "Dominic Francis Moore",
+    "email": "dom@vektor.capital",
+    "organizationName": "Vektor Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/26/2026"
+  },
+  {
+    "fullName": "Keely Buchanan",
+    "email": "keely@n4xtexperiences.com",
+    "organizationName": "N4XT Experiences",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/26/2026"
+  },
+  {
+    "fullName": "Bettina Eyales",
+    "email": "bettina@packsmith.ai",
+    "title": "EA to CEO",
+    "organizationName": "Packsmith",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/20/2026",
+    "notes": "Coordinates meetings for Ben."
+  },
+  {
+    "fullName": "Jeff Wong",
+    "email": "jewong@apollo.com",
+    "title": "APAC Family Office Lead",
+    "organizationName": "Apollo Global",
+    "orgType": "lp",
+    "entityTags": [
+      "CE",
+      "FO"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 40,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/20/2026",
+    "notes": "DC and utility buildout logistics. FO collaboration Asia. 8+ interactions."
+  },
+  {
+    "fullName": "Kartik Bandal",
+    "email": "kartik.bandal@bernstein.com",
+    "organizationName": "Bernstein",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/20/2026"
+  },
+  {
+    "fullName": "John Bay",
+    "email": "johnchunbay@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/20/2026"
+  },
+  {
+    "fullName": "Jacob Iftah",
+    "email": "jacob@kincapital.ca",
+    "organizationName": "Kincapital",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/20/2026"
+  },
+  {
+    "fullName": "Sharon Mor",
+    "email": "sharon@kincapital.ca",
+    "organizationName": "Kincapital",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/20/2026"
+  },
+  {
+    "fullName": "Devin Errico",
+    "email": "devin@volt.capital",
+    "organizationName": "Volt Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/19/2026"
+  },
+  {
+    "fullName": "June Han Wang",
+    "email": "june@canulife.com",
+    "organizationName": "Canulife",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/19/2026"
+  },
+  {
+    "fullName": "Andrea Almendaro",
+    "email": "nalmendaro@yahoo.com",
+    "organizationName": "Yahoo",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/19/2026"
+  },
+  {
+    "fullName": "Delian Asparouhov",
+    "email": "delian@foundersfund.com",
+    "organizationName": "Foundersfund",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/19/2026"
+  },
+  {
+    "fullName": "Neil Pai",
+    "email": "npai@foundersfund.com",
+    "organizationName": "Foundersfund",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/19/2026"
+  },
+  {
+    "fullName": "Carolynn Levy",
+    "email": "clevy@ycombinator.com",
+    "title": "Counsel",
+    "organizationName": "Y Combinator",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/19/2026"
+  },
+  {
+    "fullName": "Jonathan levy",
+    "email": "jlevy@ycombinator.com",
+    "organizationName": "Y Combinator",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/19/2026"
+  },
+  {
+    "fullName": "Angelzhou",
+    "email": "angelzhou@synergiscapital.com",
+    "organizationName": "Synergiscapital",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/19/2026"
+  },
+  {
+    "fullName": "Allen",
+    "email": "allen@twosmallfish.vc",
+    "organizationName": "Two Small Fish VC",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/19/2026"
+  },
+  {
+    "fullName": "Jim Kim",
+    "email": "jim@builders.vc",
+    "organizationName": "Builders",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/19/2026"
+  },
+  {
+    "fullName": "Jeffrey Pursley",
+    "email": "jeff.pursley@bmo.com",
+    "organizationName": "Bmo",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/18/2026"
+  },
+  {
+    "fullName": "Will Bocking",
+    "email": "wbocking@apollo.com",
+    "title": "Director Global Family Office",
+    "organizationName": "Apollo Global",
+    "orgType": "lp",
+    "entityTags": [
+      "CE",
+      "FO"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 40,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/18/2026",
+    "notes": "Introduced Jeff Wong for infrastructure collab. 8+ interactions."
+  },
+  {
+    "fullName": "Bettina Eyales",
+    "email": "bettina@packsmith.io",
+    "organizationName": "Packsmith",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/18/2026"
+  },
+  {
+    "fullName": "Deborah Panarello",
+    "email": "dp@khariscapital.com",
+    "organizationName": "Kharis Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/18/2026"
+  },
+  {
+    "fullName": "Linda Legault",
+    "email": "victoriayuty@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/18/2026"
+  },
+  {
+    "fullName": "Mark Seifried",
+    "email": "dockguys2674@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/18/2026"
+  },
+  {
+    "fullName": "Ariel Brooks",
+    "email": "brooks.ariel@brandline.info",
+    "organizationName": "Brandline",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/18/2026"
+  },
+  {
+    "fullName": "David Yoo",
+    "email": "david@struckcapital.com",
+    "organizationName": "Struck Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/18/2026"
+  },
+  {
+    "fullName": "Michelle Lord",
+    "email": "mlord@cornercapitalmgmt.com",
+    "title": "Partner",
+    "organizationName": "Corner Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/16/2026",
+    "notes": "7+ interactions."
+  },
+  {
+    "fullName": "Kyle Spottiswood",
+    "email": "kyle@maniv.com",
+    "title": "Partner",
+    "organizationName": "MANIV",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/16/2026"
+  },
+  {
+    "fullName": "Kenan Jiang",
+    "email": "kenan.jiang1@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 30,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/16/2026",
+    "notes": "8+ interactions."
+  },
+  {
+    "fullName": "Larry Goldberg",
+    "email": "larry.goldberg@tavio.io",
+    "organizationName": "Tavio",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/16/2026"
+  },
+  {
+    "fullName": "Salil Khaladkar",
+    "email": "salil@supreme.partners",
+    "organizationName": "Supreme",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/16/2026"
+  },
+  {
+    "fullName": "Jkonowe",
+    "email": "jkonowe@mpact.ai",
+    "organizationName": "Mpact",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/16/2026"
+  },
+  {
+    "fullName": "Jerry Invoice",
+    "email": "jerry.invoice@dext.cc",
+    "organizationName": "Dext",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/16/2026"
+  },
+  {
+    "fullName": "Russell",
+    "email": "russell@virtaventures.co",
+    "organizationName": "Virtaventures",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/15/2026"
+  },
+  {
+    "fullName": "Office Jain",
+    "email": "office.jain@rogers.com",
+    "organizationName": "Rogers",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/13/2026"
+  },
+  {
+    "fullName": "Dan Arnold",
+    "email": "danielcarnold@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/13/2026"
+  },
+  {
+    "fullName": "Will Bowen",
+    "email": "wbowen@persiumgroup.com",
+    "organizationName": "Persiumgroup",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/13/2026"
+  },
+  {
+    "fullName": "Jessica Whittington",
+    "email": "jessica.whittington@wildfruit.co",
+    "organizationName": "Wild Fruit",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/12/2026"
+  },
+  {
+    "fullName": "Colleen Fazzolari",
+    "email": "cfazzolari@apollo.com",
+    "organizationName": "Apollo Global",
+    "orgType": "lp",
+    "entityTags": [
+      "CE"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/11/2026"
+  },
+  {
+    "fullName": "kyle giddens",
+    "email": "kylegiddens@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/11/2026"
+  },
+  {
+    "fullName": "Michael A Plasencia",
+    "email": "michael_a_plasencia@ryder.com",
+    "organizationName": "Ryder",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Christie Allardyce",
+    "email": "christie@8090industries.com",
+    "title": "Director of Investor Relations",
+    "organizationName": "8090 Industries",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/10/2026",
+    "notes": "Nscale SPV allocation + side letter."
+  },
+  {
+    "fullName": "Jackie Benjamin",
+    "email": "jackiebenjamin333@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Allison Rager",
+    "email": "allison@claritytrustservices.com",
+    "organizationName": "Clarity Trust Services",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Yesenia Redes",
+    "email": "yesenia@claritytrustservices.com",
+    "organizationName": "Clarity Trust Services",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Joanna Rodriguez",
+    "email": "joanna@claritytrustservices.com",
+    "organizationName": "Clarity Trust Services",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Diana Santiago",
+    "email": "diana@claritytrustservices.com",
+    "organizationName": "Clarity Trust Services",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Tania Klein",
+    "email": "tania@claritytrustservices.com",
+    "organizationName": "Clarity Trust Services",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Paola Diaz",
+    "email": "paola@claritytrustservices.com",
+    "organizationName": "Clarity Trust Services",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/10/2026"
+  },
+  {
+    "fullName": "Wilman Herrera",
+    "email": "wilman.herrera@whotels.com",
+    "organizationName": "Whotels",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/9/2026"
+  },
+  {
+    "fullName": "Sydney Cho",
+    "email": "sydney@gammapointadvisory.com",
+    "organizationName": "Gamma Point Advisory",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/8/2026"
+  },
+  {
+    "fullName": "Jenna Francone",
+    "email": "jf@garage.vc",
+    "organizationName": "Garage",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/8/2026"
+  },
+  {
+    "fullName": "Bernie Li",
+    "email": "bernie.li@antler.co",
+    "title": "Partner",
+    "organizationName": "Antler",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 30,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/8/2026",
+    "notes": "8+ interactions."
+  },
+  {
+    "fullName": "Joe Illsley",
+    "email": "joe.illsley@truesearch.com",
+    "organizationName": "Truesearch",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/5/2026"
+  },
+  {
+    "fullName": "SILVIA GOMES",
+    "email": "silvia.gomes@bmo.com",
+    "organizationName": "Bmo",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/5/2026"
+  },
+  {
+    "fullName": "北美韭菜日记",
+    "email": "wei.hao4489868@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/4/2026"
+  },
+  {
+    "fullName": "Alex Tong",
+    "email": "alex@seguinventures.com",
+    "organizationName": "Seguinventures",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/4/2026"
+  },
+  {
+    "fullName": "A Mansylla",
+    "email": "a.mansylla@mitsui.com",
+    "organizationName": "Mitsui",
+    "orgType": "corporate",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/3/2026"
+  },
+  {
+    "fullName": "Larry Goldberg",
+    "email": "larry.goldberg@thetaviostudio.com",
+    "organizationName": "Thetaviostudio",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/3/2026"
+  },
+  {
+    "fullName": "Josh Kolar",
+    "email": "josh@driverdoc.io",
+    "organizationName": "Driverdoc",
+    "orgType": "prospect",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/3/2026"
+  },
+  {
+    "fullName": "Jim Okun",
+    "email": "jim@trestcapital.com",
+    "organizationName": "Trestcapital",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/3/2026"
+  },
+  {
+    "fullName": "Corey Greendale",
+    "email": "cgreendale@firstanalysis.com",
+    "organizationName": "First Analysis",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/3/2026"
+  },
+  {
+    "fullName": "Christopher Beselin",
+    "email": "christopher.beselin@endurance-group.com",
+    "organizationName": "Endurance-group",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/3/2026"
+  },
+  {
+    "fullName": "Ben Wunderman",
+    "email": "ben@packsmith.io",
+    "organizationName": "Packsmith",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/3/2026"
+  },
+  {
+    "fullName": "Scott Mibu",
+    "email": "smibu@caplinksecurities.com",
+    "organizationName": "Caplink Securities",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/3/2026"
+  },
+  {
+    "fullName": "Robin Fitzptrick",
+    "email": "robin.fitzptrick16@teamsleeplessstudios.info",
+    "organizationName": "Teamsleeplessstudios",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/3/2026"
+  },
+  {
+    "fullName": "James Bennett",
+    "email": "jamesb@hubfirecut.com",
+    "organizationName": "Hubfirecut",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "3/3/2026"
+  },
+  {
+    "fullName": "Jon Staenberg",
+    "email": "jon@staenberg.com",
+    "organizationName": "Staenberg",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/27/2026"
+  },
+  {
+    "fullName": "(unknown)",
+    "email": "8200856@qq.com",
+    "organizationName": "Qq",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "Chris Barkley",
+    "email": "cbarkley@platformventures.com",
+    "organizationName": "Platform Ventures",
+    "orgType": "lp",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "David Greer <dgreer@moss.com>",
+    "email": "dgreer@moss.com",
+    "organizationName": "Moss",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "Trey Yates",
+    "email": "trey@abo-empire.com",
+    "organizationName": "Abo-empire",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "Travis Steele",
+    "email": "travis@abo-ventures.com",
+    "organizationName": "Abo-ventures",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "Ryan Price",
+    "email": "ryan@abo-empire.com",
+    "organizationName": "Abo-empire",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "Rudwan Bakhsh",
+    "email": "redbax25@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "Ella Green",
+    "email": "egreen@platformventures.com",
+    "organizationName": "Platform Ventures",
+    "orgType": "lp",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "Myla Villas",
+    "email": "myla@almullacapital.com",
+    "organizationName": "Al Mulla Capital",
+    "orgType": "lp",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "Michelle Kushevsky",
+    "email": "michelle.kushevsky@copiawealthstudios.com",
+    "title": "Partner",
+    "organizationName": "Copia Wealth Studios",
+    "orgType": "lp",
+    "entityTags": [
+      "FO"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "Paula Podrug",
+    "email": "paula@anker-capital.ch",
+    "organizationName": "Anker Capital",
+    "orgType": "lp",
+    "entityTags": [
+      "CE"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "April Pizzo",
+    "email": "apizzo@moss.com",
+    "organizationName": "Moss",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "Michael Kohrn",
+    "email": "kohrn@superghost.org",
+    "organizationName": "Superghost",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026"
+  },
+  {
+    "fullName": "Darin Brannan",
+    "email": "darin.brannan@terminal-industries.com",
+    "title": "Founder",
+    "organizationName": "Terminal Industries",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 30,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/26/2026",
+    "notes": "8+ interactions."
+  },
+  {
+    "fullName": "Emily Baxter",
+    "email": "ebaxter@jmi.com",
+    "organizationName": "Jmi",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/25/2026"
+  },
+  {
+    "fullName": "Mohdrahman",
+    "email": "mohdrahman998855@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/24/2026"
+  },
+  {
+    "fullName": "Megan Wang",
+    "email": "megan.wang@rho.co",
+    "organizationName": "Rho",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/21/2026"
+  },
+  {
+    "fullName": "Emily Cheung",
+    "email": "emily.cheung@cnuul.com",
+    "title": "Operations",
+    "organizationName": "UUL Global",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "UUL"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 40,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/21/2026",
+    "notes": "UUL China payment processing."
+  },
+  {
+    "fullName": "Shaina Lubliner",
+    "email": "shaina.lubliner@rho.co",
+    "organizationName": "Rho",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/21/2026"
+  },
+  {
+    "fullName": "Hootie Rashidifard",
+    "email": "hootie@hash3.xyz",
+    "organizationName": "Hash3",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/20/2026"
+  },
+  {
+    "fullName": "Garrett McCullough",
+    "email": "gmccullough@jmi.com",
+    "organizationName": "Jmi",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/19/2026"
+  },
+  {
+    "fullName": "Tom Andersson",
+    "email": "tom@stiq.ltd",
+    "organizationName": "Stiq",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/19/2026"
+  },
+  {
+    "fullName": "Andre Kodanov",
+    "email": "a.kodanov@fr8bot.com",
+    "organizationName": "Fr8bot",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/19/2026"
+  },
+  {
+    "fullName": "Oleh Holovatiuk",
+    "email": "o.holovatiuk@fr8bot.com",
+    "organizationName": "Fr8bot",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/19/2026"
+  },
+  {
+    "fullName": "Haley Flanigan",
+    "email": "haley.flanigan@terminal-industries.com",
+    "organizationName": "Terminal-industries",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/19/2026"
+  },
+  {
+    "fullName": "ARTIS Ventures",
+    "email": "md@av.co",
+    "organizationName": "Av",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/19/2026"
+  },
+  {
+    "fullName": "Alex Churchill",
+    "email": "alex@equiforte.com",
+    "organizationName": "Equiforte",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/19/2026"
+  },
+  {
+    "fullName": "Anthony Curtis",
+    "email": "anthony.curtis@global-liberty.org",
+    "organizationName": "Global-liberty",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/19/2026"
+  },
+  {
+    "fullName": "Mike Vandenhooft",
+    "email": "mvandenhooft@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/19/2026"
+  },
+  {
+    "fullName": "APPTS",
+    "email": "appts@simcoedentalgroup.com",
+    "organizationName": "Simcoedentalgroup",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/18/2026"
+  },
+  {
+    "fullName": "Spencer Gerrol",
+    "email": "s@sparkneuro.com",
+    "organizationName": "Sparkneuro",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/18/2026"
+  },
+  {
+    "fullName": "HLawFirm",
+    "email": "lawyer@hlawfirmontario.com",
+    "organizationName": "H Law Firm Ontario",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/17/2026"
+  },
+  {
+    "fullName": "Miao  He- Real Estate",
+    "email": "mia@hlawfirmontario.com",
+    "organizationName": "H Law Firm Ontario",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/17/2026"
+  },
+  {
+    "fullName": "Daniel Vasquez",
+    "email": "daniel@actions.capital",
+    "organizationName": "Actions",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/17/2026"
+  },
+  {
+    "fullName": "Paola Puerta",
+    "email": "admin@k50ventures.com",
+    "organizationName": "K50 Ventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/17/2026"
+  },
+  {
+    "fullName": "Eduardo Almazor",
+    "email": "eduardo@actions.capital",
+    "organizationName": "Actions",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/17/2026"
+  },
+  {
+    "fullName": "Eduardo",
+    "email": "eduardo@k50ventures.com",
+    "title": "Partner",
+    "organizationName": "K50 Ventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN",
+      "FO"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/17/2026",
+    "notes": "Latam VC."
+  },
+  {
+    "fullName": "Sergio Gonzalez",
+    "email": "sergio.g@americanwelltechglobal.com",
+    "organizationName": "Americanwelltechglobal",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/16/2026"
+  },
+  {
+    "fullName": "Ali Shekofti",
+    "email": "ali@accretecap.com",
+    "organizationName": "Accretecap",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/16/2026"
+  },
+  {
+    "fullName": "Grant Mitchell",
+    "email": "grant@accretecap.com",
+    "organizationName": "Accretecap",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/16/2026"
+  },
+  {
+    "fullName": "Accrete",
+    "email": "accrete@carta.com",
+    "organizationName": "Carta",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/16/2026"
+  },
+  {
+    "fullName": "Derek Doddridge",
+    "email": "derek.doddridge@goodship.io",
+    "organizationName": "Goodship",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/16/2026"
+  },
+  {
+    "fullName": "Fabian Kis",
+    "email": "kisgfabian@crossvortexcapital.com",
+    "organizationName": "Crossvortexcapital",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/15/2026"
+  },
+  {
+    "fullName": "James Zhan",
+    "email": "james@rangerrfx.com",
+    "title": "Founder",
+    "organizationName": "Ranger RFX",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/12/2026",
+    "notes": "9+ interactions."
+  },
+  {
+    "fullName": "Tongzhoushi",
+    "email": "tongzhoushi@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/12/2026"
+  },
+  {
+    "fullName": "Yvonne Chen",
+    "email": "yvonne.chen@owncoral.com",
+    "organizationName": "Owncoral",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/11/2026"
+  },
+  {
+    "fullName": "Matt Bressler",
+    "email": "matt@lookoutventures.com",
+    "organizationName": "Lookoutventures",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/11/2026"
+  },
+  {
+    "fullName": "Lseligman",
+    "email": "lseligman@rbsinvestment.com",
+    "organizationName": "Rbsinvestment",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/7/2026"
+  },
+  {
+    "fullName": "Frontdesk",
+    "email": "frontdesk@grandbayhotelsf.com",
+    "organizationName": "Grandbayhotelsf",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/7/2026"
+  },
+  {
+    "fullName": "Frontdesk",
+    "email": "frontdesk@grandbayhotel.com",
+    "organizationName": "Grandbayhotel",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/6/2026"
+  },
+  {
+    "fullName": "Yuki Chen",
+    "email": "yuki.chen@oliveam.com",
+    "organizationName": "Olive Asset Management",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/5/2026"
+  },
+  {
+    "fullName": "Jesse Seligman",
+    "email": "js@copperman.com",
+    "organizationName": "Copperman",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/2/2026"
+  },
+  {
+    "fullName": "Leave-ckwqkomspedhukrmjprgdu",
+    "email": "leave-ckw7qkom4spedhu2krm4jprgdu.110056@leave.mc.ihg.com",
+    "organizationName": "Leave",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/1/2026"
+  },
+  {
+    "fullName": "Synergiscap Com",
+    "email": "synergiscap.com@bf06.na2.hubspotemail.net",
+    "organizationName": "Bf06",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/1/2026"
+  },
+  {
+    "fullName": "Unsubscribe  Ecbbcbeffbcec",
+    "email": "unsubscribe_215472910972159_694ec6b72b2cbef5f7bcec85@copper-4d420caf5fc4.intercom-mail.com",
+    "organizationName": "Copper-4d420caf5fc4",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/1/2026"
+  },
+  {
+    "fullName": "Joseph Kim",
+    "email": "jaehyunkim86@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "2/1/2026"
+  },
+  {
+    "fullName": "Mariana Vélez",
+    "email": "mariana@copperman.com",
+    "organizationName": "Copperman",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/31/2026"
+  },
+  {
+    "fullName": "Amrit Saxena",
+    "email": "amrit@saxecap.com",
+    "organizationName": "Saxecap",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/31/2026"
+  },
+  {
+    "fullName": "Lizzymussett",
+    "email": "lizzymussett@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/30/2026"
+  },
+  {
+    "fullName": "Andrew Chan",
+    "email": "andrew@atas.vc",
+    "organizationName": "Atas",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/30/2026"
+  },
+  {
+    "fullName": "James Lee",
+    "email": "james@usegrazeai.com",
+    "organizationName": "Usegrazeai",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/29/2026"
+  },
+  {
+    "fullName": "April Kight",
+    "email": "akight@schellbray.com",
+    "organizationName": "Schellbray",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/28/2026"
+  },
+  {
+    "fullName": "Chase Killeen",
+    "email": "cki@flo.net",
+    "organizationName": "Flo",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/27/2026"
+  },
+  {
+    "fullName": "Vivian Zhong",
+    "email": "vzhong@amazon.com",
+    "organizationName": "Amazon",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/27/2026"
+  },
+  {
+    "fullName": "staci",
+    "email": "staci@whillockinsurance.com",
+    "organizationName": "Whillockinsurance",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/27/2026"
+  },
+  {
+    "fullName": "EFFYDESK TEAM",
+    "email": "team@effydesk.com",
+    "organizationName": "Effydesk",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/27/2026"
+  },
+  {
+    "fullName": "(generic)",
+    "email": "team@effydesk.ca",
+    "organizationName": "Effydesk",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/26/2026"
+  },
+  {
+    "fullName": "Greg Stapells",
+    "email": "greg@signa.com",
+    "organizationName": "Signa",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/26/2026"
+  },
+  {
+    "fullName": "Chen Stapells",
+    "email": "chen@signa.com",
+    "organizationName": "Signa",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/26/2026"
+  },
+  {
+    "fullName": "Jack Ferguson",
+    "email": "jack@signa.com",
+    "organizationName": "Signa",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/26/2026"
+  },
+  {
+    "fullName": "Sage Line - Teonca Merchant",
+    "email": "tmerchant@sagelinelogistics.com",
+    "organizationName": "Sagelinelogistics",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/24/2026"
+  },
+  {
+    "fullName": "Howie",
+    "email": "howie@howie.ai",
+    "organizationName": "Howie",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/24/2026"
+  },
+  {
+    "fullName": "Nick Boston",
+    "email": "nick.boston@goodship.io",
+    "organizationName": "Goodship",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/23/2026"
+  },
+  {
+    "fullName": "Wojciech Wenta",
+    "email": "wojciech.wenta@wisor.ai",
+    "title": "Founder",
+    "organizationName": "Wisor AI",
+    "orgType": "prospect",
+    "entityTags": [
+      "UUL"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 25,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/21/2026",
+    "notes": "Evaluating for UUL partnership. 7+ interactions."
+  },
+  {
+    "fullName": "Iris Chung",
+    "email": "irischung@mbb.ca",
+    "organizationName": "MBB Canada",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/21/2026"
+  },
+  {
+    "fullName": "Nathaniel Koo",
+    "email": "nathanielkoo@mbb.ca",
+    "organizationName": "MBB Canada",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/21/2026"
+  },
+  {
+    "fullName": "Terence Chan",
+    "email": "tchan@cclcpa.ca",
+    "organizationName": "Cclcpa",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/21/2026"
+  },
+  {
+    "fullName": "Timothy Ho",
+    "email": "timothyho@mbb.ca",
+    "organizationName": "MBB Canada",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/21/2026"
+  },
+  {
+    "fullName": "Charisse Lam",
+    "email": "charisselam@mbb.ca",
+    "organizationName": "MBB Canada",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/21/2026"
+  },
+  {
+    "fullName": "Paola Puerta",
+    "email": "admin@actions.capital",
+    "organizationName": "Actions",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/21/2026"
+  },
+  {
+    "fullName": "John Fitzgerald",
+    "email": "john.fitzgerald@gusto.com",
+    "organizationName": "Gusto",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/20/2026"
+  },
+  {
+    "fullName": "Ally Garcia",
+    "email": "ally.garcia@gusto.com",
+    "organizationName": "Gusto",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/20/2026"
+  },
+  {
+    "fullName": "Rahul Varshneya",
+    "email": "rahul.varshneya@morganstanleypwm.com",
+    "organizationName": "Morganstanleypwm",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/20/2026"
+  },
+  {
+    "fullName": "Daniel Vasquez",
+    "email": "daniel.vasquez@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/19/2026"
+  },
+  {
+    "fullName": "Manuel Arango Trujillo",
+    "email": "marango@auteco.com",
+    "organizationName": "Auteco",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/19/2026"
+  },
+  {
+    "fullName": "Andres Aristizabal",
+    "email": "aaristizabal@autecomobility.com",
+    "organizationName": "Autecomobility",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/19/2026"
+  },
+  {
+    "fullName": "William Marín",
+    "email": "wmarin@autecomobility.com",
+    "organizationName": "Autecomobility",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/19/2026"
+  },
+  {
+    "fullName": "Carlos Vasquez",
+    "email": "cvasquezr1@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/19/2026"
+  },
+  {
+    "fullName": "Ryan Bloomer",
+    "email": "ryan@k50ventures.com",
+    "organizationName": "K50 Ventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/19/2026"
+  },
+  {
+    "fullName": "葛成",
+    "email": "alic.ge@cnuul.com",
+    "organizationName": "UUL Global (China)",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/17/2026"
+  },
+  {
+    "fullName": "TMClientServices",
+    "email": "tmclientservices@cibc.com",
+    "organizationName": "CIBC",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/17/2026"
+  },
+  {
+    "fullName": "Brad Shepard",
+    "email": "bshepard@lahzo.com",
+    "organizationName": "Lahzo",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/17/2026"
+  },
+  {
+    "fullName": "Alice Fan",
+    "email": "alice@ayf-law.com",
+    "organizationName": "Ayf-law",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/16/2026"
+  },
+  {
+    "fullName": "AYF LAW Professional Corporation",
+    "email": "info@ayf-law.com",
+    "organizationName": "Ayf-law",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/16/2026"
+  },
+  {
+    "fullName": "Shuang Liang",
+    "email": "shuang@matchrobots.com",
+    "organizationName": "Matchrobots",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/15/2026"
+  },
+  {
+    "fullName": "Pam Simon",
+    "email": "pam@manifestevents.com",
+    "organizationName": "Manifestevents",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/15/2026"
+  },
+  {
+    "fullName": "Katie Date",
+    "email": "katie@manifestevents.com",
+    "organizationName": "Manifestevents",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/15/2026"
+  },
+  {
+    "fullName": "Alex McIsaac",
+    "email": "alex@northside.ventures",
+    "organizationName": "Northside",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/15/2026"
+  },
+  {
+    "fullName": "Qiqi",
+    "email": "qiqi@stanleychina.cn",
+    "organizationName": "Stanleychina",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/15/2026"
+  },
+  {
+    "fullName": "rachel.gu",
+    "email": "rachel.gu@stanleyexecutive.com",
+    "organizationName": "Stanleyexecutive",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/15/2026"
+  },
+  {
+    "fullName": "Fernando Silva",
+    "email": "fsilva@lockton.com",
+    "title": "Director, FO & Transaction Advisory",
+    "organizationName": "Lockton Companies",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 50,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/15/2026",
+    "notes": "Runs bi-weekly FO network calls. Prominent speakers (Romney, Crown, Medina). 917.754.5330."
+  },
+  {
+    "fullName": "Tony Jimenez",
+    "email": "tony@medinavc.com",
+    "organizationName": "Medinavc",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/14/2026"
+  },
+  {
+    "fullName": "Peter Sasaki",
+    "email": "peter.sasaki@cgsassociates.com",
+    "title": "PPLI Specialist",
+    "organizationName": "CGS Associates",
+    "orgType": "prospect",
+    "entityTags": [
+      "FO"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 15,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/14/2026",
+    "notes": "Connected via Kevin Qin/AFLF."
+  },
+  {
+    "fullName": "Daniel Vasquez",
+    "email": "daniel@k50ventures.com",
+    "organizationName": "K50 Ventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/13/2026"
+  },
+  {
+    "fullName": "Charlie Carroll",
+    "email": "charlie@growiconia.com",
+    "organizationName": "Growiconia",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/13/2026"
+  },
+  {
+    "fullName": "Gould Andrew",
+    "email": "gould.andrew@outlook.com",
+    "organizationName": "Outlook",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/12/2026"
+  },
+  {
+    "fullName": "Lance Co Ting Keh",
+    "email": "lance.cotingkeh@airwallex.com",
+    "organizationName": "Airwallex",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/11/2026"
+  },
+  {
+    "fullName": "Dan",
+    "email": "dan@partner.t0.ai",
+    "organizationName": "Partner",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/11/2026"
+  },
+  {
+    "fullName": "Giulia Argante",
+    "email": "giulia.argante@rho.co",
+    "organizationName": "Rho",
+    "orgType": "service_provider",
+    "entityTags": [
+      "UUL"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/10/2026"
+  },
+  {
+    "fullName": "Alicge",
+    "email": "alicge@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/9/2026"
+  },
+  {
+    "fullName": "Nino Ray Muga",
+    "email": "ninoray@xwf.google.com",
+    "organizationName": "Xwf",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/9/2026"
+  },
+  {
+    "fullName": "Harry Golden",
+    "email": "hgolden@superordinaryusa.com",
+    "organizationName": "Superordinary",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/7/2026"
+  },
+  {
+    "fullName": "Ruth Glennon",
+    "email": "rglennon@schellbray.com",
+    "organizationName": "Schellbray",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/7/2026"
+  },
+  {
+    "fullName": "Rochel Leah Bernstein",
+    "email": "rochelleah@sparkfamilyoffices.com",
+    "organizationName": "Sparkfamilyoffices",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/7/2026"
+  },
+  {
+    "fullName": "Jean",
+    "email": "jean@botzinnovation.com",
+    "organizationName": "Botzinnovation",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/7/2026"
+  },
+  {
+    "fullName": "Max Armani",
+    "email": "max@qubithealthcapital.com",
+    "organizationName": "Qubithealthcapital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/7/2026"
+  },
+  {
+    "fullName": "Sven Lategan",
+    "email": "sven@botzinnovation.com",
+    "organizationName": "Botzinnovation",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/7/2026"
+  },
+  {
+    "fullName": "Gretchen Koegelenberg",
+    "email": "gretchen@qubithealthcapital.com",
+    "organizationName": "Qubithealthcapital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/7/2026"
+  },
+  {
+    "fullName": "Sarah Findlay",
+    "email": "sarah@garde-robe.com",
+    "organizationName": "Garde-robe",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/7/2026"
+  },
+  {
+    "fullName": "Mariana Vélez",
+    "email": "mariana@globearium.com",
+    "organizationName": "Globearium",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/4/2026"
+  },
+  {
+    "fullName": "Jesse Seligman",
+    "email": "js@globearium.com",
+    "organizationName": "Globearium",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/4/2026"
+  },
+  {
+    "fullName": "Omer Golan",
+    "email": "omer@globearium.com",
+    "organizationName": "Globearium",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/4/2026"
+  },
+  {
+    "fullName": "Russell Jones",
+    "email": "rjones@privatefleetnz.com",
+    "title": "Founder",
+    "organizationName": "Private Fleet NZ",
+    "orgType": "prospect",
+    "entityTags": [
+      "UUL"
+    ],
+    "relationshipStrength": "medium",
+    "relationshipScore": 35,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/3/2026",
+    "notes": "9+ interactions."
+  },
+  {
+    "fullName": "Sam Weng",
+    "email": "sam.weng@itech-wenya.com",
+    "organizationName": "Itech-wenya",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/2/2026"
+  },
+  {
+    "fullName": "Elvis Ge",
+    "email": "elvis.ge@live.com",
+    "title": "Broker",
+    "organizationName": "Prestigium Real Estate",
+    "orgType": "prospect",
+    "entityTags": [
+      "FO"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 20,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "1/2/2026"
+  },
+  {
+    "fullName": "PLAUD Team",
+    "email": "support@plaud.ai",
+    "organizationName": "Plaud",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/29/2025"
+  },
+  {
+    "fullName": "Superhuman Mail Team",
+    "email": "hello@superhuman.com",
+    "organizationName": "Superhuman",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/28/2025"
+  },
+  {
+    "fullName": "Jeff Su",
+    "email": "support@jeffsu.org",
+    "organizationName": "Jeffsu",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/28/2025"
+  },
+  {
+    "fullName": "Feven",
+    "email": "feven@folk.app",
+    "organizationName": "Folk",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/27/2025"
+  },
+  {
+    "fullName": "Latif Peracha",
+    "email": "latif@m13.co",
+    "organizationName": "M13",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/27/2025"
+  },
+  {
+    "fullName": "Notion Support",
+    "email": "team@makenotion.com",
+    "organizationName": "Makenotion",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/27/2025"
+  },
+  {
+    "fullName": "KateLynn Atchley",
+    "email": "katelynn@saxecap.com",
+    "organizationName": "Saxecap",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/22/2025"
+  },
+  {
+    "fullName": "Alex Gedevani",
+    "email": "alex@monad.foundation",
+    "organizationName": "Monad",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/18/2025"
+  },
+  {
+    "fullName": "Piper Sinclair",
+    "email": "piper@prometheusalts.com",
+    "organizationName": "Prometheusalts",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/18/2025"
+  },
+  {
+    "fullName": "Michael Wang",
+    "email": "michael@prometheusalts.com",
+    "organizationName": "Prometheusalts",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/18/2025"
+  },
+  {
+    "fullName": "E. John Park",
+    "email": "john.park@morganlewis.com",
+    "organizationName": "Morganlewis",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/17/2025"
+  },
+  {
+    "fullName": "Andrew Yao",
+    "email": "andrew.yao@morganlewis.com",
+    "organizationName": "Morganlewis",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/17/2025"
+  },
+  {
+    "fullName": "Yang Jiao",
+    "email": "yang@tlcfertility.com",
+    "organizationName": "Tlcfertility",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/5/2025"
+  },
+  {
+    "fullName": "surrogacy",
+    "email": "surrogacy@tlcfertility.com",
+    "organizationName": "Tlcfertility",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/5/2025"
+  },
+  {
+    "fullName": "Alassane Goldsmith",
+    "email": "alassane@industryventures.com",
+    "organizationName": "Industryventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "12/4/2025"
+  },
+  {
+    "fullName": "Boardy Boardman",
+    "email": "b.b@meetboardyy.com",
+    "organizationName": "Meetboardyy",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/29/2025"
+  },
+  {
+    "fullName": "yuzezhen",
+    "email": "yuzezhen@uniquecapital.cn",
+    "organizationName": "Uniquecapital",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/27/2025"
+  },
+  {
+    "fullName": "Daphne Robertson",
+    "email": "drobertson@hashtagpaid.com",
+    "organizationName": "Hashtagpaid",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/27/2025"
+  },
+  {
+    "fullName": "Karine Hsu",
+    "email": "karine@slope.agency",
+    "organizationName": "Slope",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/27/2025"
+  },
+  {
+    "fullName": "Christopher Ko",
+    "email": "christopher.ko@northmount.com",
+    "organizationName": "Northmount",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/27/2025"
+  },
+  {
+    "fullName": "John Cutrone",
+    "email": "john@lumida.com",
+    "title": "CSO, CFA",
+    "organizationName": "Lumida Ventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "CE"
+    ],
+    "relationshipStrength": "weak",
+    "relationshipScore": 30,
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/26/2025",
+    "notes": "New West Data round. Energy tech for DCs."
+  },
+  {
+    "fullName": "Apply",
+    "email": "apply@crescentschool.org",
+    "organizationName": "Crescentschool",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/26/2025"
+  },
+  {
+    "fullName": "Richard Vissers",
+    "email": "rvissers@crescentschool.org",
+    "organizationName": "Crescentschool",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/26/2025"
+  },
+  {
+    "fullName": "albertlin23",
+    "email": "albert.lin.toronto@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/25/2025"
+  },
+  {
+    "fullName": "Andy Kangpan",
+    "email": "andy@metalayer.vc",
+    "organizationName": "Metalayer",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/25/2025"
+  },
+  {
+    "fullName": "Hannan Parvizian",
+    "email": "hannan@exowatt.com",
+    "organizationName": "Exowatt",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/23/2025"
+  },
+  {
+    "fullName": "Maggie Rugh",
+    "email": "mrugh@superordinaryusa.com",
+    "organizationName": "Superordinary",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/20/2025"
+  },
+  {
+    "fullName": "Michael van den Berg",
+    "email": "michael@superordinaryusa.com",
+    "organizationName": "Superordinary",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/20/2025"
+  },
+  {
+    "fullName": "Laura Sposato",
+    "email": "laura@superordinaryusa.com",
+    "organizationName": "Superordinary",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/20/2025"
+  },
+  {
+    "fullName": "Derek Trau",
+    "email": "derek@superordinaryusa.com",
+    "organizationName": "Superordinary",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/18/2025"
+  },
+  {
+    "fullName": "Blake Saunders",
+    "email": "bsaunders@coreadvs.com",
+    "organizationName": "Coreadvs",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/18/2025"
+  },
+  {
+    "fullName": "Katie Kurzydlo",
+    "email": "katie@fanfix.io",
+    "organizationName": "Fanfix",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/18/2025"
+  },
+  {
+    "fullName": "Boris Wertz",
+    "email": "boris@versionone.vc",
+    "organizationName": "Versionone",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/15/2025"
+  },
+  {
+    "fullName": "Yen Reis",
+    "email": "yennyreis@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/15/2025"
+  },
+  {
+    "fullName": "Matt Patterson",
+    "email": "matt@svc.vc",
+    "organizationName": "SVC",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/15/2025"
+  },
+  {
+    "fullName": "Abbey Hamstra",
+    "email": "abbey@coinfund.io",
+    "organizationName": "Coinfund",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/13/2025"
+  },
+  {
+    "fullName": "Aram Verdiyan",
+    "email": "aram@accoladepartners.com",
+    "organizationName": "Accoladepartners",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/13/2025"
+  },
+  {
+    "fullName": "Alex Felix",
+    "email": "felix@coinfund.io",
+    "organizationName": "Coinfund",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/13/2025"
+  },
+  {
+    "fullName": "Jason Kornfeld",
+    "email": "jason@presidio.legal",
+    "organizationName": "Presidio",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/13/2025"
+  },
+  {
+    "fullName": "Cody Tolman",
+    "email": "cody@presidio.legal",
+    "organizationName": "Presidio",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/13/2025"
+  },
+  {
+    "fullName": "Zensors Inc.",
+    "email": "zensors@presidio.legal",
+    "organizationName": "Presidio",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/13/2025"
+  },
+  {
+    "fullName": "Frontoffice",
+    "email": "frontoffice@paloaltomarriotts.com",
+    "organizationName": "Paloaltomarriotts",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/8/2025"
+  },
+  {
+    "fullName": "Hannah Walker",
+    "email": "hannah.walker@tradencyo.com",
+    "organizationName": "Tradencyo",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/7/2025"
+  },
+  {
+    "fullName": "Francesca Marotti",
+    "email": "fmarotti@hashtagpaid.com",
+    "organizationName": "Hashtagpaid",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/7/2025"
+  },
+  {
+    "fullName": "Christian Mark",
+    "email": "cm@interplay.vc",
+    "organizationName": "Interplay VC",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/5/2025"
+  },
+  {
+    "fullName": "Reech Bear",
+    "email": "reech@infrared.finance",
+    "organizationName": "Infrared",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/4/2025"
+  },
+  {
+    "fullName": "Red Bear",
+    "email": "red@infrared.finance",
+    "organizationName": "Infrared",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/4/2025"
+  },
+  {
+    "fullName": "Joseph Axisa",
+    "email": "joseph@axisadvisory.xyz",
+    "organizationName": "Axisadvisory",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/4/2025"
+  },
+  {
+    "fullName": "Diana Westbury",
+    "email": "diana@n4xtexperiences.com",
+    "organizationName": "N4XT Experiences",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/3/2025"
+  },
+  {
+    "fullName": "Serge Kassardjian",
+    "email": "serge@6thman.ventures",
+    "organizationName": "6thman",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "11/2/2025"
+  },
+  {
+    "fullName": "Stratum Legal",
+    "email": "legal@stratum.ai",
+    "organizationName": "Stratum",
+    "orgType": "portfolio_company",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/31/2025"
+  },
+  {
+    "fullName": "Jeremy Wallis",
+    "email": "jeremy.r.d.wallis@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/31/2025"
+  },
+  {
+    "fullName": "Mike",
+    "email": "mike@dualworlds.io",
+    "organizationName": "Dualworlds",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/30/2025"
+  },
+  {
+    "fullName": "Adrienne Ross",
+    "email": "aross@tcs.on.ca",
+    "organizationName": "Tcs",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/30/2025"
+  },
+  {
+    "fullName": "Ryan Sequeira",
+    "email": "ryans@settercap.com",
+    "organizationName": "Setter Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/30/2025"
+  },
+  {
+    "fullName": "Andrew Caraher",
+    "email": "andrewc@settercap.com",
+    "organizationName": "Setter Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/30/2025"
+  },
+  {
+    "fullName": "Jamie Hunt",
+    "email": "jamiehunt@aglaiaim.com",
+    "organizationName": "Aglaiaim",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/28/2025"
+  },
+  {
+    "fullName": "Htao",
+    "email": "htao@nh-holdings.com",
+    "organizationName": "Nh-holdings",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/28/2025"
+  },
+  {
+    "fullName": "Hampton Tao",
+    "email": "taoham216@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/28/2025"
+  },
+  {
+    "fullName": "Austen McGregor",
+    "email": "austen@allocate.co",
+    "organizationName": "Allocate",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/28/2025"
+  },
+  {
+    "fullName": "Ben Mathews",
+    "email": "ben@night.co",
+    "organizationName": "Night",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/27/2025"
+  },
+  {
+    "fullName": "Alihasnen Ghoghai",
+    "email": "alihasnen.g@imperoitservices.ca",
+    "organizationName": "Imperoitservices",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/27/2025"
+  },
+  {
+    "fullName": "Jy Rivera",
+    "email": "jy@staircaseventures.com",
+    "organizationName": "Staircaseventures",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/25/2025"
+  },
+  {
+    "fullName": "nagendra r",
+    "email": "nagendra_r@trigent.com",
+    "organizationName": "Trigent",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/25/2025"
+  },
+  {
+    "fullName": "Hamilton Perkins",
+    "email": "hperkins@hamiltonperkins.com",
+    "organizationName": "Hamiltonperkins",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/24/2025"
+  },
+  {
+    "fullName": "Jonny Gordon",
+    "email": "jonny@hamiltonperkins.com",
+    "organizationName": "Hamiltonperkins",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/24/2025"
+  },
+  {
+    "fullName": "Kristine Phan",
+    "email": "kristine@somacap.com",
+    "organizationName": "Soma Capital",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/23/2025"
+  },
+  {
+    "fullName": "westinflushinglgafd@gmail.com",
+    "email": "westinflushinglgafd@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/23/2025"
+  },
+  {
+    "fullName": "renaissancetangram@gmail.com",
+    "email": "renaissancetangram@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/22/2025"
+  },
+  {
+    "fullName": "Alex Song",
+    "email": "alex@innovationdept.com",
+    "organizationName": "Innovationdept",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/21/2025"
+  },
+  {
+    "fullName": "Colin Darretta",
+    "email": "colin@innovationdept.com",
+    "organizationName": "Innovationdept",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/21/2025"
+  },
+  {
+    "fullName": "Lian JIN",
+    "email": "lian.jin@bendura.li",
+    "organizationName": "Bendura",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/20/2025"
+  },
+  {
+    "fullName": "Cabh",
+    "email": "cabh9900@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/20/2025"
+  },
+  {
+    "fullName": "Yijia ZHANG",
+    "email": "yijia.zhang@bendura.li",
+    "organizationName": "Bendura",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/20/2025"
+  },
+  {
+    "fullName": "Jiajia HUA",
+    "email": "jiajia.hua@bendura.li",
+    "organizationName": "Bendura",
+    "orgType": "service_provider",
+    "entityTags": [
+      "FO"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/20/2025"
+  },
+  {
+    "fullName": "Anna Vorezheykina",
+    "email": "anna.vorezheykina@aibeesgrowthidea.com",
+    "organizationName": "Aibeesgrowthidea",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/19/2025"
+  },
+  {
+    "fullName": "Zhan.associates",
+    "email": "zhan.associates@rbc.com",
+    "organizationName": "Rbc",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/17/2025"
+  },
+  {
+    "fullName": "Keith Zhan",
+    "email": "keith.zhan@rbc.com",
+    "organizationName": "Rbc",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/17/2025"
+  },
+  {
+    "fullName": "Jim Blom",
+    "email": "jblom@fairlead.com",
+    "organizationName": "Fairlead",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/17/2025"
+  },
+  {
+    "fullName": "Mark Norombaba",
+    "email": "mark@northside.ventures",
+    "organizationName": "Northside",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/16/2025"
+  },
+  {
+    "fullName": "Kevin Bloom",
+    "email": "kevin.bloom@rogers.com",
+    "organizationName": "Rogers",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/16/2025"
+  },
+  {
+    "fullName": "Zied",
+    "email": "zied@fudzs.com",
+    "organizationName": "Fudzs",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/16/2025"
+  },
+  {
+    "fullName": "GEM Paris",
+    "email": "gemparis@gemgroup.ch",
+    "organizationName": "Gemgroup",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/16/2025"
+  },
+  {
+    "fullName": "(unknown)",
+    "email": "11942811@unsubscribe.iterable.com",
+    "organizationName": "Unsubscribe",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/16/2025"
+  },
+  {
+    "fullName": "Sue Nickason",
+    "email": "sue.nickason@dart.ky",
+    "organizationName": "Dart",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/16/2025"
+  },
+  {
+    "fullName": "Nir",
+    "email": "nir@revol-robotics.ai",
+    "organizationName": "Revol-robotics",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/16/2025"
+  },
+  {
+    "fullName": "Hashir Jaffry",
+    "email": "hashir.jaffry@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/15/2025"
+  },
+  {
+    "fullName": "Milla Padilla",
+    "email": "milla@claritytrustservices.com",
+    "organizationName": "Clarity Trust Services",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/15/2025"
+  },
+  {
+    "fullName": "Marianne Haddad",
+    "email": "marianne@claritytrustservices.com",
+    "organizationName": "Clarity Trust Services",
+    "orgType": "service_provider",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/15/2025"
+  },
+  {
+    "fullName": "Coral Construction Loan",
+    "email": "constructionloan@owncoral.com",
+    "organizationName": "Owncoral",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/14/2025"
+  },
+  {
+    "fullName": "Jay Hunter",
+    "email": "jayhunteraz@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/11/2025"
+  },
+  {
+    "fullName": "Jay Hunter",
+    "email": "jay@drinksprinter.com",
+    "organizationName": "Drinksprinter",
+    "orgType": "prospect",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/11/2025"
+  },
+  {
+    "fullName": "Shea Sweeney",
+    "email": "shea@nimblepartners.vc",
+    "organizationName": "Nimblepartners",
+    "orgType": "strategic_partner",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/10/2025"
+  },
+  {
+    "fullName": "Tiffany Lai",
+    "email": "tiffany6476@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/10/2025"
+  },
+  {
+    "fullName": "Stephanie Chui",
+    "email": "stephanie.chui728@gmail.com",
+    "organizationName": "Gmail",
+    "entityTags": [
+      "SYN"
+    ],
+    "source": "Gmail (Sent)",
+    "lastInteraction": "10/10/2025"
+  }
+]
