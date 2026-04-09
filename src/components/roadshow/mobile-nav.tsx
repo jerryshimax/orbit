@@ -14,7 +14,7 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-8 px-4 bg-slate-950/80 backdrop-blur-2xl z-50 border-t border-[#e9c176]/10 shadow-[0px_-24px_48px_rgba(0,0,0,0.5)] lg:hidden">
+    <nav className="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-8 px-4 bg-slate-950/80 backdrop-blur-2xl z-50 border-t border-[#e9c176]/10 shadow-[0px_-24px_48px_rgba(0,0,0,0.5)] md:hidden">
       {TABS.map((tab) => {
         const isActive =
           tab.href === "/"

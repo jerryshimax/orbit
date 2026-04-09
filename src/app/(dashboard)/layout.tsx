@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "@/components/shared/sidebar";
 import { CommandPalette } from "@/components/shared/command-palette";
 import { ChatProvider } from "@/components/chat/chat-provider";
@@ -12,49 +12,58 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(true);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   return (
     <ChatProvider>
       <div className="min-h-screen">
-        {/* Hamburger toggle — only visible below lg */}
-        <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="fixed top-4 left-4 z-50 w-10 h-10 rounded-lg flex items-center justify-center transition-colors lg:hidden"
-          style={{
-            background: "var(--bg-surface-active)",
-            border: "1px solid var(--border)",
-          }}
-        >
-          <span
-            className="material-symbols-outlined text-lg"
-            style={{ color: "var(--accent)" }}
-          >
-            {sidebarOpen ? "close" : "menu"}
-          </span>
-        </button>
-
-        {/* Mobile sidebar backdrop */}
-        {sidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black/40 z-30 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
+        {/* Desktop: sidebar always visible */}
+        {isDesktop && (
+          <div style={{ position: "fixed", zIndex: 40, top: 0, left: 0, bottom: 0 }}>
+            <Sidebar />
+          </div>
         )}
 
-        {/* Sidebar — always visible on lg+, overlay on smaller */}
-        <div
-          className={`
-            fixed z-40 transition-transform duration-200
-            lg:translate-x-0
-            ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-          `}
-        >
-          <Sidebar onNavigate={() => setSidebarOpen(false)} />
-        </div>
+        {/* Mobile: hamburger + overlay */}
+        {!isDesktop && (
+          <>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="fixed top-4 left-4 z-50 w-10 h-10 rounded-lg flex items-center justify-center"
+              style={{
+                background: "var(--bg-surface-active)",
+                border: "1px solid var(--border)",
+              }}
+            >
+              <span className="material-symbols-outlined text-lg" style={{ color: "var(--accent)" }}>
+                {mobileOpen ? "close" : "menu"}
+              </span>
+            </button>
 
-        {/* Main content — pushed right on desktop */}
-        <div className="lg:ml-[220px]">
+            {mobileOpen && (
+              <>
+                <div
+                  className="fixed inset-0 bg-black/40 z-30"
+                  onClick={() => setMobileOpen(false)}
+                />
+                <div style={{ position: "fixed", zIndex: 40, top: 0, left: 0, bottom: 0 }}>
+                  <Sidebar onNavigate={() => setMobileOpen(false)} />
+                </div>
+              </>
+            )}
+          </>
+        )}
+
+        {/* Main content */}
+        <div style={{ marginLeft: isDesktop ? 220 : 0 }}>
           <main className="overflow-auto">{children}</main>
         </div>
 

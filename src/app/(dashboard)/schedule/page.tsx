@@ -49,7 +49,7 @@ export default function SchedulePage() {
   }, [tripData]);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 pt-20 pb-32 lg:pt-8 lg:pb-8 space-y-2">
+    <div className="max-w-3xl mx-auto px-4 pt-8 pb-32 md:pb-8 space-y-2">
       {/* Header */}
       <div className="mb-6">
         <h1

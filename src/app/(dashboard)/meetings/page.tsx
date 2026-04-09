@@ -157,7 +157,7 @@ export default function MeetingsPage() {
   }, [meetings]);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 pt-20 pb-32 lg:pt-8 lg:pb-8 space-y-6">
+    <div className="max-w-3xl mx-auto px-4 pt-8 pb-32 md:pb-8 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

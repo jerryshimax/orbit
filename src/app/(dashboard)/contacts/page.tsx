@@ -45,7 +45,7 @@ export default function ContactsPage() {
   }, [people, search, entityFilter, strengthFilter]);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 pt-20 pb-32 lg:pt-8 lg:pb-8 space-y-6">
+    <div className="max-w-4xl mx-auto px-4 pt-8 pb-32 md:pb-8 space-y-6">
       {/* Header */}
       <div>
         <h1

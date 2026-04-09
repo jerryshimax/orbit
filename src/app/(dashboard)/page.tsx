@@ -73,7 +73,7 @@ export default function BriefPage() {
   }, [orgs]);
 
   return (
-    <div className="space-y-8 max-w-3xl mx-auto px-4 pt-20 pb-32 lg:pt-8 lg:pb-8">
+    <div className="space-y-8 max-w-3xl mx-auto px-4 pt-8 pb-32 md:pb-8">
       {/* Header */}
       <div>
         <h1
