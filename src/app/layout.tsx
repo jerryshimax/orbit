@@ -34,6 +34,10 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght,FILL@100..700,0..1&display=swap"
+        />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="bg-[#10141a] text-[#dfe2eb] font-[Inter,system-ui,sans-serif] antialiased selection:bg-[#e9c176]/30 selection:text-[#e9c176] min-h-screen">

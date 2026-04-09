@@ -54,6 +54,25 @@
   --font-label: "Space Grotesk", sans-serif;
 }
 
+/* ─── Component CSS Variables (used by React components via inline styles) ─── */
+:root {
+  --accent: #e9c176;
+  --accent-surface: rgba(233, 193, 118, 0.1);
+  --text-primary: #dfe2eb;
+  --text-secondary: #d1c5b4;
+  --text-tertiary: #9a8f80;
+  --bg-body: #10141a;
+  --bg-surface: #181c22;
+  --bg-surface-hover: #1c2026;
+  --bg-surface-active: #262a31;
+  --bg-elevated: #31353c;
+  --bg-sidebar: #0a0e14;
+  --border: #4e4639;
+  --border-subtle: rgba(78, 70, 57, 0.3);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
 /* ─── Base Styles ─── */
 body {
   background: #10141a;
@@ -65,8 +84,19 @@ body {
 
 /* ─── Material Symbols ─── */
 .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   font-size: 20px;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
 }
 
 .material-symbols-outlined.filled {
@@ -75,7 +105,14 @@ body {
 
 /* Legacy support */
 .material-symbols-rounded {
+  font-family: 'Material Symbols Rounded' !important;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-size: 20px;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
 }
 
 .material-symbols-rounded.filled {

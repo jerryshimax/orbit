@@ -1,12 +1,23 @@
 import { formatDistanceToNow, format } from "date-fns";
 
-export function formatMoney(millions: string | number | null): string {
-  if (millions === null || millions === undefined) return "—";
-  const n = typeof millions === "string" ? parseFloat(millions) : millions;
-  if (isNaN(n)) return "—";
-  if (n >= 1000) return `$${(n / 1000).toFixed(1)}B`;
-  if (n >= 1) return `$${n.toFixed(0)}M`;
-  return `$${(n * 1000).toFixed(0)}K`;
+/**
+ * Format a monetary value for display.
+ * Auto-detects raw USD (>= 100000) vs millions.
+ * - Raw USD: 10000000 → "$10M"
+ * - Millions: 500 → "$500M"
+ */
+export function formatMoney(value: string | number | null): string {
+  if (value === null || value === undefined) return "—";
+  const n = typeof value === "string" ? parseFloat(value) : value;
+  if (isNaN(n) || n === 0) return "$0";
+
+  // Auto-detect: if >= 100,000, treat as raw USD; otherwise treat as millions
+  const inMillions = n >= 100000 ? n / 1000000 : n;
+
+  if (inMillions >= 1000) return `$${(inMillions / 1000).toFixed(1)}B`;
+  if (inMillions >= 1) return `$${inMillions.toFixed(0)}M`;
+  if (inMillions >= 0.001) return `$${(inMillions * 1000).toFixed(0)}K`;
+  return "$0";
 }
 
 export function formatDate(date: string | Date | null): string {

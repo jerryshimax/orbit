@@ -17,7 +17,7 @@ const SECONDARY_NAV = [
   { href: "/analytics", icon: "monitoring", label: "Analytics" },
 ];
 
-export function Sidebar() {
+export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
   const pathname = usePathname();
 
   const renderNavItem = (item: { href: string; icon: string; label: string }) => {
@@ -30,6 +30,7 @@ export function Sidebar() {
       <Link
         key={item.href}
         href={item.href}
+        onClick={onNavigate}
         className={cn(
           "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
           isActive ? "font-medium" : "hover:opacity-80"
@@ -69,7 +70,7 @@ export function Sidebar() {
           style={{ background: "var(--accent)" }}
         >
           <span
-            className="material-symbols-outlined text-sm font-bold"
+            className="material-symbols-rounded text-sm font-bold"
             style={{ color: "#412d00" }}
           >
             double_arrow
