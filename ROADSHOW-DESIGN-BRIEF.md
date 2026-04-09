@@ -1,4 +1,4 @@
-# CE Roadshow Dashboard — Design Brief
+# Orbit — Design Brief
 
 Paste this into Google AI Studio to generate the visual design system and mockups.
 
@@ -6,7 +6,7 @@ Paste this into Google AI Studio to generate the visual design system and mockup
 
 ## What This Is
 
-A mobile-first fundraising roadshow war room for Current Equities, an infrastructure PE fund ($300-500M Fund I). The GP (Jerry Shi) and partner (Ray Mao) use this on iPhone and desktop during a 3-week Asia + Europe roadshow to prepare for, track, and follow up on LP meetings.
+Orbit is a mobile-first fundraising roadshow war room for Current Equities, an infrastructure PE fund ($300-500M Fund I). The GP (Jerry Shi) and partner (Ray Mao) use this on iPhone and desktop during a 3-week Asia + Europe roadshow to prepare for, track, and follow up on LP meetings.
 
 Primary device: iPhone (accessed via iOS Home Screen shortcut as a standalone PWA). Secondary: desktop for pre-trip prep.
 
@@ -242,7 +242,7 @@ PWA:
 - Status bar: black-translucent (content extends under status bar)
 - Theme color: #0c1222
 - Background color: #0c1222
-- App name on home screen: "CE Roadshow"
+- App name on home screen: "Orbit"
 
 ## Component Quick Reference
 

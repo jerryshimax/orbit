@@ -4,10 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TABS = [
-  { href: "/roadshow", icon: "calendar_today", label: "Today" },
-  { href: "/roadshow/meetings", icon: "groups", label: "Meetings" },
-  { href: "/roadshow/timeline", icon: "timeline", label: "Timeline" },
-  { href: "/roadshow/contacts", icon: "contact_page", label: "Contacts" },
+  { href: "/", icon: "summarize", label: "Brief" },
+  { href: "/meetings", icon: "groups", label: "Meetings" },
+  { href: "/schedule", icon: "calendar_month", label: "Schedule" },
+  { href: "/contacts", icon: "contact_page", label: "Contacts" },
 ];
 
 export function MobileNav() {
@@ -17,8 +17,8 @@ export function MobileNav() {
     <nav className="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-8 px-4 bg-slate-950/80 backdrop-blur-2xl z-50 border-t border-[#e9c176]/10 shadow-[0px_-24px_48px_rgba(0,0,0,0.5)] lg:hidden">
       {TABS.map((tab) => {
         const isActive =
-          tab.href === "/roadshow"
-            ? pathname === "/roadshow"
+          tab.href === "/"
+            ? pathname === "/"
             : pathname.startsWith(tab.href);
 
         return (

@@ -17,3 +17,6 @@ export * from "./sync";
 
 // Interactions (shared between legacy and universal)
 export * from "./interactions";
+
+// Chat
+export * from "./chat";

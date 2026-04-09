@@ -1,7 +1,15 @@
 # Orbit Handoff
 > Last updated: 2026-04-08 by Jerry (via Claude Code)
 
-## Status: 🔴 NEEDS DEPLOY — Jerry departs Apr 12
+## Status: 🟡 DEPLOYED — UI build in progress
+
+---
+
+## David's Session (Apr 8, evening)
+
+- Deployed to Vercel: https://ce-roadshow-dev.vercel.app/ (rebranded to Orbit in GitHub)
+- Supabase linked
+- Building the UI now
 
 ---
 

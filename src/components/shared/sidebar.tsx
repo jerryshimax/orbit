@@ -4,18 +4,55 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 
-const NAV_ITEMS = [
-  { href: "/", icon: "dashboard", label: "Dashboard" },
-  { href: "/roadshow", icon: "flight_takeoff", label: "Roadshow", accent: true },
+const PRIMARY_NAV = [
+  { href: "/", icon: "summarize", label: "Brief" },
+  { href: "/meetings", icon: "groups", label: "Meetings" },
+  { href: "/schedule", icon: "calendar_month", label: "Schedule" },
+  { href: "/contacts", icon: "contact_page", label: "Contacts" },
+];
+
+const SECONDARY_NAV = [
   { href: "/pipeline", icon: "view_kanban", label: "Pipeline" },
   { href: "/organizations", icon: "corporate_fare", label: "Organizations" },
-  { href: "/contacts", icon: "people", label: "Contacts" },
-  { href: "/briefing", icon: "strategy", label: "Briefing" },
   { href: "/analytics", icon: "monitoring", label: "Analytics" },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
+
+  const renderNavItem = (item: { href: string; icon: string; label: string }) => {
+    const isActive =
+      item.href === "/"
+        ? pathname === "/"
+        : pathname.startsWith(item.href);
+
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        className={cn(
+          "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+          isActive ? "font-medium" : "hover:opacity-80"
+        )}
+        style={{
+          background: isActive ? "var(--accent-surface)" : "transparent",
+          color: isActive ? "var(--accent)" : "var(--text-secondary)",
+        }}
+      >
+        <span
+          className="material-symbols-rounded text-[20px]"
+          style={
+            isActive
+              ? { fontVariationSettings: "'FILL' 1" }
+              : undefined
+          }
+        >
+          {item.icon}
+        </span>
+        {item.label}
+      </Link>
+    );
+  };
 
   return (
     <aside
@@ -28,67 +65,54 @@ export function Sidebar() {
       {/* Logo */}
       <div className="px-5 py-5 flex items-center gap-2.5">
         <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-semibold text-sm"
+          className="w-8 h-8 rounded-lg flex items-center justify-center"
           style={{ background: "var(--accent)" }}
         >
-          O
+          <span
+            className="material-symbols-outlined text-sm font-bold"
+            style={{ color: "#412d00" }}
+          >
+            double_arrow
+          </span>
         </div>
         <div>
-          <div className="font-semibold text-sm" style={{ color: "var(--text-primary)" }}>
-            Orbit
+          <div
+            className="font-[Manrope] font-extrabold text-sm tracking-tight"
+            style={{ color: "var(--text-primary)" }}
+          >
+            ORBIT
           </div>
-          <div className="text-[11px]" style={{ color: "var(--text-tertiary)" }}>
-            Current Equities
+          <div
+            className="text-[10px] font-[Space_Grotesk] uppercase tracking-wider"
+            style={{ color: "var(--text-tertiary)" }}
+          >
+            Graph Intelligence
           </div>
         </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 px-3 py-2 space-y-0.5">
-        {NAV_ITEMS.map((item) => {
-          const isActive =
-            item.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(item.href);
-          const goldAccent = "accent" in item && item.accent;
+      {/* Primary Navigation */}
+      <nav className="flex-1 px-3 py-2">
+        <div className="space-y-0.5">
+          {PRIMARY_NAV.map(renderNavItem)}
+        </div>
 
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
-                isActive
-                  ? "font-medium"
-                  : "hover:opacity-80"
-              )}
-              style={{
-                background: isActive
-                  ? goldAccent
-                    ? "rgba(255, 186, 5, 0.1)"
-                    : "var(--accent-surface)"
-                  : "transparent",
-                color: isActive
-                  ? goldAccent
-                    ? "#ffba05"
-                    : "var(--accent)"
-                  : goldAccent
-                    ? "#ffba05"
-                    : "var(--text-secondary)",
-              }}
-            >
-              <span
-                className={cn(
-                  "material-symbols-rounded text-[20px]",
-                  isActive && "filled"
-                )}
-              >
-                {item.icon}
-              </span>
-              {item.label}
-            </Link>
-          );
-        })}
+        {/* Divider */}
+        <div
+          className="my-4 mx-2 h-px"
+          style={{ background: "var(--border-subtle)" }}
+        />
+
+        {/* Secondary Navigation */}
+        <div className="space-y-0.5">
+          <div
+            className="px-3 py-1 text-[10px] font-[Space_Grotesk] uppercase tracking-wider"
+            style={{ color: "var(--text-tertiary)" }}
+          >
+            Views
+          </div>
+          {SECONDARY_NAV.map(renderNavItem)}
+        </div>
       </nav>
 
       {/* Footer */}
@@ -99,7 +123,7 @@ export function Sidebar() {
           color: "var(--text-tertiary)",
         }}
       >
-        Fund I — $500M Target
+        CE Fund I — $500M Target
       </div>
     </aside>
   );

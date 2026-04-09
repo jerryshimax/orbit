@@ -127,3 +127,25 @@ export const relationshipStrengthEnum = pgEnum("relationship_strength", [
   "weak",
   "cold",
 ]);
+
+// ─── Chat enums ───
+
+export const chatRoleEnum = pgEnum("chat_role", [
+  "user",
+  "assistant",
+  "system",
+  "tool_call",
+  "tool_result",
+]);
+
+export const chatStatusEnum = pgEnum("chat_status", [
+  "active",
+  "archived",
+]);
+
+export const draftStatusEnum = pgEnum("draft_status", [
+  "pending",
+  "approved",
+  "edited",
+  "discarded",
+]);
