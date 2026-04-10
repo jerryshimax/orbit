@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Sidebar } from "@/components/shared/sidebar";
 import { CommandPalette } from "@/components/shared/command-palette";
 import { ChatProvider } from "@/components/chat/chat-provider";
@@ -12,58 +11,16 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(true);
-
-  useEffect(() => {
-    const check = () => setIsDesktop(window.innerWidth >= 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
   return (
     <ChatProvider>
-      <div className="min-h-screen">
-        {/* Desktop: sidebar always visible */}
-        {isDesktop && (
-          <div style={{ position: "fixed", zIndex: 40, top: 0, left: 0, bottom: 0 }}>
-            <Sidebar />
-          </div>
-        )}
+      <div style={{ display: "flex", minHeight: "100vh" }}>
+        {/* Sidebar — always visible */}
+        <div style={{ width: 220, flexShrink: 0, position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 40 }}>
+          <Sidebar />
+        </div>
 
-        {/* Mobile: hamburger + overlay */}
-        {!isDesktop && (
-          <>
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="fixed top-4 left-4 z-50 w-10 h-10 rounded-lg flex items-center justify-center"
-              style={{
-                background: "var(--bg-surface-active)",
-                border: "1px solid var(--border)",
-              }}
-            >
-              <span className="material-symbols-outlined text-lg" style={{ color: "var(--accent)" }}>
-                {mobileOpen ? "close" : "menu"}
-              </span>
-            </button>
-
-            {mobileOpen && (
-              <>
-                <div
-                  className="fixed inset-0 bg-black/40 z-30"
-                  onClick={() => setMobileOpen(false)}
-                />
-                <div style={{ position: "fixed", zIndex: 40, top: 0, left: 0, bottom: 0 }}>
-                  <Sidebar onNavigate={() => setMobileOpen(false)} />
-                </div>
-              </>
-            )}
-          </>
-        )}
-
-        {/* Main content */}
-        <div style={{ marginLeft: isDesktop ? 220 : 0 }}>
+        {/* Main content — always pushed right */}
+        <div style={{ marginLeft: 220, flex: 1 }}>
           <main className="overflow-auto">{children}</main>
         </div>
 

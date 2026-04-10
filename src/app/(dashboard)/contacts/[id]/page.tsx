@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getPersonDetail } from "@/db/queries/people";
 import { notFound } from "next/navigation";
 
