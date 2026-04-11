@@ -62,6 +62,18 @@ function categorizeEvent(evt: CalendarEvent): EventCategory {
   return CATEGORIES.lp;
 }
 
+function isVirtualEvent(evt: CalendarEvent): boolean {
+  const loc = (evt.location ?? "").toLowerCase();
+  const title = (evt.title ?? "").toLowerCase();
+  // Virtual indicators
+  if (loc.includes("zoom") || loc.includes("meet.google") || loc.includes("teams.microsoft") || loc.includes("webex") || loc.includes("whereby")) return true;
+  if (loc.startsWith("http") || loc.startsWith("https")) return true;
+  if (title.includes("virtual") || title.includes("zoom") || title.includes("online")) return true;
+  // No location at all — likely virtual
+  if (!evt.location || evt.location.trim() === "" || evt.location === "TBD") return true;
+  return false;
+}
+
 /**
  * CALENDAR — Unified calendar view.
  * Google Calendar is the single source of truth.
@@ -198,6 +210,7 @@ export default function CalendarPage() {
                     >
                       {(() => {
                         const cat = categorizeEvent(evt);
+                        const virtual = isVirtualEvent(evt);
                         return (
                       <div
                         className={`flex gap-4 p-4 rounded-lg ${isPast ? "opacity-40" : ""}`}
@@ -242,6 +255,19 @@ export default function CalendarPage() {
                                 {cat.label}
                               </span>
                             )}
+                            <span
+                              className="flex items-center gap-0.5 font-[Space_Grotesk] text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded"
+                              style={{
+                                background: virtual ? "#1c2026" : "#1c2026",
+                                color: virtual ? "#9a8f80" : "#22c55e",
+                                border: `1px solid ${virtual ? "#4e4639" : "#22c55e40"}`,
+                              }}
+                            >
+                              <span className="material-symbols-rounded text-[11px]">
+                                {virtual ? "videocam" : "location_on"}
+                              </span>
+                              {virtual ? "Virtual" : "Field"}
+                            </span>
                           </div>
                           <h3
                             className="font-[Manrope] font-bold text-sm"
