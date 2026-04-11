@@ -16,6 +16,7 @@ const SECONDARY_NAV = [
   { href: "/pipeline", icon: "view_kanban", label: "Pipeline" },
   { href: "/organizations", icon: "corporate_fare", label: "Organizations" },
   { href: "/analytics", icon: "monitoring", label: "Analytics" },
+  { href: "/settings", icon: "settings", label: "Settings" },
 ];
 
 export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {

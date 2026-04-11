@@ -6,6 +6,7 @@ import { useOrganizations } from "@/hooks/use-organizations";
 import { usePipelineSummary } from "@/hooks/use-pipeline";
 import { useInteractions } from "@/hooks/use-interactions";
 import { useDefaultTrip, useTrip } from "@/hooks/use-roadshow";
+import { useCalendarEvents } from "@/hooks/use-calendar";
 import { WarmthDot } from "@/components/shared/warmth-dot";
 import { formatMoney } from "@/lib/format";
 import { FUND_TARGET_MM, getWarmthLevel } from "@/lib/constants";
@@ -22,18 +23,49 @@ export default function BriefPage() {
   const { data: defaultTrip } = useDefaultTrip();
   const { data: tripData } = useTrip(defaultTrip?.id ?? null);
 
+  // GCal events for today
+  const today = new Date().toISOString().split("T")[0];
+  const tomorrow = new Date(Date.now() + 86400_000).toISOString().split("T")[0];
+  const { events: gcalEvents } = useCalendarEvents(today, tomorrow);
+
   const committedPct = pipeline
     ? Math.round((pipeline.totalCommitted / FUND_TARGET_MM) * 100)
     : 0;
 
-  // Today's meetings
-  const today = new Date().toISOString().split("T")[0];
+  // Today's meetings (field trip + GCal merged)
   const todayMeetings = useMemo(() => {
-    if (!tripData?.meetings) return [];
-    return tripData.meetings
+    // Field trip meetings for today
+    const ftMeetings = (tripData?.meetings ?? [])
       .filter((m) => m.meetingDate === today)
-      .sort((a, b) => (a.meetingTime ?? "").localeCompare(b.meetingTime ?? ""));
-  }, [tripData, today]);
+      .map((m) => ({
+        id: m.id,
+        title: m.title,
+        time: m.meetingTime?.slice(0, 5) ?? "TBD",
+        location: m.location,
+        type: "field_trip" as const,
+        orgName: m.orgName,
+      }));
+
+    // GCal events for today (exclude all-day)
+    const gcalToday = gcalEvents
+      .filter((e) => e.type === "gcal" && !e.isAllDay)
+      .map((e) => ({
+        id: e.id,
+        title: e.title,
+        time: new Date(e.startTime).toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }).slice(0, 5),
+        location: e.location,
+        type: "gcal" as const,
+        orgName: null as string | null,
+      }));
+
+    return [...ftMeetings, ...gcalToday].sort((a, b) =>
+      a.time.localeCompare(b.time)
+    );
+  }, [tripData, today, gcalEvents]);
 
   // Action items from meetings
   const actionItems = useMemo(() => {
@@ -107,24 +139,24 @@ export default function BriefPage() {
           </div>
         ) : (
           <div className="space-y-2">
-            {todayMeetings.map((m, i) => (
-              <Link
-                key={m.id}
-                href={`/meetings/${m.id}`}
-                className="block active:scale-[0.98] transition-transform"
-              >
+            {todayMeetings.map((m, i) => {
+              const inner = (
                 <div
                   className="p-4 rounded-lg flex gap-4"
                   style={{
                     background: i === 0 ? "#262a31" : "#181c22",
-                    borderLeft: i === 0 ? "2px solid var(--accent)" : undefined,
+                    borderLeft: i === 0
+                      ? "2px solid var(--accent)"
+                      : m.type === "gcal"
+                        ? "2px solid #3b82f6"
+                        : undefined,
                   }}
                 >
                   <div
                     className="w-16 shrink-0 font-[JetBrains_Mono] text-sm"
                     style={{ color: i === 0 ? "var(--accent)" : "var(--text-tertiary)" }}
                   >
-                    {m.meetingTime?.slice(0, 5) ?? "TBD"}
+                    {m.time}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div
@@ -150,9 +182,29 @@ export default function BriefPage() {
                       Next
                     </span>
                   )}
+                  {m.type === "gcal" && i !== 0 && (
+                    <span
+                      className="font-[Space_Grotesk] text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded self-start shrink-0"
+                      style={{ background: "#3b82f6", color: "#fff" }}
+                    >
+                      GCal
+                    </span>
+                  )}
                 </div>
-              </Link>
-            ))}
+              );
+
+              return m.type === "field_trip" ? (
+                <Link
+                  key={m.id}
+                  href={`/meetings/${m.id}`}
+                  className="block active:scale-[0.98] transition-transform"
+                >
+                  {inner}
+                </Link>
+              ) : (
+                <div key={m.id}>{inner}</div>
+              );
+            })}
           </div>
         )}
       </section>
