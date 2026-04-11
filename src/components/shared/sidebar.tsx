@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
+import { useNavigation } from "./navigation-provider";
 
 const PRIMARY_NAV = [
   { href: "/brief", icon: "summarize", label: "Brief" },
@@ -19,6 +20,10 @@ const SECONDARY_NAV = [
 
 export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
   const pathname = usePathname();
+  const { isCollapsed, toggleCollapsed } = useNavigation();
+
+  // In drawer mode (onNavigate provided), never collapse
+  const collapsed = onNavigate ? false : isCollapsed;
 
   const renderNavItem = (item: { href: string; icon: string; label: string }) => {
     const isActive =
@@ -31,8 +36,10 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
         key={item.href}
         href={item.href}
         onClick={onNavigate}
+        title={collapsed ? item.label : undefined}
         className={cn(
-          "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+          "flex items-center rounded-lg text-sm transition-colors",
+          collapsed ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2",
           isActive ? "font-medium" : "hover:opacity-80"
         )}
         style={{
@@ -41,7 +48,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
         }}
       >
         <span
-          className="material-symbols-rounded text-[20px]"
+          className="material-symbols-rounded text-[20px] shrink-0"
           style={
             isActive
               ? { fontVariationSettings: "'FILL' 1" }
@@ -50,50 +57,58 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
         >
           {item.icon}
         </span>
-        {item.label}
+        {!collapsed && item.label}
       </Link>
     );
   };
 
   return (
     <aside
-      className="h-full w-full flex flex-col border-r"
+      className="h-full flex flex-col border-r transition-all duration-200"
       style={{
         background: "var(--bg-sidebar)",
         borderColor: "var(--border-subtle)",
+        width: collapsed ? 56 : "100%",
       }}
     >
-      {/* Logo */}
-      <div className="px-5 py-5 flex items-center gap-2.5">
-        <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center"
+      {/* Logo + collapse toggle */}
+      <div className={cn("py-5 flex items-center", collapsed ? "px-3 justify-center" : "px-5 gap-2.5")}>
+        <button
+          onClick={onNavigate ? undefined : toggleCollapsed}
+          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 hover:brightness-110 transition-all"
           style={{ background: "var(--accent)" }}
+          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           <span
-            className="material-symbols-rounded text-sm font-bold"
-            style={{ color: "#412d00" }}
+            className="material-symbols-rounded text-sm font-bold transition-transform duration-200"
+            style={{
+              color: "#412d00",
+              transform: collapsed ? "scaleX(1)" : "scaleX(-1)",
+            }}
           >
             double_arrow
           </span>
-        </div>
-        <div>
-          <div
-            className="font-[Manrope] font-extrabold text-sm tracking-tight"
-            style={{ color: "var(--text-primary)" }}
-          >
-            ORBIT
+        </button>
+        {!collapsed && (
+          <div>
+            <div
+              className="font-[Manrope] font-extrabold text-sm tracking-tight"
+              style={{ color: "var(--text-primary)" }}
+            >
+              ORBIT
+            </div>
+            <div
+              className="text-[10px] font-[Space_Grotesk] uppercase tracking-wider"
+              style={{ color: "var(--text-tertiary)" }}
+            >
+              Graph Intelligence
+            </div>
           </div>
-          <div
-            className="text-[10px] font-[Space_Grotesk] uppercase tracking-wider"
-            style={{ color: "var(--text-tertiary)" }}
-          >
-            Graph Intelligence
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Primary Navigation */}
-      <nav className="flex-1 px-3 py-2">
+      <nav className={cn("flex-1 py-2", collapsed ? "px-1.5" : "px-3")}>
         <div className="space-y-0.5">
           {PRIMARY_NAV.map(renderNavItem)}
         </div>
@@ -111,15 +126,17 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
       </nav>
 
       {/* Footer */}
-      <div
-        className="px-5 py-4 border-t text-[11px]"
-        style={{
-          borderColor: "var(--border-subtle)",
-          color: "var(--text-tertiary)",
-        }}
-      >
-        CE Fund I — $500M Target
-      </div>
+      {!collapsed && (
+        <div
+          className="px-5 py-4 border-t text-[11px]"
+          style={{
+            borderColor: "var(--border-subtle)",
+            color: "var(--text-tertiary)",
+          }}
+        >
+          CE Fund I — $500M Target
+        </div>
+      )}
     </aside>
   );
 }
