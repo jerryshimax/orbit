@@ -3,6 +3,64 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { useCalendarEvents } from "@/hooks/use-calendar";
+import type { CalendarEvent } from "@/db/queries/calendar";
+
+type EventCategory = {
+  label: string;
+  color: string;
+  bg: string;
+  borderColor: string;
+};
+
+const CATEGORIES: Record<string, EventCategory> = {
+  lp:         { label: "LP",         color: "#412d00", bg: "#e9c176", borderColor: "#e9c176" },
+  deal:       { label: "Deal",       color: "#fff",    bg: "#8b5cf6", borderColor: "#8b5cf6" },
+  conference: { label: "Conference", color: "#fff",    bg: "#3b82f6", borderColor: "#3b82f6" },
+  dinner:     { label: "Dinner",     color: "#412d00", bg: "#f59e0b", borderColor: "#f59e0b" },
+  lunch:      { label: "Lunch",      color: "#412d00", bg: "#f59e0b", borderColor: "#f59e0b" },
+  site_visit: { label: "Site Visit", color: "#fff",    bg: "#06b6d4", borderColor: "#06b6d4" },
+  internal:   { label: "Internal",   color: "#dfe2eb", bg: "#4e4639", borderColor: "#6b7280" },
+  personal:   { label: "",           color: "",        bg: "",        borderColor: "#31353c" },
+};
+
+function categorizeEvent(evt: CalendarEvent): EventCategory {
+  const title = (evt.title ?? "").toLowerCase();
+  const meetingType = (evt.meetingType ?? "").toLowerCase();
+
+  // Check meetingType first (field trip metadata)
+  if (meetingType === "conference" || meetingType === "roundtable")
+    return CATEGORIES.conference;
+  if (meetingType === "site_visit") return CATEGORIES.site_visit;
+  if (meetingType === "dinner") return CATEGORIES.dinner;
+
+  // Title keywords
+  if (title.includes("dinner") || title.includes("晚宴") || title.includes("晚餐"))
+    return CATEGORIES.dinner;
+  if (title.includes("lunch") || title.includes("午餐"))
+    return CATEGORIES.lunch;
+  if (title.includes("roundtable") || title.includes("conference") || title.includes("summit") || title.includes("forum"))
+    return CATEGORIES.conference;
+  if (title.includes("site visit") || title.includes("参观") || title.includes("考察"))
+    return CATEGORIES.site_visit;
+
+  // LP-related (org context)
+  if (evt.orgName && evt.type === "field_trip")
+    return CATEGORIES.lp;
+
+  // Deal-related (has strategic context)
+  if (evt.strategicAsk || evt.pitchAngle)
+    return CATEGORIES.deal;
+
+  // GCal events without field trip match
+  if (evt.type === "gcal") {
+    // Internal if no external attendees or few attendees
+    const attendees = Array.isArray(evt.attendees) ? evt.attendees : [];
+    if (attendees.length <= 1) return CATEGORIES.personal;
+    return CATEGORIES.internal;
+  }
+
+  return CATEGORIES.lp;
+}
 
 /**
  * CALENDAR — Unified calendar view.
@@ -138,14 +196,14 @@ export default function CalendarPage() {
                       href={`/calendar/${evt.id}`}
                       className="block active:scale-[0.98] transition-transform"
                     >
+                      {(() => {
+                        const cat = categorizeEvent(evt);
+                        return (
                       <div
                         className={`flex gap-4 p-4 rounded-lg ${isPast ? "opacity-40" : ""}`}
                         style={{
                           background: isToday ? "#262a31" : "#181c22",
-                          borderLeft:
-                            evt.type === "field_trip"
-                              ? "2px solid var(--accent)"
-                              : "2px solid #3b82f6",
+                          borderLeft: `2px solid ${cat.borderColor}`,
                         }}
                       >
                         {/* Time */}
@@ -173,15 +231,15 @@ export default function CalendarPage() {
                         {/* Content */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-0.5">
-                            {evt.type === "field_trip" && (
+                            {cat.label && (
                               <span
                                 className="font-[Space_Grotesk] text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded"
                                 style={{
-                                  background: "var(--accent)",
-                                  color: "#412d00",
+                                  background: cat.bg,
+                                  color: cat.color,
                                 }}
                               >
-                                Field Trip
+                                {cat.label}
                               </span>
                             )}
                           </div>
@@ -217,6 +275,8 @@ export default function CalendarPage() {
                           chevron_right
                         </span>
                       </div>
+                        );
+                      })()}
                     </Link>
                   ))}
                 </div>
