@@ -52,8 +52,8 @@ export default function CalendarPage() {
         >
           Calendar
         </h1>
-        <p className="text-sm mt-1" style={{ color: "var(--text-tertiary)" }}>
-          Your Calendar
+        <p className="text-sm mt-1 font-[JetBrains_Mono]" style={{ color: "var(--text-tertiary)" }}>
+          {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
         </p>
       </div>
 
