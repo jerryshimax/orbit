@@ -18,6 +18,10 @@ const CATEGORIES: Record<string, EventCategory> = {
   conference: { label: "Conference", color: "#fff",    bg: "#3b82f6", borderColor: "#3b82f6" },
   dinner:     { label: "Dinner",     color: "#412d00", bg: "#f59e0b", borderColor: "#f59e0b" },
   lunch:      { label: "Lunch",      color: "#412d00", bg: "#f59e0b", borderColor: "#f59e0b" },
+  flight:     { label: "Flight",     color: "#fff",    bg: "#6366f1", borderColor: "#6366f1" },
+  train:      { label: "Train",      color: "#fff",    bg: "#6366f1", borderColor: "#6366f1" },
+  transit:    { label: "Transit",    color: "#fff",    bg: "#6366f1", borderColor: "#6366f1" },
+  hotel:      { label: "Hotel",      color: "#fff",    bg: "#a855f7", borderColor: "#a855f7" },
   site_visit: { label: "Site Visit", color: "#fff",    bg: "#06b6d4", borderColor: "#06b6d4" },
   internal:   { label: "Internal",   color: "#dfe2eb", bg: "#4e4639", borderColor: "#6b7280" },
   personal:   { label: "",           color: "",        bg: "",        borderColor: "#31353c" },
@@ -34,6 +38,14 @@ function categorizeEvent(evt: CalendarEvent): EventCategory {
   if (meetingType === "dinner") return CATEGORIES.dinner;
 
   // Title keywords
+  if (title.includes("flight") || title.includes("✈") || title.match(/\b[a-z]{2}\d{3,4}\b/i) || title.includes("航班") || title.includes("飞") || title.includes("airport"))
+    return CATEGORIES.flight;
+  if (title.includes("train") || title.includes("rail") || title.includes("高铁") || title.includes("火车") || title.includes("地铁"))
+    return CATEGORIES.train;
+  if (title.includes("drive") || title.includes("car") || title.includes("taxi") || title.includes("uber") || title.includes("transfer") || title.includes("pickup") || title.includes("pick up") || title.includes("drop off") || title.includes("接送") || title.includes("打车"))
+    return CATEGORIES.transit;
+  if (title.includes("hotel") || title.includes("check-in") || title.includes("check in") || title.includes("checkout") || title.includes("check out") || title.includes("酒店") || title.includes("入住") || title.includes("accommodation"))
+    return CATEGORIES.hotel;
   if (title.includes("dinner") || title.includes("晚宴") || title.includes("晚餐"))
     return CATEGORIES.dinner;
   if (title.includes("lunch") || title.includes("午餐"))
