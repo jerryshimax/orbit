@@ -263,7 +263,7 @@ export default function CalendarPage() {
                           <div className="flex items-center gap-2 mb-0.5">
                             {cat.label && (
                               <span
-                                className="font-[Space_Grotesk] text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded"
+                                className="font-[Space_Grotesk] text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded leading-none"
                                 style={{
                                   background: cat.bg,
                                   color: cat.color,
@@ -274,14 +274,14 @@ export default function CalendarPage() {
                             )}
                             {fmtStyle.label && (
                               <span
-                                className="flex items-center gap-0.5 font-[Space_Grotesk] text-[8px] uppercase tracking-wider px-1 py-px rounded"
+                                className="flex items-center gap-0.5 font-[Space_Grotesk] text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded leading-none"
                                 style={{
                                   background: "#1c2026",
                                   color: fmtStyle.color,
                                   border: `1px solid ${fmtStyle.border}`,
                                 }}
                               >
-                                <span className="material-symbols-rounded text-[9px]">
+                                <span className="material-symbols-rounded text-[10px]">
                                   {fmtStyle.icon}
                                 </span>
                                 {fmtStyle.label}
