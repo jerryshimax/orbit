@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
     status: searchParams.get("status") ?? "open",
     owner: searchParams.get("owner") ?? undefined,
     objectiveId: searchParams.get("objectiveId") ?? undefined,
+    entityCode: searchParams.get("entity") ?? undefined,
     limit: searchParams.has("limit")
       ? parseInt(searchParams.get("limit")!)
       : undefined,

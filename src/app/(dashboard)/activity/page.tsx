@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { db } from "@/db";
 import { interactions, organizations, people } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 
 const INTERACTION_ICONS: Record<string, string> = {
   meeting: "M",
@@ -22,7 +22,12 @@ const INTERACTION_ICONS: Record<string, string> = {
   board_meeting: "B",
 };
 
-async function getActivity() {
+async function getActivity(entityCode?: string) {
+  const conditions = [];
+  if (entityCode) {
+    conditions.push(eq(interactions.entityCode, entityCode));
+  }
+
   const rows = await db
     .select({
       id: interactions.id,
@@ -40,14 +45,20 @@ async function getActivity() {
     .from(interactions)
     .leftJoin(organizations, eq(interactions.orgId, organizations.id))
     .leftJoin(people, eq(interactions.personId, people.id))
+    .where(conditions.length > 0 ? and(...conditions) : undefined)
     .orderBy(desc(interactions.interactionDate))
     .limit(100);
 
   return rows;
 }
 
-export default async function ActivityPage() {
-  const activity = await getActivity();
+export default async function ActivityPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ entity?: string }>;
+}) {
+  const { entity } = await searchParams;
+  const activity = await getActivity(entity);
 
   return (
     <div className="p-6 max-w-4xl">

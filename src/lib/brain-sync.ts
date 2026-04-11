@@ -9,18 +9,18 @@
 import { readFileSync, writeFileSync, existsSync, readdirSync } from "fs";
 import { join } from "path";
 
-const BRAIN_DIR = join(
+export const BRAIN_DIR = join(
   process.env.HOME ?? "/Users/jerryshi",
   "Work/[00] Brain"
 );
 
 // ── YAML Frontmatter Parser ────────────────────────────────────────────────
 
-interface Frontmatter {
+export interface Frontmatter {
   [key: string]: string | string[] | undefined;
 }
 
-interface BrainNote {
+export interface BrainNote {
   frontmatter: Frontmatter;
   body: string;
   raw: string;

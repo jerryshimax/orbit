@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useEntity } from "@/components/shared/entity-provider";
 import { useObjectives } from "@/hooks/use-objectives";
 import { useActions } from "@/hooks/use-actions";
 import { useMomentum } from "@/hooks/use-momentum";
@@ -31,15 +32,16 @@ const ACTION_TABS = [
 ];
 
 export default function FocusPage() {
+  const { entityParam } = useEntity();
   const today = new Date().toISOString().split("T")[0];
   const tomorrow = new Date(Date.now() + 86400_000).toISOString().split("T")[0];
 
-  const { data: objectivesData, mutate: mutateObjectives } = useObjectives("active");
-  const { data: allActions, mutate: mutateActions } = useActions();
+  const { data: objectivesData, mutate: mutateObjectives } = useObjectives("active", entityParam);
+  const { data: allActions, mutate: mutateActions } = useActions({ entity: entityParam });
   const { data: momentum } = useMomentum();
   const { data: teamPulse } = useTeamPulse();
   const { events: todayEvents } = useCalendarEvents(today, tomorrow);
-  const { data: pipeline } = usePipelineSummary();
+  const { data: pipeline } = usePipelineSummary({ entity: entityParam });
 
   const [actionTab, setActionTab] = useState("all");
   const [showNewObjective, setShowNewObjective] = useState(false);

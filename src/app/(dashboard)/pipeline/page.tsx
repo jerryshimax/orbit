@@ -2,13 +2,22 @@
 
 import { useOrganizations } from "@/hooks/use-organizations";
 import { usePipelineSummary } from "@/hooks/use-pipeline";
+import { useEntity } from "@/components/shared/entity-provider";
 import { KanbanBoard } from "@/components/pipeline/kanban-board";
 import { mutate } from "swr";
 import { useCallback } from "react";
 
 export default function PipelinePage() {
-  const { data: orgs } = useOrganizations();
-  const { data: pipeline } = usePipelineSummary();
+  const { entityParam } = useEntity();
+  const { data: orgs } = useOrganizations({ entity: entityParam });
+  const { data: pipeline } = usePipelineSummary({ entity: entityParam });
+
+  const orgKey = entityParam
+    ? `/api/organizations?entity=${entityParam}`
+    : "/api/organizations";
+  const pipelineKey = entityParam
+    ? `/api/pipeline/summary?entity=${entityParam}`
+    : "/api/pipeline/summary";
 
   const handleStageChange = useCallback(
     async (orgId: string, newStage: string) => {
@@ -24,7 +33,7 @@ export default function PipelinePage() {
               }
             : o
         );
-        mutate("/api/organizations", updated, false);
+        mutate(orgKey, updated, false);
       }
 
       // Server update — routes through opportunities now
@@ -35,10 +44,10 @@ export default function PipelinePage() {
       });
 
       // Revalidate
-      mutate("/api/organizations");
-      mutate("/api/pipeline/summary");
+      mutate(orgKey);
+      mutate(pipelineKey);
     },
-    [orgs]
+    [orgs, orgKey, pipelineKey]
   );
 
   return (

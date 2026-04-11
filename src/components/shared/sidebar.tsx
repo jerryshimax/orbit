@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { useNavigation } from "./navigation-provider";
+import { EntitySwitcher } from "./entity-switcher";
 
 const PRIMARY_NAV = [
   { href: "/focus", icon: "target", label: "Focus" },
@@ -127,18 +128,13 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
         </div>
       </nav>
 
-      {/* Footer */}
-      {!collapsed && (
-        <div
-          className="px-5 py-4 border-t text-[11px]"
-          style={{
-            borderColor: "var(--border-subtle)",
-            color: "var(--text-tertiary)",
-          }}
-        >
-          CE Fund I — $500M Target
-        </div>
-      )}
+      {/* Entity Switcher */}
+      <div
+        className={cn("border-t", collapsed ? "py-3 px-1.5" : "px-4 py-3")}
+        style={{ borderColor: "var(--border-subtle)" }}
+      >
+        <EntitySwitcher collapsed={collapsed} />
+      </div>
     </aside>
   );
 }

@@ -3,10 +3,10 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { usePeople } from "@/hooks/use-people";
+import { useEntity } from "@/components/shared/entity-provider";
 import { WarmthDot } from "@/components/shared/warmth-dot";
 import { getWarmthLevel } from "@/lib/constants";
 
-const ENTITY_FILTERS = ["All", "CE", "SYN", "UUL", "FO"];
 const STRENGTH_FILTERS = ["All", "strong", "medium", "weak", "cold"];
 
 /**
@@ -14,9 +14,9 @@ const STRENGTH_FILTERS = ["All", "strong", "medium", "weak", "cold"];
  * Filterable by entity, relationship strength, search.
  */
 export default function ContactsPage() {
-  const { data: people } = usePeople();
+  const { entityParam } = useEntity();
+  const { data: people } = usePeople({ entity: entityParam });
   const [search, setSearch] = useState("");
-  const [entityFilter, setEntityFilter] = useState("All");
   const [strengthFilter, setStrengthFilter] = useState("All");
 
   const filtered = useMemo(() => {
@@ -32,17 +32,13 @@ export default function ContactsPage() {
           p.title?.toLowerCase().includes(q);
         if (!match) return false;
       }
-      // Entity
-      if (entityFilter !== "All") {
-        if (!p.entityTags?.includes(entityFilter)) return false;
-      }
       // Strength
       if (strengthFilter !== "All") {
         if (p.relationshipStrength !== strengthFilter) return false;
       }
       return true;
     });
-  }, [people, search, entityFilter, strengthFilter]);
+  }, [people, search, strengthFilter]);
 
   return (
     <div className="max-w-4xl mx-auto px-4 pt-8 pb-32 md:pb-8 space-y-6">
@@ -75,22 +71,8 @@ export default function ContactsPage() {
           }}
         />
 
-        {/* Entity chips */}
+        {/* Strength chips */}
         <div className="flex gap-2 overflow-x-auto pb-1">
-          {ENTITY_FILTERS.map((e) => (
-            <button
-              key={e}
-              onClick={() => setEntityFilter(e)}
-              className="px-3 py-1.5 rounded-lg text-xs font-[Space_Grotesk] shrink-0 transition-colors"
-              style={{
-                background: entityFilter === e ? "var(--accent)" : "#262a31",
-                color: entityFilter === e ? "#412d00" : "var(--text-secondary)",
-              }}
-            >
-              {e}
-            </button>
-          ))}
-          <div className="w-px mx-1 self-stretch" style={{ background: "#262a31" }} />
           {STRENGTH_FILTERS.map((s) => (
             <button
               key={s}

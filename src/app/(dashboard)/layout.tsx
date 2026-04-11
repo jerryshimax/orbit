@@ -1,11 +1,13 @@
 "use client";
 
+import { Suspense } from "react";
 import { Sidebar } from "@/components/shared/sidebar";
 import { DashboardShell } from "@/components/shared/dashboard-shell";
 import {
   NavigationProvider,
   useNavigation,
 } from "@/components/shared/navigation-provider";
+import { EntityProvider } from "@/components/shared/entity-provider";
 import { MobileDrawer } from "@/components/shared/mobile-drawer";
 import { BottomBar } from "@/components/shared/bottom-bar";
 import { TopBar } from "@/components/shared/top-bar";
@@ -61,8 +63,12 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <NavigationProvider>
-      <DashboardInner>{children}</DashboardInner>
-    </NavigationProvider>
+    <Suspense>
+      <EntityProvider>
+        <NavigationProvider>
+          <DashboardInner>{children}</DashboardInner>
+        </NavigationProvider>
+      </EntityProvider>
+    </Suspense>
   );
 }

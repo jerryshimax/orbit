@@ -7,6 +7,7 @@ export async function getActionItems(opts?: {
   status?: string;
   owner?: string;
   objectiveId?: string;
+  entityCode?: string;
   limit?: number;
 }) {
   const conditions = [];
@@ -15,6 +16,8 @@ export async function getActionItems(opts?: {
   if (opts?.owner) conditions.push(eq(actionItems.owner, opts.owner));
   if (opts?.objectiveId)
     conditions.push(eq(actionItems.objectiveId, opts.objectiveId));
+  if (opts?.entityCode)
+    conditions.push(eq(actionItems.entityCode, opts.entityCode));
 
   const items = await db
     .select({

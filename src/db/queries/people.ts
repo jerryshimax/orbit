@@ -6,7 +6,7 @@ import {
   contactChannels,
   interactions,
 } from "@/db/schema";
-import { eq, desc, ilike, and, count, max, inArray } from "drizzle-orm";
+import { eq, desc, ilike, and, count, max, inArray, sql } from "drizzle-orm";
 import { type UserContext, visibilityFilter } from "@/lib/access";
 
 export type PersonWithMeta = {
@@ -58,8 +58,9 @@ export async function getPeople(filters?: {
     );
   }
   if (filters?.entityCode) {
-    // Filter people who have an affiliation with an org tagged with this entity
-    // For now, filter by people's own entityTags
+    conditions.push(
+      sql`${filters.entityCode} = ANY(${people.entityTags})`
+    );
   }
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
