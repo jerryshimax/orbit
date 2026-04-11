@@ -7,6 +7,7 @@ import {
   interactions,
 } from "@/db/schema";
 import { eq, desc, ilike, and, count, max, inArray } from "drizzle-orm";
+import { type UserContext, visibilityFilter } from "@/lib/access";
 
 export type PersonWithMeta = {
   id: string;
@@ -42,8 +43,12 @@ export async function getPeople(filters?: {
   query?: string;
   entityCode?: string;
   relationship?: string;
+  userContext?: UserContext;
 }): Promise<PersonWithMeta[]> {
   const conditions = [];
+  if (filters?.userContext) {
+    conditions.push(visibilityFilter(filters.userContext));
+  }
   if (filters?.query) {
     conditions.push(ilike(people.fullName, `%${filters.query}%`));
   }

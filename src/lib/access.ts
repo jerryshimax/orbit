@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import { db } from "@/db";
 import { orbitUsers } from "@/db/schema/users";
 import { eq } from "drizzle-orm";
+import { getCurrentUser } from "@/lib/supabase/get-current-user";
 
 export interface UserContext {
   handle: string;
@@ -76,8 +77,22 @@ export async function getUserContextByTelegram(
 }
 
 /**
+ * Get UserContext from the authenticated session.
+ * Falls back to JERRY_CONTEXT if not authenticated (backward compat for MCP/bot calls).
+ */
+export async function getCurrentUserContext(): Promise<UserContext> {
+  const user = await getCurrentUser();
+  if (!user) return JERRY_CONTEXT;
+  return {
+    handle: user.handle,
+    role: user.role,
+    entityAccess: user.entityAccess,
+  };
+}
+
+/**
  * Default user context for Jerry (owner, full access).
- * Used when no caller is specified (backward compat).
+ * Used when no caller is specified (backward compat for MCP/bot).
  */
 export const JERRY_CONTEXT: UserContext = {
   handle: "jerry",

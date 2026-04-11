@@ -7,7 +7,7 @@ export function useTrip(tripId: string | null) {
   return useSWR<TripWithLegsAndMeetings>(
     tripId ? `/api/roadshow/${tripId}` : null,
     fetcher,
-    { refreshInterval: 5000, revalidateOnFocus: true }
+    { revalidateOnFocus: true }
   );
 }
 
@@ -15,7 +15,7 @@ export function useMeeting(meetingId: string | null) {
   return useSWR(
     meetingId ? `/api/roadshow/meetings/${meetingId}` : null,
     fetcher,
-    { refreshInterval: 5000 }
+    { revalidateOnFocus: true }
   );
 }
 

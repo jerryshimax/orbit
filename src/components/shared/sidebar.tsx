@@ -57,7 +57,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
 
   return (
     <aside
-      className="fixed left-0 top-0 bottom-0 w-[220px] flex flex-col border-r"
+      className="h-full w-full flex flex-col border-r"
       style={{
         background: "var(--bg-sidebar)",
         borderColor: "var(--border-subtle)",
@@ -100,18 +100,12 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
 
         {/* Divider */}
         <div
-          className="my-4 mx-2 h-px"
+          className="my-5 mx-2 h-px"
           style={{ background: "var(--border-subtle)" }}
         />
 
         {/* Secondary Navigation */}
-        <div className="space-y-0.5">
-          <div
-            className="px-3 py-1 text-[10px] font-[Space_Grotesk] uppercase tracking-wider"
-            style={{ color: "var(--text-tertiary)" }}
-          >
-            Views
-          </div>
+        <div className="space-y-0.5 opacity-80">
           {SECONDARY_NAV.map(renderNavItem)}
         </div>
       </nav>

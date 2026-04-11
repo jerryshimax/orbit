@@ -18,5 +18,8 @@ export * from "./sync";
 // Interactions (shared between legacy and universal)
 export * from "./interactions";
 
+// Meeting attendees (team member ↔ meeting link)
+export * from "./meeting-attendees";
+
 // Chat
 export * from "./chat";

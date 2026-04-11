@@ -8,6 +8,7 @@ import {
   pipelineHistory,
 } from "@/db/schema";
 import { eq, sql, desc, ilike, and, count, max, inArray } from "drizzle-orm";
+import { type UserContext, visibilityFilter } from "@/lib/access";
 
 export type OrgWithMeta = {
   id: string;
@@ -59,8 +60,12 @@ export async function getOrganizations(filters?: {
   owner?: string;
   query?: string;
   entityCode?: string;
+  userContext?: UserContext;
 }): Promise<OrgWithMeta[]> {
   const conditions = [];
+  if (filters?.userContext) {
+    conditions.push(visibilityFilter(filters.userContext));
+  }
   if (filters?.orgType) {
     conditions.push(eq(organizations.orgType, filters.orgType as any));
   }

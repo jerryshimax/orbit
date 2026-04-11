@@ -19,7 +19,6 @@ export function usePeople(filters?: {
   const key = `/api/people${qs ? `?${qs}` : ""}`;
 
   return useSWR<PersonWithMeta[]>(key, fetcher, {
-    refreshInterval: 5000,
     revalidateOnFocus: true,
   });
 }
@@ -28,6 +27,6 @@ export function usePersonDetail(id: string | null) {
   return useSWR(
     id ? `/api/people/${id}` : null,
     fetcher,
-    { refreshInterval: 5000 }
+    { revalidateOnFocus: true }
   );
 }

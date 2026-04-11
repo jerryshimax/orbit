@@ -1,10 +1,10 @@
 "use client";
 
 import { Sidebar } from "@/components/shared/sidebar";
-import { CommandPalette } from "@/components/shared/command-palette";
-import { ChatProvider } from "@/components/chat/chat-provider";
-import { ChatFab } from "@/components/chat/chat-fab";
-import { ChatPanel } from "@/components/chat/chat-panel";
+import { DashboardShell } from "@/components/shared/dashboard-shell";
+import { NavigationProvider } from "@/components/shared/navigation-provider";
+import { MobileDrawer } from "@/components/shared/mobile-drawer";
+import { BottomBar } from "@/components/shared/bottom-bar";
 
 export default function DashboardLayout({
   children,
@@ -12,22 +12,26 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ChatProvider>
-      <div style={{ display: "flex", minHeight: "100vh" }}>
-        {/* Sidebar — always visible */}
-        <div style={{ width: 220, flexShrink: 0, position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 40 }}>
+    <NavigationProvider>
+      <div className="flex min-h-screen">
+        {/* Desktop sidebar — hidden on mobile */}
+        <div className="hidden md:block w-[220px] shrink-0 fixed top-0 left-0 bottom-0 z-40">
           <Sidebar />
         </div>
 
-        {/* Main content — always pushed right */}
-        <div style={{ marginLeft: 220, flex: 1 }}>
-          <main className="overflow-auto">{children}</main>
+        {/* Mobile drawer overlay */}
+        <MobileDrawer />
+
+        {/* Main content */}
+        <div className="flex-1 md:ml-[220px]">
+          <DashboardShell>
+            <main className="overflow-auto pb-20 md:pb-0">{children}</main>
+          </DashboardShell>
         </div>
 
-        <CommandPalette />
-        <ChatFab />
-        <ChatPanel />
+        {/* Mobile bottom bar — hidden on desktop */}
+        <BottomBar />
       </div>
-    </ChatProvider>
+    </NavigationProvider>
   );
 }

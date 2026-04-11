@@ -23,7 +23,6 @@ export function useOrganizations(filters?: {
   const key = `/api/organizations${qs ? `?${qs}` : ""}`;
 
   return useSWR<OrgWithMeta[]>(key, fetcher, {
-    refreshInterval: 5000,
     revalidateOnFocus: true,
   });
 }
@@ -32,6 +31,6 @@ export function useOrganizationDetail(id: string | null) {
   return useSWR(
     id ? `/api/organizations/${id}` : null,
     fetcher,
-    { refreshInterval: 5000 }
+    { revalidateOnFocus: true }
   );
 }

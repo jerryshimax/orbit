@@ -3,8 +3,8 @@
 /* ─── Stitch Design System — Material Design 3 Tokens ─── */
 
 @theme inline {
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: var(--font-body), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
 
   /* Stitch M3 Color Tokens */
   --color-primary: #e9c176;
@@ -48,10 +48,10 @@
   --color-warmth-cooling: #f97316;
   --color-warmth-cold: #ef4444;
 
-  /* Font families */
-  --font-headline: "Manrope", sans-serif;
-  --font-body: "Inter", sans-serif;
-  --font-label: "Space Grotesk", sans-serif;
+  /* Font families — set by next/font CSS variables, fallbacks here */
+  --font-headline-fallback: "Manrope", sans-serif;
+  --font-body-fallback: "Inter", sans-serif;
+  --font-label-fallback: "Space Grotesk", sans-serif;
 }
 
 /* ─── Component CSS Variables (used by React components via inline styles) ─── */
@@ -77,33 +77,13 @@
 body {
   background: #10141a;
   color: #dfe2eb;
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   min-height: 100dvh;
 }
 
 /* ─── Material Symbols ─── */
-.material-symbols-outlined {
-  font-family: 'Material Symbols Outlined' !important;
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  font-size: 20px;
-  font-weight: normal;
-  font-style: normal;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-smoothing: antialiased;
-}
-
-.material-symbols-outlined.filled {
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-
-/* Legacy support */
+.material-symbols-outlined,
 .material-symbols-rounded {
   font-family: 'Material Symbols Rounded' !important;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -115,6 +95,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.material-symbols-outlined.filled,
 .material-symbols-rounded.filled {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }

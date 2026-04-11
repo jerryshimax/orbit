@@ -19,6 +19,6 @@ export function useInteractions(filters?: {
   const key = `/api/interactions${qs ? `?${qs}` : ""}`;
 
   return useSWR<InteractionWithContext[]>(key, fetcher, {
-    refreshInterval: 5000,
+    revalidateOnFocus: true,
   });
 }

@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { db } from "@/db";
 import { organizations, people } from "@/db/schema";
 import { sql } from "drizzle-orm";
+import { getCurrentUserContext, visibilityFilter } from "@/lib/access";
 
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams.get("q");
@@ -9,6 +10,8 @@ export async function GET(request: NextRequest) {
     return Response.json({ organizations: [], people: [] });
   }
 
+  const userContext = await getCurrentUserContext();
+  const vf = visibilityFilter(userContext);
   const pattern = `%${q}%`;
 
   const [orgs, ppl] = await Promise.all([
@@ -22,10 +25,11 @@ export async function GET(request: NextRequest) {
       })
       .from(organizations)
       .where(
-        sql`${organizations.name} ILIKE ${pattern}
+        sql`(${organizations.name} ILIKE ${pattern}
             OR ${organizations.nameZh} ILIKE ${pattern}
             OR ${organizations.notes} ILIKE ${pattern}
-            OR array_to_string(${organizations.tags}, ',') ILIKE ${pattern}`
+            OR array_to_string(${organizations.tags}, ',') ILIKE ${pattern})
+            AND ${vf}`
       )
       .limit(10),
     db
@@ -37,9 +41,10 @@ export async function GET(request: NextRequest) {
       })
       .from(people)
       .where(
-        sql`${people.fullName} ILIKE ${pattern}
+        sql`(${people.fullName} ILIKE ${pattern}
             OR ${people.fullNameZh} ILIKE ${pattern}
-            OR ${people.title} ILIKE ${pattern}`
+            OR ${people.title} ILIKE ${pattern})
+            AND ${vf}`
       )
       .limit(10),
   ]);

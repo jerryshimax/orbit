@@ -6,8 +6,9 @@ import {
   organizations,
   opportunities,
   interactions,
+  meetingAttendees,
 } from "@/db/schema";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, inArray } from "drizzle-orm";
 
 export type MeetingWithOrg = {
   id: string;
@@ -217,6 +218,32 @@ export async function getTripActionItems(tripId: string) {
         done: boolean;
       }>,
     }));
+}
+
+/**
+ * Get meetings for a specific user (via meeting_attendees join table).
+ * If userId is null or user is owner, returns all meetings for the trip.
+ */
+export async function getMyMeetings(
+  tripId: string,
+  userId: string | null,
+  isOwner: boolean = false
+): Promise<MeetingWithOrg[]> {
+  const trip = await getTripWithLegsAndMeetings(tripId);
+  if (!trip) return [];
+
+  // Owner sees everything
+  if (isOwner || !userId) return trip.meetings;
+
+  // Get meeting IDs where this user is an attendee
+  const attendeeRows = await db
+    .select({ meetingId: meetingAttendees.meetingId })
+    .from(meetingAttendees)
+    .where(eq(meetingAttendees.userId, userId));
+
+  const myMeetingIds = new Set(attendeeRows.map((r) => r.meetingId));
+
+  return trip.meetings.filter((m) => myMeetingIds.has(m.id));
 }
 
 /**

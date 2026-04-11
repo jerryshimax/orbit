@@ -9,6 +9,6 @@ type PipelineData = PipelineSummary & {
 
 export function usePipelineSummary() {
   return useSWR<PipelineData>("/api/pipeline/summary", fetcher, {
-    refreshInterval: 5000,
+    revalidateOnFocus: true,
   });
 }
