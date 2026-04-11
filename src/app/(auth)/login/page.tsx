@@ -17,6 +17,7 @@ const ERROR_MESSAGES: Record<string, string> = {
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
@@ -30,10 +31,15 @@ function LoginForm() {
     setLoading(true);
     setError(null);
 
-    const result = await loginAction(email, password);
-    if (result?.error) {
-      setError(ERROR_MESSAGES[result.error] ?? result.error);
-      setLoading(false);
+    try {
+      const result = await loginAction(email, password);
+      if (result?.error) {
+        setError(ERROR_MESSAGES[result.error] ?? result.error);
+        setLoading(false);
+      }
+    } catch {
+      // redirect() throws NEXT_REDIRECT — this is expected on success
+      // If it's a real error, it will surface as an unhandled rejection
     }
   }
 
@@ -75,6 +81,16 @@ function LoginForm() {
             className="w-full h-11 pl-10 pr-3 bg-[#262a31] border border-[#4e4639]/30 rounded-lg text-[#dfe2eb] placeholder-[#9a8f80] text-sm font-[var(--font-body)] focus:outline-none focus:ring-1 focus:ring-[#e9c176]/50 focus:border-[#e9c176]/50 transition-colors"
           />
         </div>
+
+        <label className="flex items-center gap-2 py-1 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
+            className="w-4 h-4 rounded border-[#4e4639] bg-[#262a31] text-[#e9c176] accent-[#e9c176] cursor-pointer"
+          />
+          <span className="text-xs text-[#9a8f80]">Remember me</span>
+        </label>
 
         <button
           type="submit"

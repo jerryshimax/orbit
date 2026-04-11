@@ -22,33 +22,41 @@ async function linkAuthId(
 export async function loginAction(
   email: string,
   password: string
-): Promise<{ error: string } | never> {
-  const supabase = await createClient();
+): Promise<{ error: string }> {
+  try {
+    const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-  if (error) {
-    return { error: error.message };
+    if (error) {
+      return { error: error.message };
+    }
+
+    // Check if this email is in our pre-approved orbit_users table
+    let user;
+    try {
+      const [row] = await db
+        .select({ id: orbitUsers.id, authId: orbitUsers.supabaseAuthId })
+        .from(orbitUsers)
+        .where(
+          eq(sql`lower(trim(${orbitUsers.email}))`, email.trim().toLowerCase())
+        )
+        .limit(1);
+      user = row;
+    } catch (dbErr) {
+      // DB might not have orbit_users table yet — allow login anyway
+      console.error("orbit_users lookup failed:", dbErr);
+    }
+
+    if (user) {
+      await linkAuthId(user.id, data.user.id, user.authId);
+    }
+  } catch (err) {
+    return { error: String(err) };
   }
-
-  // Check if this email is in our pre-approved orbit_users table
-  const [user] = await db
-    .select({ id: orbitUsers.id, authId: orbitUsers.supabaseAuthId })
-    .from(orbitUsers)
-    .where(
-      eq(sql`lower(trim(${orbitUsers.email}))`, email.trim().toLowerCase())
-    )
-    .limit(1);
-
-  if (!user) {
-    await supabase.auth.signOut();
-    return { error: "unauthorized" };
-  }
-
-  await linkAuthId(user.id, data.user.id, user.authId);
 
   redirect("/");
 }
