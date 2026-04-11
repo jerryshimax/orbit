@@ -10,7 +10,7 @@ const PRIMARY_NAV = [
   { href: "/focus", icon: "target", label: "Focus" },
   { href: "/calendar", icon: "calendar_month", label: "Calendar" },
   { href: "/meetings", icon: "groups", label: "Meetings" },
-  { href: "/war-room", icon: "strategy", label: "War Room" },
+  { href: "/recon", icon: "strategy", label: "Recon" },
   { href: "/contacts", icon: "contact_page", label: "Contacts" },
 ];
 

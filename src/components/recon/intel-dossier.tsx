@@ -1,9 +1,9 @@
 "use client";
 
-import type { WarRoomContext } from "@/db/queries/war-room";
+import type { ReconContext } from "@/db/queries/recon";
 
 type Props = {
-  context: WarRoomContext;
+  context: ReconContext;
   attendees: any[] | null;
   introChain: string | null;
 };

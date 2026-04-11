@@ -3,12 +3,12 @@
 import { useState, useCallback } from "react";
 
 type Props = {
-  meetingId: string;
+  projectId: string;
   hasExistingSections: boolean;
   onComplete: () => void;
 };
 
-export function GenerateButton({ meetingId, hasExistingSections, onComplete }: Props) {
+export function GenerateButton({ projectId, hasExistingSections, onComplete }: Props) {
   const [generating, setGenerating] = useState(false);
   const [status, setStatus] = useState("");
   const [progress, setProgress] = useState({ count: 0, total: 0 });
@@ -19,7 +19,7 @@ export function GenerateButton({ meetingId, hasExistingSections, onComplete }: P
     setStatus("Starting...");
 
     try {
-      const res = await fetch(`/api/war-room/${meetingId}/generate`, {
+      const res = await fetch(`/api/recon/${projectId}/generate`, {
         method: "POST",
       });
 
@@ -56,12 +56,12 @@ export function GenerateButton({ meetingId, hasExistingSections, onComplete }: P
           }
         }
       }
-    } catch (err) {
+    } catch {
       setStatus("Generation failed");
     } finally {
       setGenerating(false);
     }
-  }, [generating, meetingId, onComplete]);
+  }, [generating, projectId, onComplete]);
 
   return (
     <div className="flex items-center gap-3">
@@ -77,8 +77,8 @@ export function GenerateButton({ meetingId, hasExistingSections, onComplete }: P
         {generating
           ? `Generating${progress.total ? ` (${progress.count}/${progress.total})` : ""}...`
           : hasExistingSections
-            ? "Regenerate Intel"
-            : "Generate War Room"}
+            ? "Regenerate"
+            : "Generate Recon"}
       </button>
       {status && (
         <span className="text-[10px] font-[JetBrains_Mono]" style={{ color: "var(--text-tertiary)" }}>

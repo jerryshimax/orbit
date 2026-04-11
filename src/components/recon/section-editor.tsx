@@ -4,7 +4,7 @@ import { useState, useCallback, useRef } from "react";
 
 type Props = {
   sectionId: string;
-  meetingId: string;
+  projectId: string;
   title: string;
   content: string;
   sectionType: string;
@@ -13,14 +13,9 @@ type Props = {
   onRefineComplete: () => void;
 };
 
-/**
- * Editable section card with inline AI refine.
- * Click to edit (textarea), save on blur.
- * AI Refine button opens a prompt bar for section-level refinement.
- */
 export function SectionEditor({
   sectionId,
-  meetingId,
+  projectId,
   title,
   content,
   sectionType,
@@ -49,7 +44,7 @@ export function SectionEditor({
     setStreamedContent("");
 
     try {
-      const res = await fetch(`/api/war-room/${meetingId}/refine`, {
+      const res = await fetch(`/api/recon/${projectId}/refine`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -101,7 +96,7 @@ export function SectionEditor({
       setRefining(false);
       setStreamedContent("");
     }
-  }, [refinePrompt, refining, meetingId, sectionId, localContent, title, onRefineComplete]);
+  }, [refinePrompt, refining, projectId, sectionId, localContent, title, onRefineComplete]);
 
   const borderColor =
     sectionType === "pitch_script"
@@ -117,7 +112,6 @@ export function SectionEditor({
       className="rounded-lg overflow-hidden"
       style={{ background: "#181c22", borderLeft: `3px solid ${borderColor}` }}
     >
-      {/* Header */}
       <div className="flex items-center justify-between px-5 pt-4 pb-2">
         <div className="flex items-center gap-2">
           <h3
@@ -127,11 +121,7 @@ export function SectionEditor({
             {title}
           </h3>
           {aiGenerated && (
-            <span
-              className="material-symbols-outlined text-[12px]"
-              style={{ color: "var(--text-tertiary)" }}
-              title="AI generated"
-            >
+            <span className="material-symbols-outlined text-[12px]" style={{ color: "var(--text-tertiary)" }} title="AI generated">
               auto_awesome
             </span>
           )}
@@ -145,9 +135,7 @@ export function SectionEditor({
               color: showRefine ? "#412d00" : "var(--accent)",
             }}
           >
-            <span className="material-symbols-outlined text-[14px]">
-              auto_awesome
-            </span>
+            <span className="material-symbols-outlined text-[14px]">auto_awesome</span>
             Refine
           </button>
           <button
@@ -164,7 +152,6 @@ export function SectionEditor({
         </div>
       </div>
 
-      {/* Content */}
       <div className="px-5 pb-4">
         {editing ? (
           <textarea
@@ -189,18 +176,9 @@ export function SectionEditor({
         )}
       </div>
 
-      {/* AI Refine bar */}
       {showRefine && (
-        <div
-          className="flex items-center gap-2 px-5 py-3"
-          style={{ background: "#262a31", borderTop: "1px solid #31353c" }}
-        >
-          <span
-            className="material-symbols-outlined text-[16px] shrink-0"
-            style={{ color: "var(--accent)" }}
-          >
-            auto_awesome
-          </span>
+        <div className="flex items-center gap-2 px-5 py-3" style={{ background: "#262a31", borderTop: "1px solid #31353c" }}>
+          <span className="material-symbols-outlined text-[16px] shrink-0" style={{ color: "var(--accent)" }}>auto_awesome</span>
           <input
             type="text"
             placeholder="How should Cloud refine this section?"

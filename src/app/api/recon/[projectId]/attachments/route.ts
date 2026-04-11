@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { put, del } from "@vercel/blob";
-import { createAttachment, deleteAttachment } from "@/db/queries/war-room";
+import { createAttachment, deleteAttachment } from "@/db/queries/recon";
 import { getCurrentUser } from "@/lib/supabase/get-current-user";
 
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
@@ -13,17 +13,14 @@ const ALLOWED_TYPES = [
   "text/csv",
 ];
 
-/**
- * POST /api/war-room/[meetingId]/attachments — upload a file
- */
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ meetingId: string }> }
+  { params }: { params: Promise<{ projectId: string }> }
 ) {
   const user = await getCurrentUser();
   if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { meetingId } = await params;
+  const { projectId } = await params;
   const formData = await request.formData();
   const file = formData.get("file") as File | null;
   const description = formData.get("description") as string | null;
@@ -34,14 +31,12 @@ export async function POST(
     return Response.json({ error: `Unsupported type: ${file.type}` }, { status: 400 });
   }
 
-  // Upload to Vercel Blob
   const blob = await put(
-    `war-room/${meetingId}/${Date.now()}-${file.name}`,
+    `recon/${projectId}/${Date.now()}-${file.name}`,
     file,
     { access: "public", contentType: file.type }
   );
 
-  // Extract text for AI context
   let extractedText: string | undefined;
   if (file.type === "text/plain" || file.type === "text/csv") {
     extractedText = await file.text();
@@ -57,7 +52,7 @@ export async function POST(
     }
   }
 
-  const attachment = await createAttachment(meetingId, {
+  const attachment = await createAttachment(projectId, {
     filename: file.name,
     blobUrl: blob.url,
     contentType: file.type,
@@ -69,22 +64,19 @@ export async function POST(
   return Response.json(attachment);
 }
 
-/**
- * DELETE /api/war-room/[meetingId]/attachments — remove a file
- */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ meetingId: string }> }
+  { params }: { params: Promise<{ projectId: string }> }
 ) {
   const user = await getCurrentUser();
   if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { meetingId } = await params;
+  const { projectId } = await params;
   const { attachmentId } = await request.json();
 
   if (!attachmentId) return Response.json({ error: "attachmentId required" }, { status: 400 });
 
-  const deleted = await deleteAttachment(meetingId, attachmentId);
+  const deleted = await deleteAttachment(projectId, attachmentId);
   if (deleted?.blobUrl) {
     try {
       await del(deleted.blobUrl);

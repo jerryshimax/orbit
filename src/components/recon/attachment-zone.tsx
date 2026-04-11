@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import type { WarRoomAttachment } from "@/db/queries/war-room";
+import type { ReconAttachment } from "@/db/queries/recon";
 
 type Props = {
-  meetingId: string;
-  attachments: WarRoomAttachment[];
+  projectId: string;
+  attachments: ReconAttachment[];
   onUpdate: () => void;
 };
 
@@ -25,7 +25,7 @@ function formatSize(bytes: number | null): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
 }
 
-export function AttachmentZone({ meetingId, attachments, onUpdate }: Props) {
+export function AttachmentZone({ projectId, attachments, onUpdate }: Props) {
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,7 +36,7 @@ export function AttachmentZone({ meetingId, attachments, onUpdate }: Props) {
       try {
         const form = new FormData();
         form.append("file", file);
-        await fetch(`/api/war-room/${meetingId}/attachments`, {
+        await fetch(`/api/recon/${projectId}/attachments`, {
           method: "POST",
           body: form,
         });
@@ -47,13 +47,13 @@ export function AttachmentZone({ meetingId, attachments, onUpdate }: Props) {
         setUploading(false);
       }
     },
-    [meetingId, onUpdate]
+    [projectId, onUpdate]
   );
 
   const deleteAttachment = useCallback(
     async (attachmentId: string) => {
       try {
-        await fetch(`/api/war-room/${meetingId}/attachments`, {
+        await fetch(`/api/recon/${projectId}/attachments`, {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ attachmentId }),
@@ -63,7 +63,7 @@ export function AttachmentZone({ meetingId, attachments, onUpdate }: Props) {
         console.error("Delete failed:", err);
       }
     },
-    [meetingId, onUpdate]
+    [projectId, onUpdate]
   );
 
   const handleDrop = useCallback(
@@ -85,7 +85,6 @@ export function AttachmentZone({ meetingId, attachments, onUpdate }: Props) {
         Reference Docs ({attachments.length})
       </h3>
 
-      {/* Drop zone */}
       <div
         className="rounded-lg border-2 border-dashed p-6 text-center cursor-pointer transition-colors"
         style={{
@@ -119,17 +118,13 @@ export function AttachmentZone({ meetingId, attachments, onUpdate }: Props) {
         </span>
       </div>
 
-      {/* File list */}
       {attachments.map((a) => (
         <div
           key={a.id}
           className="flex items-center gap-3 px-4 py-2.5 rounded-lg group"
           style={{ background: "#181c22" }}
         >
-          <span
-            className="material-symbols-outlined text-[18px]"
-            style={{ color: "var(--text-tertiary)" }}
-          >
+          <span className="material-symbols-outlined text-[18px]" style={{ color: "var(--text-tertiary)" }}>
             {FILE_ICONS[a.contentType] ?? "attach_file"}
           </span>
           <div className="flex-1 min-w-0">
@@ -152,9 +147,7 @@ export function AttachmentZone({ meetingId, attachments, onUpdate }: Props) {
             className="opacity-0 group-hover:opacity-100 transition-opacity"
             title="Remove"
           >
-            <span className="material-symbols-outlined text-[14px]" style={{ color: "var(--text-tertiary)" }}>
-              close
-            </span>
+            <span className="material-symbols-outlined text-[14px]" style={{ color: "var(--text-tertiary)" }}>close</span>
           </button>
         </div>
       ))}

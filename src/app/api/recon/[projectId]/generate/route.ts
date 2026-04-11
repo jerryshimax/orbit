@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { getWarRoom, upsertSection } from "@/db/queries/war-room";
-import { buildWarRoomContext } from "@/lib/war-room/context-builder";
-import { getGeneratePrompt } from "@/lib/war-room/prompts";
+import { getRecon, upsertSection } from "@/db/queries/recon";
+import { buildReconContext } from "@/lib/recon/context-builder";
+import { getGeneratePrompt } from "@/lib/recon/prompts";
 import { getCurrentUser } from "@/lib/supabase/get-current-user";
 
 const SECTION_MAP: Record<string, { type: string; order: number }> = {
@@ -17,26 +17,22 @@ const SECTION_MAP: Record<string, { type: string; order: number }> = {
   prep_checklist: { type: "prep_checklist", order: 20 },
 };
 
-/**
- * POST /api/war-room/[meetingId]/generate — one-click AI war room generation
- */
 export async function POST(
   _request: NextRequest,
-  { params }: { params: Promise<{ meetingId: string }> }
+  { params }: { params: Promise<{ projectId: string }> }
 ) {
   const user = await getCurrentUser();
   if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { meetingId } = await params;
-  const data = await getWarRoom(meetingId);
-  if (!data) return Response.json({ error: "Meeting not found" }, { status: 404 });
+  const { projectId } = await params;
+  const data = await getRecon(projectId);
+  if (!data) return Response.json({ error: "Project not found" }, { status: 404 });
 
-  const meetingContext = buildWarRoomContext(data);
-  const prompt = getGeneratePrompt(meetingContext);
+  const reconContext = buildReconContext(data);
+  const prompt = getGeneratePrompt(reconContext);
 
   const client = new Anthropic();
 
-  // Stream progress via SSE
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
@@ -46,7 +42,7 @@ export async function POST(
         );
       };
 
-      send("status", { message: "Generating war room..." });
+      send("status", { message: "Generating recon..." });
 
       try {
         const response = await client.messages.create({
@@ -58,7 +54,6 @@ export async function POST(
         const text =
           response.content[0].type === "text" ? response.content[0].text : "";
 
-        // Parse JSON from response
         const jsonMatch = text.match(/\{[\s\S]*\}/);
         if (!jsonMatch) {
           send("error", { message: "Failed to parse AI response" });
@@ -68,13 +63,12 @@ export async function POST(
 
         const sections = JSON.parse(jsonMatch[0]);
 
-        // Create sections in DB
         let created = 0;
         for (const [key, meta] of Object.entries(SECTION_MAP)) {
           const section = sections[key];
           if (!section) continue;
 
-          await upsertSection(meetingId, {
+          await upsertSection(projectId, {
             sectionType: meta.type,
             title: section.title,
             content: section.content,

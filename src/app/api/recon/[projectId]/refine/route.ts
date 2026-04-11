@@ -1,21 +1,18 @@
 import { NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { getWarRoom, upsertSection } from "@/db/queries/war-room";
-import { buildWarRoomContext } from "@/lib/war-room/context-builder";
-import { getRefinePrompt } from "@/lib/war-room/prompts";
+import { getRecon, upsertSection } from "@/db/queries/recon";
+import { buildReconContext } from "@/lib/recon/context-builder";
+import { getRefinePrompt } from "@/lib/recon/prompts";
 import { getCurrentUser } from "@/lib/supabase/get-current-user";
 
-/**
- * POST /api/war-room/[meetingId]/refine — AI-refine a single section
- */
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ meetingId: string }> }
+  { params }: { params: Promise<{ projectId: string }> }
 ) {
   const user = await getCurrentUser();
   if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { meetingId } = await params;
+  const { projectId } = await params;
   const body = await request.json();
   const { sectionId, prompt: userPrompt, currentContent, sectionTitle } = body as {
     sectionId: string;
@@ -28,11 +25,11 @@ export async function POST(
     return Response.json({ error: "sectionId and prompt required" }, { status: 400 });
   }
 
-  const data = await getWarRoom(meetingId);
-  if (!data) return Response.json({ error: "Meeting not found" }, { status: 404 });
+  const data = await getRecon(projectId);
+  if (!data) return Response.json({ error: "Project not found" }, { status: 404 });
 
-  const meetingContext = buildWarRoomContext(data);
-  const fullPrompt = getRefinePrompt(meetingContext, sectionTitle, currentContent, userPrompt);
+  const reconContext = buildReconContext(data);
+  const fullPrompt = getRefinePrompt(reconContext, sectionTitle, currentContent, userPrompt);
 
   const client = new Anthropic();
   const encoder = new TextEncoder();
@@ -64,10 +61,9 @@ export async function POST(
           }
         }
 
-        // Save refined content with previous version in metadata
-        await upsertSection(meetingId, {
+        await upsertSection(projectId, {
           id: sectionId,
-          sectionType: "pitch_script", // preserved from original
+          sectionType: "pitch_script",
           title: sectionTitle,
           content: fullText,
           aiGenerated: true,

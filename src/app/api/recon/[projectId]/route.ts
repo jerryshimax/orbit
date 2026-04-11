@@ -1,45 +1,37 @@
 import { NextRequest } from "next/server";
-import { getWarRoom, upsertSection, deleteSection } from "@/db/queries/war-room";
+import { getRecon, upsertSection, deleteSection } from "@/db/queries/recon";
 import { getCurrentUser } from "@/lib/supabase/get-current-user";
 
-/**
- * GET /api/war-room/[meetingId] — full war room data
- */
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ meetingId: string }> }
+  { params }: { params: Promise<{ projectId: string }> }
 ) {
   const user = await getCurrentUser();
   if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { meetingId } = await params;
-  const data = await getWarRoom(meetingId);
-  if (!data) return Response.json({ error: "Meeting not found" }, { status: 404 });
+  const { projectId } = await params;
+  const data = await getRecon(projectId);
+  if (!data) return Response.json({ error: "Project not found" }, { status: 404 });
 
   return Response.json(data);
 }
 
-/**
- * PATCH /api/war-room/[meetingId] — upsert or delete a section
- */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ meetingId: string }> }
+  { params }: { params: Promise<{ projectId: string }> }
 ) {
   const user = await getCurrentUser();
   if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { meetingId } = await params;
+  const { projectId } = await params;
   const body = await request.json();
 
-  // Delete section
   if (body.action === "delete" && body.sectionId) {
-    await deleteSection(meetingId, body.sectionId);
+    await deleteSection(projectId, body.sectionId);
     return Response.json({ ok: true });
   }
 
-  // Upsert section
-  const section = await upsertSection(meetingId, {
+  const section = await upsertSection(projectId, {
     id: body.sectionId,
     sectionType: body.sectionType ?? "custom",
     title: body.title,

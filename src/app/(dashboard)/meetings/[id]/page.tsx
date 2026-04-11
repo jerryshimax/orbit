@@ -3,6 +3,7 @@
 import { use } from "react";
 import { useMeeting } from "@/hooks/use-roadshow";
 import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 const STATUS_COLORS: Record<string, string> = {
   confirmed: "#22c55e",
@@ -22,8 +23,41 @@ export default function MeetingDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id: meetingId } = use(params);
+  const router = useRouter();
   const { data: meeting, isLoading, mutate } = useMeeting(meetingId);
   const [saving, setSaving] = useState(false);
+  const [creatingRecon, setCreatingRecon] = useState(false);
+
+  const handleRecon = useCallback(async () => {
+    if (creatingRecon) return;
+    setCreatingRecon(true);
+    try {
+      // Check if a recon project already exists for this meeting
+      const listRes = await fetch("/api/recon-projects");
+      const projects = await listRes.json();
+      const existing = projects.find((p: any) => p.meetingId === meetingId);
+      if (existing) {
+        router.push(`/recon/${existing.id}`);
+        return;
+      }
+      // Create a new meeting-prep recon
+      const res = await fetch("/api/recon-projects", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: meeting?.title ?? "Meeting Prep",
+          projectType: "meeting_prep",
+          meetingId,
+          organizationId: meeting?.organizationId ?? undefined,
+          opportunityId: meeting?.opportunityId ?? undefined,
+        }),
+      });
+      const project = await res.json();
+      router.push(`/recon/${project.id}`);
+    } finally {
+      setCreatingRecon(false);
+    }
+  }, [creatingRecon, meetingId, meeting, router]);
 
   const toggleAction = useCallback(
     async (index: number) => {
@@ -98,14 +132,17 @@ export default function MeetingDetailPage({
               </span>
             </div>
           </div>
-          <a
-            href={`/meetings/${meetingId}/war-room`}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-[Space_Grotesk] uppercase tracking-wider font-bold transition-all hover:brightness-110 shrink-0"
+          <button
+            onClick={handleRecon}
+            disabled={creatingRecon}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-[Space_Grotesk] uppercase tracking-wider font-bold transition-all hover:brightness-110 shrink-0 disabled:opacity-50"
             style={{ background: "var(--accent)", color: "#412d00" }}
           >
-            <span className="material-symbols-outlined text-[16px]">strategy</span>
-            War Room
-          </a>
+            <span className="material-symbols-outlined text-[16px]">
+              {creatingRecon ? "hourglass_top" : "strategy"}
+            </span>
+            Recon
+          </button>
         </div>
       </section>
 
