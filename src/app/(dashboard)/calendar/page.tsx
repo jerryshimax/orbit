@@ -272,16 +272,13 @@ export default function CalendarPage() {
                             )}
                             {fmtStyle.label && (
                               <span
-                                className="flex items-center gap-0.5 font-[Space_Grotesk] text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded leading-none"
+                                className="font-[Space_Grotesk] text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded leading-none"
                                 style={{
                                   background: "#1c2026",
                                   color: fmtStyle.color,
                                   border: `1px solid ${fmtStyle.border}`,
                                 }}
                               >
-                                <span className="material-symbols-rounded text-[10px]">
-                                  {fmtStyle.icon}
-                                </span>
                                 {fmtStyle.label}
                               </span>
                             )}
