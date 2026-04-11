@@ -52,18 +52,9 @@ export default function RootLayout({
     <html className={`dark ${manrope.variable} ${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`} lang="en" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
-        {/* Material Symbols — loaded async to avoid blocking render */}
-        <link
-          rel="preload"
-          as="style"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght,FILL@100..700,0..1&display=swap"
-        />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght,FILL@100..700,0..1&display=swap"
-          media="print"
-          // @ts-expect-error — onLoad sets media to 'all' after async load
-          onLoad="this.media='all'"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
         />
       </head>
       <body className="bg-[#10141a] text-[#dfe2eb] font-[var(--font-body),system-ui,sans-serif] antialiased selection:bg-[#e9c176]/30 selection:text-[#e9c176] min-h-screen">
