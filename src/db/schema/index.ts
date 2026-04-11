@@ -24,5 +24,8 @@ export * from "./meeting-attendees";
 // Google integration
 export * from "./google-auth";
 
+// Meeting notes (Orbit intelligence layer on GCal events)
+export * from "./meeting-notes";
+
 // Chat
 export * from "./chat";
