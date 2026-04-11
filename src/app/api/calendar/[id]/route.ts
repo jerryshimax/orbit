@@ -1,6 +1,11 @@
 import { NextRequest } from "next/server";
 import { db } from "@/db";
-import { gcalEvents, orbitMeetingNotes, fieldTripMeetings, organizations } from "@/db/schema";
+import {
+  gcalEvents,
+  orbitMeetingNotes,
+  fieldTripMeetings,
+  organizations,
+} from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/supabase/get-current-user";
 import {
@@ -20,50 +25,118 @@ export async function GET(
 
   const { id } = await params;
 
-  // Fetch the gcal event
-  const [event] = await db
+  // Try gcal_events first
+  const [gcalEvent] = await db
     .select()
     .from(gcalEvents)
     .where(eq(gcalEvents.id, id))
     .limit(1);
 
-  if (!event) {
+  if (gcalEvent) {
+    // GCal event found — fetch notes and field trip match
+    const [notes] = await db
+      .select()
+      .from(orbitMeetingNotes)
+      .where(
+        and(
+          eq(orbitMeetingNotes.userId, user.id),
+          eq(orbitMeetingNotes.gcalEventId, gcalEvent.gcalEventId)
+        )
+      )
+      .limit(1);
+
+    let fieldTrip = null;
+    let org = null;
+    if (gcalEvent.title) {
+      const [ftMatch] = await db
+        .select({
+          meeting: fieldTripMeetings,
+          orgName: organizations.name,
+          orgType: organizations.orgType,
+          orgNotes: organizations.notes,
+        })
+        .from(fieldTripMeetings)
+        .leftJoin(
+          organizations,
+          eq(fieldTripMeetings.organizationId, organizations.id)
+        )
+        .where(eq(fieldTripMeetings.title, gcalEvent.title))
+        .limit(1);
+      if (ftMatch) {
+        fieldTrip = ftMatch.meeting;
+        org = {
+          name: ftMatch.orgName,
+          type: ftMatch.orgType,
+          notes: ftMatch.orgNotes,
+        };
+      }
+    }
+
+    return Response.json({
+      event: {
+        ...gcalEvent,
+        startTime: gcalEvent.startTime.toISOString(),
+        endTime: gcalEvent.endTime.toISOString(),
+      },
+      notes: notes ?? null,
+      fieldTrip,
+      org,
+      source: "gcal",
+    });
+  }
+
+  // Fallback: try field_trip_meetings
+  const [ftRow] = await db
+    .select({
+      meeting: fieldTripMeetings,
+      orgName: organizations.name,
+      orgType: organizations.orgType,
+      orgNotes: organizations.notes,
+    })
+    .from(fieldTripMeetings)
+    .leftJoin(
+      organizations,
+      eq(fieldTripMeetings.organizationId, organizations.id)
+    )
+    .where(eq(fieldTripMeetings.id, id))
+    .limit(1);
+
+  if (!ftRow) {
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
-  // Fetch Orbit meeting notes for this event
-  const [notes] = await db
-    .select()
-    .from(orbitMeetingNotes)
-    .where(
-      and(
-        eq(orbitMeetingNotes.userId, user.id),
-        eq(orbitMeetingNotes.gcalEventId, event.gcalEventId)
-      )
-    )
-    .limit(1);
-
-  // Check if this event matches a field trip meeting
-  let fieldTrip = null;
-  let org = null;
-  if (event.title) {
-    const [ftMatch] = await db
-      .select({ meeting: fieldTripMeetings, orgName: organizations.name, orgType: organizations.orgType, orgNotes: organizations.notes })
-      .from(fieldTripMeetings)
-      .leftJoin(organizations, eq(fieldTripMeetings.organizationId, organizations.id))
-      .where(eq(fieldTripMeetings.title, event.title))
-      .limit(1);
-    if (ftMatch) {
-      fieldTrip = ftMatch.meeting;
-      org = { name: ftMatch.orgName, type: ftMatch.orgType, notes: ftMatch.orgNotes };
-    }
-  }
+  const m = ftRow.meeting;
+  const startTime = m.meetingTime
+    ? `${m.meetingDate}T${m.meetingTime}`
+    : `${m.meetingDate}T09:00:00`;
+  const durationMs = (m.durationMin ?? 60) * 60_000;
+  const endTime = new Date(
+    new Date(startTime).getTime() + durationMs
+  ).toISOString();
 
   return Response.json({
-    event,
-    notes: notes ?? null,
-    fieldTrip,
-    org,
+    event: {
+      id: m.id,
+      title: m.title,
+      description: m.prepNotes,
+      startTime: new Date(startTime).toISOString(),
+      endTime,
+      location: m.location,
+      attendees: m.attendees,
+      status: m.status,
+      isAllDay: false,
+      gcalEventId: null,
+    },
+    notes: null,
+    fieldTrip: m,
+    org: ftRow.orgName
+      ? {
+          name: ftRow.orgName,
+          type: ftRow.orgType,
+          notes: ftRow.orgNotes,
+        }
+      : null,
+    source: "field_trip",
   });
 }
 
@@ -77,87 +150,97 @@ export async function PATCH(
   const { id } = await params;
   const body = await request.json();
 
-  // Fetch the event to get gcalEventId
+  // Try gcal event first
   const [event] = await db
     .select()
     .from(gcalEvents)
     .where(eq(gcalEvents.id, id))
     .limit(1);
 
-  if (!event) {
-    return Response.json({ error: "Not found" }, { status: 404 });
-  }
+  const gcalEventId = event?.gcalEventId;
 
-  // Upsert orbit_meeting_notes
-  const noteFields = {
-    strategicObjective: body.strategicObjective,
-    valueProposition: body.valueProposition,
-    notes: body.notes,
-    context: body.context,
-    status: body.status,
-    updatedAt: new Date(),
-  };
+  if (gcalEventId) {
+    // Upsert orbit_meeting_notes
+    const noteFields: Record<string, any> = {
+      updatedAt: new Date(),
+    };
+    if (body.strategicObjective !== undefined)
+      noteFields.strategicObjective = body.strategicObjective;
+    if (body.valueProposition !== undefined)
+      noteFields.valueProposition = body.valueProposition;
+    if (body.notes !== undefined) noteFields.notes = body.notes;
+    if (body.context !== undefined) noteFields.context = body.context;
+    if (body.status !== undefined) noteFields.status = body.status;
 
-  // Remove undefined fields
-  const cleanFields = Object.fromEntries(
-    Object.entries(noteFields).filter(([, v]) => v !== undefined)
-  );
-
-  const [existingNote] = await db
-    .select({ id: orbitMeetingNotes.id })
-    .from(orbitMeetingNotes)
-    .where(
-      and(
-        eq(orbitMeetingNotes.userId, user.id),
-        eq(orbitMeetingNotes.gcalEventId, event.gcalEventId)
-      )
-    )
-    .limit(1);
-
-  if (existingNote) {
-    await db
-      .update(orbitMeetingNotes)
-      .set(cleanFields)
-      .where(eq(orbitMeetingNotes.id, existingNote.id));
-  } else {
-    await db.insert(orbitMeetingNotes).values({
-      userId: user.id,
-      gcalEventId: event.gcalEventId,
-      ...cleanFields,
-    });
-  }
-
-  // Sync to GCal if strategic objective or value prop changed
-  if (body.strategicObjective !== undefined || body.valueProposition !== undefined) {
-    // Read back the full notes to build description
-    const [fullNotes] = await db
-      .select()
+    const [existingNote] = await db
+      .select({ id: orbitMeetingNotes.id })
       .from(orbitMeetingNotes)
       .where(
         and(
           eq(orbitMeetingNotes.userId, user.id),
-          eq(orbitMeetingNotes.gcalEventId, event.gcalEventId)
+          eq(orbitMeetingNotes.gcalEventId, gcalEventId)
         )
       )
       .limit(1);
 
-    if (fullNotes) {
-      const newDescription = buildGcalDescription(
-        event.description,
-        fullNotes.strategicObjective,
-        fullNotes.valueProposition
-      );
-      await updateGcalEvent(user.id, event.gcalEventId, {
-        description: newDescription,
+    if (existingNote) {
+      await db
+        .update(orbitMeetingNotes)
+        .set(noteFields)
+        .where(eq(orbitMeetingNotes.id, existingNote.id));
+    } else {
+      await db.insert(orbitMeetingNotes).values({
+        userId: user.id,
+        gcalEventId,
+        ...noteFields,
       });
     }
-  }
 
-  // Sync status to GCal if changed
-  if (body.status) {
-    await updateGcalEvent(user.id, event.gcalEventId, {
-      status: orbitStatusToGcal(body.status),
-    });
+    // Sync to GCal
+    if (
+      body.strategicObjective !== undefined ||
+      body.valueProposition !== undefined
+    ) {
+      const [fullNotes] = await db
+        .select()
+        .from(orbitMeetingNotes)
+        .where(
+          and(
+            eq(orbitMeetingNotes.userId, user.id),
+            eq(orbitMeetingNotes.gcalEventId, gcalEventId)
+          )
+        )
+        .limit(1);
+
+      if (fullNotes) {
+        const desc = buildGcalDescription(
+          event.description,
+          fullNotes.strategicObjective,
+          fullNotes.valueProposition
+        );
+        await updateGcalEvent(user.id, gcalEventId, { description: desc });
+      }
+    }
+
+    if (body.status) {
+      await updateGcalEvent(user.id, gcalEventId, {
+        status: orbitStatusToGcal(body.status),
+      });
+    }
+  } else {
+    // Fallback: update field_trip_meetings directly
+    const updateFields: Record<string, any> = { updatedAt: new Date() };
+    if (body.strategicObjective !== undefined)
+      updateFields.strategicAsk = body.strategicObjective;
+    if (body.valueProposition !== undefined)
+      updateFields.pitchAngle = body.valueProposition;
+    if (body.notes !== undefined) updateFields.prepNotes = body.notes;
+    if (body.status !== undefined) updateFields.status = body.status;
+
+    await db
+      .update(fieldTripMeetings)
+      .set(updateFields)
+      .where(eq(fieldTripMeetings.id, id));
   }
 
   return Response.json({ ok: true });

@@ -39,18 +39,19 @@ export default function CalendarEventPage() {
     valueProp !== null ||
     notes !== null ||
     context !== null;
-  if (!seeded && meetingNotes) {
-    setObjective(meetingNotes.strategicObjective ?? "");
-    setValueProp(meetingNotes.valueProposition ?? "");
-    setNotes(meetingNotes.notes ?? "");
-    setContext(meetingNotes.context ?? "");
-  }
-  if (!seeded && !meetingNotes && event) {
-    // Seed from field trip data if available
-    setObjective(fieldTrip?.strategicAsk ?? "");
-    setValueProp(fieldTrip?.pitchAngle ?? "");
-    setNotes(fieldTrip?.prepNotes ?? "");
-    setContext("");
+  if (!seeded && event) {
+    if (meetingNotes) {
+      setObjective(meetingNotes.strategicObjective ?? "");
+      setValueProp(meetingNotes.valueProposition ?? "");
+      setNotes(meetingNotes.notes ?? "");
+      setContext(meetingNotes.context ?? "");
+    } else {
+      // Seed from field trip data if available
+      setObjective(fieldTrip?.strategicAsk ?? "");
+      setValueProp(fieldTrip?.pitchAngle ?? "");
+      setNotes(fieldTrip?.prepNotes ?? event.description ?? "");
+      setContext("");
+    }
   }
 
   const currentStatus =
