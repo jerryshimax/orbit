@@ -62,17 +62,27 @@ function categorizeEvent(evt: CalendarEvent): EventCategory {
   return CATEGORIES.lp;
 }
 
-function isVirtualEvent(evt: CalendarEvent): boolean {
-  const loc = (evt.location ?? "").toLowerCase();
-  const title = (evt.title ?? "").toLowerCase();
-  // Virtual indicators
-  if (loc.includes("zoom") || loc.includes("meet.google") || loc.includes("teams.microsoft") || loc.includes("webex") || loc.includes("whereby")) return true;
-  if (loc.startsWith("http") || loc.startsWith("https")) return true;
-  if (title.includes("virtual") || title.includes("zoom") || title.includes("online")) return true;
-  // No location at all — likely virtual
-  if (!evt.location || evt.location.trim() === "" || evt.location === "TBD") return true;
-  return false;
+type MeetingFormat = "virtual" | "field" | "unknown";
+
+function detectMeetingFormat(evt: CalendarEvent): MeetingFormat {
+  const loc = (evt.location ?? "").trim();
+
+  // Has a URL → virtual
+  if (loc.match(/^https?:\/\//i)) return "virtual";
+  if (loc.toLowerCase().includes("zoom.us") || loc.toLowerCase().includes("meet.google") || loc.toLowerCase().includes("teams.microsoft") || loc.toLowerCase().includes("webex")) return "virtual";
+
+  // Has a physical location → field
+  if (loc.length > 0 && loc !== "TBD") return "field";
+
+  // No location, no link → unknown
+  return "unknown";
 }
+
+const FORMAT_STYLES: Record<MeetingFormat, { icon: string; label: string; color: string; border: string }> = {
+  virtual: { icon: "videocam",    label: "Virtual", color: "#3b82f6", border: "#3b82f640" },
+  field:   { icon: "location_on", label: "Field",   color: "#22c55e", border: "#22c55e40" },
+  unknown: { icon: "help_outline", label: "",        color: "#6b7280", border: "#6b728040" },
+};
 
 /**
  * CALENDAR — Unified calendar view.
@@ -210,7 +220,8 @@ export default function CalendarPage() {
                     >
                       {(() => {
                         const cat = categorizeEvent(evt);
-                        const virtual = isVirtualEvent(evt);
+                        const fmt = detectMeetingFormat(evt);
+                        const fmtStyle = FORMAT_STYLES[fmt];
                         return (
                       <div
                         className={`flex gap-4 p-4 rounded-lg ${isPast ? "opacity-40" : ""}`}
@@ -255,19 +266,21 @@ export default function CalendarPage() {
                                 {cat.label}
                               </span>
                             )}
-                            <span
-                              className="flex items-center gap-0.5 font-[Space_Grotesk] text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded"
-                              style={{
-                                background: virtual ? "#1c2026" : "#1c2026",
-                                color: virtual ? "#9a8f80" : "#22c55e",
-                                border: `1px solid ${virtual ? "#4e4639" : "#22c55e40"}`,
-                              }}
-                            >
-                              <span className="material-symbols-rounded text-[11px]">
-                                {virtual ? "videocam" : "location_on"}
+                            {fmtStyle.label && (
+                              <span
+                                className="flex items-center gap-0.5 font-[Space_Grotesk] text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded"
+                                style={{
+                                  background: "#1c2026",
+                                  color: fmtStyle.color,
+                                  border: `1px solid ${fmtStyle.border}`,
+                                }}
+                              >
+                                <span className="material-symbols-rounded text-[11px]">
+                                  {fmtStyle.icon}
+                                </span>
+                                {fmtStyle.label}
                               </span>
-                              {virtual ? "Virtual" : "Field"}
-                            </span>
+                            )}
                           </div>
                           <h3
                             className="font-[Manrope] font-bold text-sm"
