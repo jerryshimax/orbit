@@ -33,3 +33,6 @@ export * from "./objectives";
 // Chat
 export * from "./chat";
 export * from "./chat-jobs";
+
+// War Room (meeting prep workspace)
+export * from "./war-room";

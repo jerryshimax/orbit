@@ -31,15 +31,12 @@ function LoginForm() {
     setLoading(true);
     setError(null);
 
-    try {
-      const result = await loginAction(email, password);
-      if (result?.error) {
-        setError(ERROR_MESSAGES[result.error] ?? result.error);
-        setLoading(false);
-      }
-    } catch {
-      // redirect() throws NEXT_REDIRECT — this is expected on success
-      // If it's a real error, it will surface as an unhandled rejection
+    const result = await loginAction(email, password);
+    if (result?.error) {
+      setError(ERROR_MESSAGES[result.error] ?? result.error);
+      setLoading(false);
+    } else if (result?.success) {
+      window.location.href = "/focus";
     }
   }
 
