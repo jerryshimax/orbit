@@ -7,8 +7,8 @@ import { useNavigation } from "./navigation-provider";
 
 const PRIMARY_NAV = [
   { href: "/brief", icon: "summarize", label: "Brief" },
+  { href: "/calendar", icon: "calendar_month", label: "Calendar" },
   { href: "/meetings", icon: "groups", label: "Meetings" },
-  { href: "/schedule", icon: "calendar_month", label: "Schedule" },
   { href: "/contacts", icon: "contact_page", label: "Contacts" },
 ];
 

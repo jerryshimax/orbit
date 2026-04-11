@@ -13,11 +13,11 @@ const LEG_DISTRICTS: Record<string, string> = {
 };
 
 /**
- * SCHEDULE — Full calendar/timeline view of the trip.
- * Primary events (meetings) get full cards, secondary are compact.
+ * CALENDAR — Full calendar/timeline view.
+ * Shows field trip meetings now, will merge with Google Calendar events.
  * Sticky city headers per leg.
  */
-export default function SchedulePage() {
+export default function CalendarPage() {
   const { data: defaultTrip } = useDefaultTrip();
   const { data: tripData } = useTrip(defaultTrip?.id ?? null);
 
@@ -56,7 +56,7 @@ export default function SchedulePage() {
           className="font-[Manrope] text-2xl font-extrabold tracking-tight"
           style={{ color: "var(--text-primary)" }}
         >
-          Schedule
+          Calendar
         </h1>
         <p className="text-sm mt-1" style={{ color: "var(--text-tertiary)" }}>
           {tripData?.trip?.name ?? "No active trip"}

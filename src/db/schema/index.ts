@@ -21,5 +21,8 @@ export * from "./interactions";
 // Meeting attendees (team member ↔ meeting link)
 export * from "./meeting-attendees";
 
+// Google integration
+export * from "./google-auth";
+
 // Chat
 export * from "./chat";
