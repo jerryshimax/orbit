@@ -38,13 +38,13 @@ function categorizeEvent(evt: CalendarEvent): EventCategory {
   // Title keywords
   if (title.includes("flight") || title.includes("✈") || title.match(/\b[a-z]{2}\d{3,4}\b/i) || title.includes("航班") || title.includes("飞") || title.includes("airport") || title.includes("train") || title.includes("rail") || title.includes("高铁") || title.includes("火车") || title.includes("drive") || title.includes("car") || title.includes("taxi") || title.includes("uber") || title.includes("transfer") || title.includes("pickup") || title.includes("pick up") || title.includes("drop off") || title.includes("接送") || title.includes("打车") || title.includes("地铁"))
     return CATEGORIES.transport;
-  if (title.includes("hotel") || title.includes("check-in") || title.includes("check in") || title.includes("checkout") || title.includes("check out") || title.includes("酒店") || title.includes("入住") || title.includes("accommodation"))
+  if (title.includes("hotel") || title.includes("check-in") || title.includes("check in") || title.includes("checkout") || title.includes("check out") || title.includes("酒店") || title.includes("入住") || title.includes("accommodation") || title.includes("stay at") || title.includes("airbnb"))
     return CATEGORIES.hotel;
   if (title.includes("dinner") || title.includes("晚宴") || title.includes("晚餐"))
     return CATEGORIES.dinner;
   if (title.includes("lunch") || title.includes("午餐"))
     return CATEGORIES.lunch;
-  if (title.includes("roundtable") || title.includes("conference") || title.includes("summit") || title.includes("forum"))
+  if (title.includes("roundtable") || title.includes("conference") || title.includes("summit") || title.includes("forum") || title.includes("[irr]") || title.includes("圆桌") || title.includes("开幕") || title.includes("milken") || title.includes("活动"))
     return CATEGORIES.conference;
   if (title.includes("site visit") || title.includes("参观") || title.includes("考察"))
     return CATEGORIES.site_visit;
