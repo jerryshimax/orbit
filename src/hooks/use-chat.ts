@@ -23,15 +23,16 @@ export function useChat(pageContext: PageContext) {
   const abortRef = useRef<AbortController | null>(null);
 
   const sendMessage = useCallback(
-    async (text: string, opts?: { transcription?: string; language?: string }) => {
-      if (!text.trim() || isLoading) return;
+    async (text: string, opts?: { transcription?: string; language?: string; attachments?: Array<{ url: string; filename: string; contentType: string }> }) => {
+      if ((!text.trim() && !opts?.attachments?.length) || isLoading) return;
 
       // Add user message
       const userMsg: ChatMessage = {
         id: `user-${Date.now()}`,
         role: "user",
         content: text,
-      };
+        attachments: opts?.attachments,
+      } as any;
       setMessages((prev) => [...prev, userMsg]);
 
       // Add streaming assistant placeholder
@@ -52,8 +53,7 @@ export function useChat(pageContext: PageContext) {
             conversationId,
             message: text,
             pageContext,
-            audioTranscription: opts?.transcription,
-            inputLanguage: opts?.language,
+            attachments: opts?.attachments,
           }),
           signal: abortRef.current.signal,
         });

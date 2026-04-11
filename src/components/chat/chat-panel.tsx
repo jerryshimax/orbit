@@ -143,7 +143,12 @@ export function ChatPanel() {
 
         {/* Input */}
         <div className="shrink-0 pb-safe">
-          <ChatInput onSend={sendMessage} isLoading={isLoading} />
+          <ChatInput
+            onSend={(text, attachments) =>
+              sendMessage(text, { attachments })
+            }
+            isLoading={isLoading}
+          />
         </div>
       </div>
     </>

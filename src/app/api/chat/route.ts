@@ -13,10 +13,12 @@ export async function POST(request: Request) {
     conversationId: existingConvId,
     message,
     pageContext,
+    attachments,
   } = body as {
     conversationId?: string;
     message: string;
     pageContext?: PageContext;
+    attachments?: Array<{ url: string; filename: string; contentType: string }>;
   };
 
   const user = await getCurrentUser();
@@ -80,7 +82,19 @@ export async function POST(request: Request) {
   const systemPrompt = buildSystemPrompt({ pageContext, entityData });
 
   // 5. Create a job for the local daemon to process
-  const fullPrompt = `${systemPrompt}\n\n--- CONVERSATION HISTORY ---\n${historyText}\n\n--- CURRENT MESSAGE ---\nUser: ${message}`;
+  // Build attachment context
+  let attachmentContext = "";
+  if (attachments && attachments.length > 0) {
+    const parts = attachments.map((a) => {
+      if (a.contentType.startsWith("image/")) {
+        return `[Image attached: ${a.filename} — ${a.url}]`;
+      }
+      return `[File attached: ${a.filename} (${a.contentType}) — ${a.url}]`;
+    });
+    attachmentContext = `\n${parts.join("\n")}`;
+  }
+
+  const fullPrompt = `${systemPrompt}\n\n--- CONVERSATION HISTORY ---\n${historyText}\n\n--- CURRENT MESSAGE ---\nUser: ${message}${attachmentContext}`;
 
   const [job] = await db
     .insert(chatJobs)
