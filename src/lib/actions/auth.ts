@@ -54,20 +54,50 @@ export async function loginAction(
   return { success: true };
 }
 
+const ALLOWED_DOMAINS = ["synergiscap.com", "currentequities.com"];
+
 export async function signUpAction(
   email: string,
   password: string
 ): Promise<{ error?: string; success?: boolean }> {
   const supabase = await createClient();
+  const normalizedEmail = email.trim().toLowerCase();
+  const domain = normalizedEmail.split("@")[1];
 
-  // Only allow sign up if email is pre-approved in orbit_users
-  const [user] = await db
+  // Check if email is pre-approved in orbit_users
+  let [user] = await db
     .select({ id: orbitUsers.id, authId: orbitUsers.supabaseAuthId })
     .from(orbitUsers)
     .where(
-      eq(sql`lower(trim(${orbitUsers.email}))`, email.trim().toLowerCase())
+      eq(sql`lower(trim(${orbitUsers.email}))`, normalizedEmail)
     )
     .limit(1);
+
+  // If not in table but from an allowed domain, auto-create
+  if (!user && domain && ALLOWED_DOMAINS.includes(domain)) {
+    const namePart = normalizedEmail.split("@")[0];
+    const handle = namePart.replace(/[^a-z0-9]/g, "");
+    const fullName = namePart
+      .split(/[._-]/)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+    const entityAccess =
+      domain === "currentequities.com"
+        ? ["CE"]
+        : ["CE", "SYN", "UUL", "FO"];
+
+    const [created] = await db
+      .insert(orbitUsers)
+      .values({
+        handle,
+        fullName,
+        email: normalizedEmail,
+        role: "principal",
+        entityAccess,
+      })
+      .returning({ id: orbitUsers.id, authId: orbitUsers.supabaseAuthId });
+    user = created;
+  }
 
   if (!user) {
     return { error: "unauthorized" };
