@@ -58,7 +58,7 @@ export function ChatPanel() {
                 className="material-symbols-outlined text-sm"
                 style={{ color: "#412d00" }}
               >
-                chat
+                pets
               </span>
             </div>
             <div>
@@ -66,7 +66,7 @@ export function ChatPanel() {
                 className="text-sm font-semibold"
                 style={{ color: "var(--text-primary)" }}
               >
-                Claude
+                Cloud
               </div>
               <div
                 className="text-[10px] font-[Space_Grotesk] uppercase tracking-wider"
@@ -118,8 +118,8 @@ export function ChatPanel() {
                 className="text-sm text-center"
                 style={{ color: "var(--text-tertiary)" }}
               >
-                Ask Claude about your pipeline, prep for a meeting, or
-                voice-dump a new relationship.
+                Ask Cloud anything — pipeline, meeting prep, emails,
+                objectives, or just tell it what to do.
               </p>
             </div>
           )}

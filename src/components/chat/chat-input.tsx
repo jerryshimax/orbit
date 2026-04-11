@@ -39,16 +39,6 @@ export function ChatInput({
       className="flex items-end gap-2 px-4 py-3"
       style={{ borderTop: "1px solid #262a31" }}
     >
-      {/* Voice toggle (placeholder — Phase 4) */}
-      <button
-        className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors"
-        style={{ background: "#262a31", color: "var(--text-tertiary)" }}
-        title="Voice input (coming soon)"
-        disabled
-      >
-        <span className="material-symbols-outlined text-xl">mic</span>
-      </button>
-
       {/* Text input */}
       <textarea
         ref={textareaRef}
@@ -56,7 +46,7 @@ export function ChatInput({
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
         onInput={handleInput}
-        placeholder="Ask Claude anything..."
+        placeholder="Ask Cloud anything..."
         rows={1}
         className="flex-1 resize-none bg-transparent outline-none text-sm py-2.5 px-3 rounded-lg"
         style={{
