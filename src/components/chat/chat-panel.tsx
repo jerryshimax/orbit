@@ -58,7 +58,7 @@ export function ChatPanel() {
                 className="material-symbols-outlined text-sm"
                 style={{ color: "#412d00" }}
               >
-                pets
+                blur_on
               </span>
             </div>
             <div>

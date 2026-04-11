@@ -47,7 +47,8 @@ export async function POST(
     extractedText = await file.text();
   } else if (file.type === "application/pdf") {
     try {
-      const pdfParse = (await import("pdf-parse")).default;
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const pdfParse = require("pdf-parse") as (buf: Buffer) => Promise<{ text: string }>;
       const buffer = Buffer.from(await file.arrayBuffer());
       const parsed = await pdfParse(buffer);
       extractedText = parsed.text;

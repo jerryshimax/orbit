@@ -98,6 +98,14 @@ export default function MeetingDetailPage({
               </span>
             </div>
           </div>
+          <a
+            href={`/meetings/${meetingId}/war-room`}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-[Space_Grotesk] uppercase tracking-wider font-bold transition-all hover:brightness-110 shrink-0"
+            style={{ background: "var(--accent)", color: "#412d00" }}
+          >
+            <span className="material-symbols-outlined text-[16px]">strategy</span>
+            War Room
+          </a>
         </div>
       </section>
 

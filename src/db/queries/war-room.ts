@@ -9,7 +9,7 @@ import {
   personOrgAffiliations,
   interactions,
 } from "@/db/schema";
-import { eq, desc, asc, and } from "drizzle-orm";
+import { eq, desc, asc, and, sql, count, max } from "drizzle-orm";
 
 // ─── Types ───
 
@@ -244,4 +244,72 @@ export async function deleteAttachment(
     )
     .returning();
   return deleted;
+}
+
+// ─── List All War Rooms ───
+
+export type WarRoomListItem = {
+  meetingId: string;
+  meetingTitle: string;
+  meetingDate: string | null;
+  meetingTime: string | null;
+  meetingLocation: string | null;
+  meetingStatus: string;
+  orgName: string | null;
+  orgNameZh: string | null;
+  sectionCount: number;
+  attachmentCount: number;
+  lastActivity: Date | null;
+};
+
+/**
+ * List all meetings that have war room content (sections or attachments).
+ */
+export async function listWarRooms(): Promise<WarRoomListItem[]> {
+  // Subquery: section counts + latest update per meeting
+  const sectionStats = db
+    .select({
+      meetingId: warRoomSections.meetingId,
+      sectionCount: count(warRoomSections.id).as("section_count"),
+      lastUpdated: max(warRoomSections.updatedAt).as("last_updated"),
+    })
+    .from(warRoomSections)
+    .groupBy(warRoomSections.meetingId)
+    .as("section_stats");
+
+  // Subquery: attachment counts per meeting
+  const attachStats = db
+    .select({
+      meetingId: warRoomAttachments.meetingId,
+      attachmentCount: count(warRoomAttachments.id).as("attachment_count"),
+    })
+    .from(warRoomAttachments)
+    .groupBy(warRoomAttachments.meetingId)
+    .as("attach_stats");
+
+  const rows = await db
+    .select({
+      meetingId: fieldTripMeetings.id,
+      meetingTitle: fieldTripMeetings.title,
+      meetingDate: fieldTripMeetings.meetingDate,
+      meetingTime: fieldTripMeetings.meetingTime,
+      meetingLocation: fieldTripMeetings.location,
+      meetingStatus: fieldTripMeetings.status,
+      orgName: organizations.name,
+      orgNameZh: organizations.nameZh,
+      sectionCount: sql<number>`coalesce(${sectionStats.sectionCount}, 0)`,
+      attachmentCount: sql<number>`coalesce(${attachStats.attachmentCount}, 0)`,
+      lastActivity: sectionStats.lastUpdated,
+    })
+    .from(fieldTripMeetings)
+    .innerJoin(sectionStats, eq(sectionStats.meetingId, fieldTripMeetings.id))
+    .leftJoin(attachStats, eq(attachStats.meetingId, fieldTripMeetings.id))
+    .leftJoin(organizations, eq(organizations.id, fieldTripMeetings.organizationId))
+    .orderBy(desc(fieldTripMeetings.meetingDate));
+
+  return rows.map((r) => ({
+    ...r,
+    sectionCount: Number(r.sectionCount),
+    attachmentCount: Number(r.attachmentCount),
+  }));
 }

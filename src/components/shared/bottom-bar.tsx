@@ -12,7 +12,7 @@ export function BottomBar() {
       onClick: () => router.back(),
     },
     {
-      icon: "pets",
+      icon: "blur_on",
       label: "Cloud",
       accent: true,
       onClick: () => {

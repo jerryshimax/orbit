@@ -22,7 +22,7 @@ export function ChatFab() {
       }}
       title="Open Cloud"
     >
-      <span className="material-symbols-rounded text-2xl">pets</span>
+      <span className="material-symbols-rounded text-2xl">blur_on</span>
     </button>
   );
 }
