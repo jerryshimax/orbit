@@ -27,5 +27,8 @@ export * from "./google-auth";
 // Meeting notes (Orbit intelligence layer on GCal events)
 export * from "./meeting-notes";
 
+// Objectives, Key Results, Action Items
+export * from "./objectives";
+
 // Chat
 export * from "./chat";

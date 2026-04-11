@@ -1,128 +1,101 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { useOrganizations } from "@/hooks/use-organizations";
-import { usePipelineSummary } from "@/hooks/use-pipeline";
-import { useDefaultTrip, useTrip } from "@/hooks/use-roadshow";
+import { useObjectives } from "@/hooks/use-objectives";
+import { useActions } from "@/hooks/use-actions";
+import { useMomentum } from "@/hooks/use-momentum";
+import { useTeamPulse } from "@/hooks/use-team-pulse";
 import { useCalendarEvents } from "@/hooks/use-calendar";
+import { usePipelineSummary } from "@/hooks/use-pipeline";
 import { formatMoney } from "@/lib/format";
-import { FUND_TARGET_MM } from "@/lib/constants";
 
-/**
- * FOCUS — Objective-driven priority hub.
- * Surfaces what matters most right now, weighted by urgency × importance.
- */
+const PRIORITY_COLORS: Record<string, string> = {
+  p0: "#ef4444",
+  p1: "#f59e0b",
+  p2: "#6b7280",
+};
+
+const ENTITY_COLORS: Record<string, string> = {
+  CE: "#e9c176",
+  SYN: "#3b82f6",
+  UUL: "#22c55e",
+  FO: "#a855f7",
+};
+
+const ACTION_TABS = [
+  { key: "all", label: "All" },
+  { key: "action", label: "Actions" },
+  { key: "decision", label: "Decisions" },
+  { key: "follow_up", label: "Follow-ups" },
+];
+
 export default function FocusPage() {
-  const { data: orgs } = useOrganizations();
-  const { data: pipeline } = usePipelineSummary();
-  const { data: defaultTrip } = useDefaultTrip();
-  const { data: tripData } = useTrip(defaultTrip?.id ?? null);
-
   const today = new Date().toISOString().split("T")[0];
   const tomorrow = new Date(Date.now() + 86400_000).toISOString().split("T")[0];
+
+  const { data: objectivesData } = useObjectives("active");
+  const { data: allActions, mutate: mutateActions } = useActions();
+  const { data: momentum } = useMomentum();
+  const { data: teamPulse } = useTeamPulse();
   const { events: todayEvents } = useCalendarEvents(today, tomorrow);
+  const { data: pipeline } = usePipelineSummary();
 
-  // Today's agenda (non-all-day events)
-  const agenda = useMemo(() => {
-    return todayEvents
-      .filter((e) => !e.isAllDay)
-      .sort(
-        (a, b) =>
-          new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
-      )
-      .slice(0, 8);
-  }, [todayEvents]);
+  const [actionTab, setActionTab] = useState("all");
 
-  // Next actions — aggregated from meeting action items
-  const nextActions = useMemo(() => {
-    if (!tripData?.meetings) return [];
-    const items: {
-      task: string;
-      owner: string;
-      due?: string;
-      meetingTitle: string;
-      meetingId: string;
-    }[] = [];
-    for (const m of tripData.meetings) {
-      if (Array.isArray(m.actionItems)) {
-        for (const a of m.actionItems as any[]) {
-          if (!a.done) {
-            items.push({
-              task: a.task,
-              owner: a.owner,
-              due: a.due,
-              meetingTitle: m.title,
-              meetingId: m.id,
-            });
-          }
-        }
-      }
+  const objectives = objectivesData ?? [];
+  const actions = allActions ?? [];
+
+  // Today's agenda
+  const agenda = useMemo(
+    () =>
+      todayEvents
+        .filter((e) => !e.isAllDay)
+        .sort(
+          (a, b) =>
+            new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+        )
+        .slice(0, 8),
+    [todayEvents]
+  );
+
+  // Deadline alerts (objectives due in 7 days)
+  const deadlineAlerts = useMemo(() => {
+    const in7d = new Date(Date.now() + 7 * 86400_000)
+      .toISOString()
+      .split("T")[0];
+    return objectives.filter(
+      (o: any) => o.deadline && o.deadline >= today && o.deadline <= in7d
+    );
+  }, [objectives, today]);
+
+  // Filtered actions by tab
+  const filteredActions = useMemo(
+    () =>
+      actionTab === "all"
+        ? actions
+        : actions.filter((a: any) => a.type === actionTab),
+    [actions, actionTab]
+  );
+
+  // Action counts by type
+  const actionCounts = useMemo(() => {
+    const counts = { action: 0, decision: 0, follow_up: 0, total: actions.length };
+    for (const a of actions) {
+      if (a.type in counts) (counts as any)[a.type]++;
     }
-    return items.slice(0, 10);
-  }, [tripData]);
+    return counts;
+  }, [actions]);
 
-  // Signals — stale pipeline + upcoming meetings with no prep
-  const signals = useMemo(() => {
-    const items: {
-      type: string;
-      title: string;
-      detail: string;
-      href: string;
-      urgency: number;
-    }[] = [];
-
-    // Stale pipeline: orgs with active deals but no interaction in 14+ days
-    if (orgs) {
-      for (const org of orgs) {
-        if (
-          org.primaryOpportunity &&
-          org.primaryOpportunity.stage !== "passed" &&
-          org.primaryOpportunity.stage !== "closed" &&
-          org.daysSinceInteraction !== null &&
-          org.daysSinceInteraction > 14
-        ) {
-          items.push({
-            type: "stale",
-            title: org.name,
-            detail: `${org.daysSinceInteraction}d since last touch · ${org.primaryOpportunity.stage}`,
-            href: `/organizations/${org.id}`,
-            urgency: org.daysSinceInteraction,
-          });
-        }
-      }
-    }
-
-    // Upcoming meetings in next 48h with no strategic objective
-    if (tripData?.meetings) {
-      const in48h = new Date(Date.now() + 48 * 3600_000)
-        .toISOString()
-        .split("T")[0];
-      for (const m of tripData.meetings) {
-        if (
-          m.meetingDate &&
-          m.meetingDate >= today &&
-          m.meetingDate <= in48h &&
-          !m.strategicAsk &&
-          m.status !== "completed" &&
-          m.status !== "cancelled"
-        ) {
-          items.push({
-            type: "unprepped",
-            title: m.title,
-            detail: `${m.meetingDate} · No strategic objective set`,
-            href: `/calendar/${m.id}`,
-            urgency: 100,
-          });
-        }
-      }
-    }
-
-    return items.sort((a, b) => b.urgency - a.urgency).slice(0, 8);
-  }, [orgs, tripData, today]);
-
-  const actionCount = nextActions.length;
-  const signalCount = signals.length;
+  const toggleAction = async (id: string, currentStatus: string) => {
+    const newStatus = currentStatus === "done" ? "open" : "done";
+    await fetch(`/api/actions/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus }),
+    });
+    mutateActions();
+  };
 
   return (
     <div className="max-w-3xl mx-auto px-4 pt-8 pb-32 lg:pb-8 space-y-8">
@@ -138,13 +111,50 @@ export default function FocusPage() {
           className="text-sm mt-1 font-[JetBrains_Mono]"
           style={{ color: "var(--text-tertiary)" }}
         >
-          {actionCount} action{actionCount !== 1 ? "s" : ""} pending
-          {signalCount > 0 &&
-            ` · ${signalCount} signal${signalCount !== 1 ? "s" : ""}`}
+          {objectives.length} objective{objectives.length !== 1 ? "s" : ""}
+          {actionCounts.total > 0 && ` · ${actionCounts.total} open`}
+          {actionCounts.decision > 0 &&
+            ` · ${actionCounts.decision} decision${actionCounts.decision !== 1 ? "s" : ""}`}
         </p>
       </div>
 
-      {/* Today's Agenda — compact horizontal row */}
+      {/* Deadline Alerts */}
+      {deadlineAlerts.length > 0 && (
+        <div
+          className="p-3 rounded-lg border flex items-center gap-3"
+          style={{
+            background: "rgba(233, 193, 118, 0.08)",
+            borderColor: "var(--accent)",
+          }}
+        >
+          <span
+            className="material-symbols-rounded text-lg"
+            style={{ color: "var(--accent)" }}
+          >
+            alarm
+          </span>
+          <div className="flex-1 text-sm" style={{ color: "var(--text-primary)" }}>
+            {deadlineAlerts.map((o: any, i: number) => (
+              <span key={o.id}>
+                {i > 0 && " · "}
+                <strong>{o.title}</strong>
+                {o.deadline && (
+                  <span style={{ color: "var(--text-tertiary)" }}>
+                    {" "}
+                    — due{" "}
+                    {new Date(o.deadline + "T00:00:00").toLocaleDateString(
+                      "en-US",
+                      { month: "short", day: "numeric" }
+                    )}
+                  </span>
+                )}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Today's Agenda */}
       {agenda.length > 0 && (
         <section>
           <div className="flex items-center justify-between mb-3">
@@ -194,95 +204,365 @@ export default function FocusPage() {
         </section>
       )}
 
-      {/* Next Actions */}
-      {nextActions.length > 0 && (
+      {/* Objectives Board */}
+      <section>
+        <h2
+          className="font-[Space_Grotesk] text-[10px] uppercase tracking-[0.15em] mb-3"
+          style={{ color: "var(--text-tertiary)" }}
+        >
+          Objectives
+        </h2>
+        {objectives.length > 0 ? (
+          <div className="space-y-2">
+            {objectives.map((obj: any) => (
+              <div
+                key={obj.id}
+                className="p-4 rounded-lg"
+                style={{ background: "#181c22" }}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      {obj.entityCode && (
+                        <span
+                          className="font-[Space_Grotesk] text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded leading-none"
+                          style={{
+                            background:
+                              ENTITY_COLORS[obj.entityCode] ?? "#6b7280",
+                            color: obj.entityCode === "CE" ? "#412d00" : "#fff",
+                          }}
+                        >
+                          {obj.entityCode}
+                        </span>
+                      )}
+                      <span
+                        className="font-[Space_Grotesk] text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded leading-none"
+                        style={{
+                          background: "#1c2026",
+                          color: PRIORITY_COLORS[obj.priority] ?? "#6b7280",
+                          border: `1px solid ${PRIORITY_COLORS[obj.priority] ?? "#6b7280"}40`,
+                        }}
+                      >
+                        {obj.priority.toUpperCase()}
+                      </span>
+                    </div>
+                    <h3
+                      className="font-[Manrope] font-bold text-sm"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      {obj.title}
+                    </h3>
+                    {obj.description && (
+                      <p
+                        className="text-xs mt-1 line-clamp-2"
+                        style={{ color: "var(--text-tertiary)" }}
+                      >
+                        {obj.description}
+                      </p>
+                    )}
+                  </div>
+                  {obj.deadline && (
+                    <div
+                      className="text-[10px] font-[JetBrains_Mono] shrink-0"
+                      style={{ color: "var(--text-tertiary)" }}
+                    >
+                      {new Date(obj.deadline + "T00:00:00").toLocaleDateString(
+                        "en-US",
+                        { month: "short", day: "numeric" }
+                      )}
+                    </div>
+                  )}
+                </div>
+                {/* Progress bar */}
+                {obj.keyResults?.length > 0 && (
+                  <div className="mt-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <span
+                        className="text-[10px] font-[Space_Grotesk]"
+                        style={{ color: "var(--text-tertiary)" }}
+                      >
+                        {obj.keyResults.length} key result
+                        {obj.keyResults.length !== 1 ? "s" : ""}
+                      </span>
+                      <span
+                        className="text-[10px] font-[JetBrains_Mono]"
+                        style={{ color: "var(--accent)" }}
+                      >
+                        {obj.progress}%
+                      </span>
+                    </div>
+                    <div
+                      className="h-1.5 rounded-full overflow-hidden"
+                      style={{ background: "#262a31" }}
+                    >
+                      <div
+                        className="h-full rounded-full transition-all"
+                        style={{
+                          width: `${obj.progress}%`,
+                          background: "var(--accent)",
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            className="p-6 rounded-lg text-center text-sm"
+            style={{ background: "#181c22", color: "var(--text-tertiary)" }}
+          >
+            No objectives yet. Create your first strategic objective.
+          </div>
+        )}
+      </section>
+
+      {/* Action Stream */}
+      <section>
+        <div className="flex items-center gap-4 mb-3">
+          {ACTION_TABS.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActionTab(tab.key)}
+              className="font-[Space_Grotesk] text-[10px] uppercase tracking-[0.15em] transition-colors"
+              style={{
+                color:
+                  actionTab === tab.key
+                    ? "var(--accent)"
+                    : "var(--text-tertiary)",
+                borderBottom:
+                  actionTab === tab.key ? "1px solid var(--accent)" : "none",
+                paddingBottom: 4,
+              }}
+            >
+              {tab.label}
+              {tab.key !== "all" && (
+                <span className="ml-1 opacity-60">
+                  {tab.key === "action"
+                    ? actionCounts.action
+                    : tab.key === "decision"
+                      ? actionCounts.decision
+                      : actionCounts.follow_up}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+        {filteredActions.length > 0 ? (
+          <div className="space-y-1.5">
+            {filteredActions.map((a: any) => (
+              <div
+                key={a.id}
+                className="flex items-start gap-3 p-3 rounded-lg"
+                style={{ background: "#181c22" }}
+              >
+                <button
+                  onClick={() => toggleAction(a.id, a.status)}
+                  className="w-5 h-5 rounded border shrink-0 mt-0.5 flex items-center justify-center transition-colors"
+                  style={{
+                    borderColor:
+                      a.status === "done"
+                        ? "var(--accent)"
+                        : "var(--border)",
+                    background:
+                      a.status === "done" ? "var(--accent)" : "transparent",
+                  }}
+                >
+                  {a.status === "done" && (
+                    <span
+                      className="material-symbols-rounded text-[14px]"
+                      style={{ color: "#412d00" }}
+                    >
+                      check
+                    </span>
+                  )}
+                </button>
+                <div className="flex-1 min-w-0">
+                  <div
+                    className="text-sm"
+                    style={{
+                      color:
+                        a.status === "done"
+                          ? "var(--text-tertiary)"
+                          : "var(--text-primary)",
+                      textDecoration:
+                        a.status === "done" ? "line-through" : "none",
+                    }}
+                  >
+                    {a.title}
+                  </div>
+                  <div
+                    className="text-[11px] mt-0.5 flex items-center gap-2"
+                    style={{ color: "var(--text-tertiary)" }}
+                  >
+                    <span>{a.owner}</span>
+                    {a.objectiveTitle && (
+                      <>
+                        <span>·</span>
+                        <span className="truncate">{a.objectiveTitle}</span>
+                      </>
+                    )}
+                    {a.type === "decision" && (
+                      <span
+                        className="font-[Space_Grotesk] text-[8px] uppercase tracking-wider px-1 py-px rounded"
+                        style={{ background: "#ef444420", color: "#ef4444" }}
+                      >
+                        Decision
+                      </span>
+                    )}
+                    {a.type === "follow_up" && (
+                      <span
+                        className="font-[Space_Grotesk] text-[8px] uppercase tracking-wider px-1 py-px rounded"
+                        style={{ background: "#3b82f620", color: "#3b82f6" }}
+                      >
+                        Follow-up
+                      </span>
+                    )}
+                  </div>
+                </div>
+                {a.dueDate && (
+                  <span
+                    className="text-[10px] font-[JetBrains_Mono] shrink-0"
+                    style={{
+                      color:
+                        a.dueDate < today ? "#ef4444" : "var(--text-tertiary)",
+                    }}
+                  >
+                    {new Date(a.dueDate + "T00:00:00").toLocaleDateString(
+                      "en-US",
+                      { month: "short", day: "numeric" }
+                    )}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            className="p-4 rounded-lg text-center text-xs"
+            style={{ background: "#181c22", color: "var(--text-tertiary)" }}
+          >
+            No open items
+          </div>
+        )}
+      </section>
+
+      {/* Relationship Momentum */}
+      {momentum && (momentum.warming?.length > 0 || momentum.cooling?.length > 0) && (
         <section>
           <h2
             className="font-[Space_Grotesk] text-[10px] uppercase tracking-[0.15em] mb-3"
             style={{ color: "var(--text-tertiary)" }}
           >
-            Next Actions
+            Relationship Momentum
           </h2>
-          <div className="space-y-1.5">
-            {nextActions.map((a, i) => (
-              <Link
-                key={i}
-                href={`/calendar/${a.meetingId}`}
-                className="flex items-start gap-3 p-3 rounded-lg hover:brightness-110 transition-colors"
-                style={{ background: "#181c22" }}
+          <div className="grid grid-cols-2 gap-3">
+            {/* Warming */}
+            <div className="space-y-1.5">
+              <div
+                className="text-[9px] font-[Space_Grotesk] uppercase tracking-wider flex items-center gap-1"
+                style={{ color: "#22c55e" }}
               >
-                <div
-                  className="w-5 h-5 rounded border shrink-0 mt-0.5"
-                  style={{ borderColor: "var(--border)" }}
-                />
-                <div className="flex-1 min-w-0">
+                <span className="material-symbols-rounded text-[12px]">
+                  trending_up
+                </span>
+                Warming
+              </div>
+              {(momentum.warming ?? []).map((c: any) => (
+                <Link
+                  key={c.personId}
+                  href={`/contacts/${c.personId}`}
+                  className="block p-2 rounded-lg hover:brightness-110 transition-colors"
+                  style={{ background: "#181c22" }}
+                >
                   <div
-                    className="text-sm"
+                    className="text-xs font-[Manrope] font-semibold truncate"
                     style={{ color: "var(--text-primary)" }}
                   >
-                    {a.task}
+                    {c.name}
                   </div>
                   <div
-                    className="text-[11px] mt-0.5 truncate"
-                    style={{ color: "var(--text-tertiary)" }}
+                    className="text-[10px] font-[JetBrains_Mono]"
+                    style={{ color: "#22c55e" }}
                   >
-                    {a.owner} · {a.meetingTitle}
+                    +{c.delta} interactions
                   </div>
-                </div>
-                {a.due && (
-                  <span
-                    className="text-[10px] font-[JetBrains_Mono] shrink-0"
-                    style={{ color: "var(--text-tertiary)" }}
+                </Link>
+              ))}
+            </div>
+            {/* Cooling */}
+            <div className="space-y-1.5">
+              <div
+                className="text-[9px] font-[Space_Grotesk] uppercase tracking-wider flex items-center gap-1"
+                style={{ color: "#ef4444" }}
+              >
+                <span className="material-symbols-rounded text-[12px]">
+                  trending_down
+                </span>
+                Cooling
+              </div>
+              {(momentum.cooling ?? []).map((c: any) => (
+                <Link
+                  key={c.personId}
+                  href={`/contacts/${c.personId}`}
+                  className="block p-2 rounded-lg hover:brightness-110 transition-colors"
+                  style={{ background: "#181c22" }}
+                >
+                  <div
+                    className="text-xs font-[Manrope] font-semibold truncate"
+                    style={{ color: "var(--text-primary)" }}
                   >
-                    {a.due}
-                  </span>
-                )}
-              </Link>
-            ))}
+                    {c.name}
+                  </div>
+                  <div
+                    className="text-[10px] font-[JetBrains_Mono]"
+                    style={{ color: "#ef4444" }}
+                  >
+                    {c.delta} interactions
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       )}
 
-      {/* Signals */}
-      {signals.length > 0 && (
+      {/* Team Pulse */}
+      {teamPulse && teamPulse.length > 0 && (
         <section>
           <h2
             className="font-[Space_Grotesk] text-[10px] uppercase tracking-[0.15em] mb-3"
             style={{ color: "var(--text-tertiary)" }}
           >
-            Signals
+            Team Pulse
           </h2>
-          <div className="space-y-1.5">
-            {signals.map((s, i) => (
-              <Link
-                key={i}
-                href={s.href}
-                className="flex items-center gap-3 p-3 rounded-lg hover:brightness-110 transition-colors"
-                style={{ background: "#181c22" }}
+          <div className="flex gap-2 overflow-x-auto pb-1 hide-scrollbar">
+            {teamPulse.map((m: any) => (
+              <div
+                key={m.handle}
+                className="shrink-0 px-3 py-2.5 rounded-lg"
+                style={{ background: "#181c22", minWidth: 130 }}
               >
-                <span
-                  className="material-symbols-rounded text-lg shrink-0"
-                  style={{
-                    color: s.type === "stale" ? "#f59e0b" : "#ef4444",
-                  }}
+                <div
+                  className="font-[Manrope] font-bold text-xs"
+                  style={{ color: "var(--text-primary)" }}
                 >
-                  {s.type === "stale" ? "schedule" : "warning"}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <div
-                    className="text-sm font-[Manrope] font-semibold"
-                    style={{ color: "var(--text-primary)" }}
-                  >
-                    {s.title}
-                  </div>
-                  <div
-                    className="text-[11px] mt-0.5"
-                    style={{ color: "var(--text-tertiary)" }}
-                  >
-                    {s.detail}
-                  </div>
+                  {m.fullName}
                 </div>
-              </Link>
+                <div
+                  className="text-[10px] mt-1 font-[Space_Grotesk]"
+                  style={{ color: "var(--text-tertiary)" }}
+                >
+                  {m.openActions} open
+                  {m.overdueActions > 0 && (
+                    <span style={{ color: "#ef4444" }}>
+                      {" "}
+                      · {m.overdueActions} overdue
+                    </span>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         </section>
