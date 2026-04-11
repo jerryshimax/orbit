@@ -20,9 +20,9 @@ export function ChatFab() {
         background: "var(--accent)",
         color: "#412d00",
       }}
-      title="Open Claude"
+      title="Open Cloud"
     >
-      <span className="material-symbols-outlined text-2xl">chat</span>
+      <span className="material-symbols-rounded text-2xl">cloud</span>
     </button>
   );
 }

@@ -113,6 +113,98 @@ export const ORBIT_TOOLS: Anthropic.Tool[] = [
       },
     },
   },
+  // ── Calendar & Email tools ──
+  {
+    name: "list_calendar_events",
+    description: "List calendar events for a date range. Returns GCal events + field trip meetings.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        start_date: { type: "string", description: "Start date (YYYY-MM-DD). Default: today" },
+        end_date: { type: "string", description: "End date (YYYY-MM-DD). Default: 7 days from now" },
+      },
+    },
+  },
+  {
+    name: "search_emails",
+    description: "Search Gmail for emails matching a query. Returns subject, from, date, snippet.",
+    input_schema: {
+      type: "object" as const,
+      required: ["query"],
+      properties: {
+        query: { type: "string", description: "Gmail search query (e.g., 'from:ray subject:LP')" },
+        max_results: { type: "number", description: "Max results (default 10)" },
+      },
+    },
+  },
+  {
+    name: "draft_email",
+    description: "Create an email draft in Gmail. Does NOT send — creates a draft for review.",
+    input_schema: {
+      type: "object" as const,
+      required: ["to", "subject", "body"],
+      properties: {
+        to: { type: "string", description: "Recipient email address" },
+        subject: { type: "string" },
+        body: { type: "string", description: "Email body (plain text)" },
+        cc: { type: "string", description: "CC email address" },
+      },
+    },
+  },
+  // ── Objectives & Actions tools ──
+  {
+    name: "create_objective",
+    description: "Create a strategic objective with optional deadline and priority.",
+    input_schema: {
+      type: "object" as const,
+      required: ["title"],
+      properties: {
+        title: { type: "string" },
+        description: { type: "string" },
+        entity_code: { type: "string", enum: ["CE", "SYN", "UUL", "FO"] },
+        priority: { type: "string", enum: ["p0", "p1", "p2"] },
+        deadline: { type: "string", description: "YYYY-MM-DD" },
+      },
+    },
+  },
+  {
+    name: "create_action",
+    description: "Create an action item, decision, or follow-up. Use type='decision' for things waiting on Jerry's call, 'follow_up' for promises to keep.",
+    input_schema: {
+      type: "object" as const,
+      required: ["title"],
+      properties: {
+        title: { type: "string" },
+        type: { type: "string", enum: ["action", "decision", "follow_up"], description: "Default: action" },
+        priority: { type: "string", enum: ["p0", "p1", "p2"] },
+        due_date: { type: "string", description: "YYYY-MM-DD" },
+        objective_title: { type: "string", description: "Link to an objective by title (fuzzy match)" },
+        notes: { type: "string" },
+      },
+    },
+  },
+  {
+    name: "list_objectives",
+    description: "List active objectives with progress.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        status: { type: "string", enum: ["active", "blocked", "complete"] },
+        entity_code: { type: "string" },
+      },
+    },
+  },
+  {
+    name: "list_actions",
+    description: "List open action items, decisions, or follow-ups.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        type: { type: "string", enum: ["action", "decision", "follow_up"] },
+        status: { type: "string", enum: ["open", "done", "blocked"] },
+      },
+    },
+  },
   {
     name: "create_draft_record",
     description:
@@ -162,9 +254,21 @@ export async function executeToolCall(
       return handlers.handleGetDetail(toolInput);
     case "update_contact":
       return handlers.handleUpdateContact(toolInput);
+    case "list_calendar_events":
+      return handlers.handleListCalendarEvents(toolInput);
+    case "search_emails":
+      return handlers.handleSearchEmails(toolInput);
+    case "draft_email":
+      return handlers.handleDraftEmail(toolInput);
+    case "create_objective":
+      return handlers.handleCreateObjective(toolInput);
+    case "create_action":
+      return handlers.handleCreateAction(toolInput);
+    case "list_objectives":
+      return handlers.handleListObjectives(toolInput);
+    case "list_actions":
+      return handlers.handleListActions(toolInput);
     case "create_draft_record":
-      // Draft records are NOT executed — they're stored as drafts
-      // The actual execution happens when the user approves via /api/chat/draft/[id]
       return { status: "draft_created", ...toolInput };
     default:
       return { error: `Unknown tool: ${toolName}` };

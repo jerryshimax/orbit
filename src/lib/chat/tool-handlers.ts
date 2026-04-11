@@ -593,3 +593,270 @@ export async function handleUpdateContact(params: {
 
   return { updates: updated };
 }
+
+// ── Calendar & Email handlers ──────────────────────────────────────────
+
+export async function handleListCalendarEvents(params: {
+  start_date?: string;
+  end_date?: string;
+}) {
+  const { getMergedCalendar } = await import("@/db/queries/calendar");
+  const { getDefaultTrip } = await import("@/db/queries/roadshow");
+
+  const now = new Date();
+  const startDate = params.start_date
+    ? new Date(params.start_date)
+    : now;
+  const endDate = params.end_date
+    ? new Date(params.end_date)
+    : new Date(now.getTime() + 7 * 86400_000);
+
+  // Get user ID from orbit_users (default to jerry)
+  const { orbitUsers } = await import("@/db/schema");
+  const [jerry] = await db
+    .select({ id: orbitUsers.id })
+    .from(orbitUsers)
+    .where(eq(orbitUsers.handle, "jerry"))
+    .limit(1);
+
+  const defaultTrip = await getDefaultTrip();
+  const events = await getMergedCalendar(
+    jerry?.id ?? "",
+    startDate,
+    endDate,
+    defaultTrip?.id
+  );
+
+  return {
+    events: events.map((e) => ({
+      title: e.title,
+      startTime: e.startTime,
+      endTime: e.endTime,
+      location: e.location,
+      type: e.type,
+      status: e.status,
+      orgName: e.orgName,
+    })),
+    count: events.length,
+  };
+}
+
+export async function handleSearchEmails(params: {
+  query: string;
+  max_results?: number;
+}) {
+  const { getGoogleClient } = await import("@/lib/google/client");
+  const { orbitUsers } = await import("@/db/schema");
+
+  const [jerry] = await db
+    .select({ id: orbitUsers.id })
+    .from(orbitUsers)
+    .where(eq(orbitUsers.handle, "jerry"))
+    .limit(1);
+
+  if (!jerry) return { error: "User not found" };
+
+  const client = await getGoogleClient(jerry.id);
+  if (!client) return { error: "Google not connected" };
+
+  const maxResults = params.max_results ?? 10;
+  const searchParams = new URLSearchParams({
+    q: params.query,
+    maxResults: String(maxResults),
+  });
+
+  const res = await client.fetch(
+    `https://gmail.googleapis.com/gmail/v1/users/me/messages?${searchParams}`
+  );
+  if (!res.ok) return { error: "Gmail search failed" };
+
+  const data = await res.json();
+  const messageIds: string[] = (data.messages ?? []).map((m: any) => m.id);
+
+  // Fetch message details (first 5 for speed)
+  const results = [];
+  for (const msgId of messageIds.slice(0, 5)) {
+    const msgRes = await client.fetch(
+      `https://gmail.googleapis.com/gmail/v1/users/me/messages/${msgId}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date`
+    );
+    if (!msgRes.ok) continue;
+    const msg = await msgRes.json();
+    const headers: Array<{ name: string; value: string }> =
+      msg.payload?.headers ?? [];
+    results.push({
+      from: headers.find((h) => h.name === "From")?.value ?? "",
+      subject: headers.find((h) => h.name === "Subject")?.value ?? "",
+      date: headers.find((h) => h.name === "Date")?.value ?? "",
+      snippet: msg.snippet ?? "",
+    });
+  }
+
+  return { results, totalResults: data.resultSizeEstimate ?? 0 };
+}
+
+export async function handleDraftEmail(params: {
+  to: string;
+  subject: string;
+  body: string;
+  cc?: string;
+}) {
+  const { getGoogleClient } = await import("@/lib/google/client");
+  const { orbitUsers } = await import("@/db/schema");
+
+  const [jerry] = await db
+    .select({ id: orbitUsers.id })
+    .from(orbitUsers)
+    .where(eq(orbitUsers.handle, "jerry"))
+    .limit(1);
+
+  if (!jerry) return { error: "User not found" };
+
+  const client = await getGoogleClient(jerry.id);
+  if (!client) return { error: "Google not connected" };
+
+  // Build MIME message
+  const headers = [
+    `To: ${params.to}`,
+    `Subject: ${params.subject}`,
+    params.cc ? `Cc: ${params.cc}` : "",
+    "Content-Type: text/plain; charset=utf-8",
+    "",
+    params.body,
+  ]
+    .filter(Boolean)
+    .join("\r\n");
+
+  const raw = Buffer.from(headers)
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+  const res = await client.fetch(
+    "https://gmail.googleapis.com/gmail/v1/users/me/drafts",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: { raw } }),
+    }
+  );
+
+  if (!res.ok) return { error: "Failed to create draft" };
+
+  return { status: "draft_created", to: params.to, subject: params.subject };
+}
+
+// ── Objectives & Actions handlers ──────────────────────────────────────
+
+export async function handleCreateObjective(params: {
+  title: string;
+  description?: string;
+  entity_code?: string;
+  priority?: string;
+  deadline?: string;
+}) {
+  const { objectives: objTable } = await import("@/db/schema");
+
+  const [created] = await db
+    .insert(objTable)
+    .values({
+      title: params.title,
+      description: params.description,
+      entityCode: params.entity_code,
+      priority: params.priority ?? "p1",
+      status: "active",
+      deadline: params.deadline,
+      owner: "jerry",
+      createdBy: "cloud",
+    })
+    .returning();
+
+  return { status: "created", objective: { id: created.id, title: created.title } };
+}
+
+export async function handleCreateAction(params: {
+  title: string;
+  type?: string;
+  priority?: string;
+  due_date?: string;
+  objective_title?: string;
+  notes?: string;
+}) {
+  const { actionItems, objectives: objTable } = await import("@/db/schema");
+
+  // Link to objective if specified
+  let objectiveId = null;
+  if (params.objective_title) {
+    const [obj] = await db
+      .select({ id: objTable.id })
+      .from(objTable)
+      .where(ilike(objTable.title, `%${params.objective_title}%`))
+      .limit(1);
+    objectiveId = obj?.id ?? null;
+  }
+
+  const [created] = await db
+    .insert(actionItems)
+    .values({
+      title: params.title,
+      type: params.type ?? "action",
+      priority: params.priority ?? "p1",
+      status: "open",
+      dueDate: params.due_date,
+      objectiveId,
+      notes: params.notes,
+      owner: "jerry",
+      createdBy: "cloud",
+    })
+    .returning();
+
+  return { status: "created", action: { id: created.id, title: created.title, type: created.type } };
+}
+
+export async function handleListObjectives(params: {
+  status?: string;
+  entity_code?: string;
+}) {
+  const { getObjectives } = await import("@/db/queries/objectives");
+  const results = await getObjectives({
+    status: params.status ?? "active",
+    entityCode: params.entity_code,
+  });
+
+  return {
+    objectives: results.map((o: any) => ({
+      title: o.title,
+      entityCode: o.entityCode,
+      priority: o.priority,
+      status: o.status,
+      deadline: o.deadline,
+      progress: o.progress,
+      keyResultCount: o.keyResults?.length ?? 0,
+    })),
+    count: results.length,
+  };
+}
+
+export async function handleListActions(params: {
+  type?: string;
+  status?: string;
+}) {
+  const { getActionItems } = await import("@/db/queries/actions");
+  const results = await getActionItems({
+    type: params.type,
+    status: params.status ?? "open",
+  });
+
+  return {
+    items: results.map((a: any) => ({
+      title: a.title,
+      type: a.type,
+      status: a.status,
+      priority: a.priority,
+      dueDate: a.dueDate,
+      owner: a.owner,
+      objectiveTitle: a.objectiveTitle,
+    })),
+    count: results.length,
+  };
+}
