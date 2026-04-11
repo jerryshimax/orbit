@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         destination: "/calendar",
         permanent: true,
       },
+      {
+        source: "/brief",
+        destination: "/focus",
+        permanent: true,
+      },
     ];
   },
 };

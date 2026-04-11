@@ -6,7 +6,7 @@ import { cn } from "@/lib/cn";
 import { useNavigation } from "./navigation-provider";
 
 const PRIMARY_NAV = [
-  { href: "/brief", icon: "summarize", label: "Brief" },
+  { href: "/focus", icon: "target", label: "Focus" },
   { href: "/calendar", icon: "calendar_month", label: "Calendar" },
   { href: "/meetings", icon: "groups", label: "Meetings" },
   { href: "/contacts", icon: "contact_page", label: "Contacts" },
@@ -91,7 +91,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
           </span>
         </button>
         {!collapsed && (
-          <Link href="/brief" onClick={onNavigate} className="hover:opacity-80 transition-opacity">
+          <Link href="/focus" onClick={onNavigate} className="hover:opacity-80 transition-opacity">
             <div
               className="font-[Manrope] font-extrabold text-sm tracking-tight"
               style={{ color: "var(--text-primary)" }}

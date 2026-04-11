@@ -33,7 +33,7 @@ export function TopBar() {
 
       {/* Logo text — links to home */}
       <Link
-        href="/brief"
+        href="/focus"
         className="font-[var(--font-headline)] font-extrabold text-sm tracking-tight ml-2.5 hover:opacity-80 transition-opacity"
         style={{ color: "var(--text-primary)" }}
       >
