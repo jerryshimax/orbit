@@ -54,7 +54,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,400,0..1,0&display=swap"
         />
       </head>
       <body className="bg-[#10141a] text-[#dfe2eb] font-[var(--font-body),system-ui,sans-serif] antialiased selection:bg-[#e9c176]/30 selection:text-[#e9c176] min-h-screen">
