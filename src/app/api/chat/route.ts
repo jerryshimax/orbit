@@ -1,13 +1,11 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { db } from "@/db";
-import { conversations, chatMessages } from "@/db/schema";
+import { conversations, chatMessages, chatJobs } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { buildSystemPrompt, type PageContext } from "@/lib/chat/system-prompt";
-import { ORBIT_TOOLS, executeToolCall } from "@/lib/chat/tools";
+import { ORBIT_TOOLS } from "@/lib/chat/tools";
 import { getOrganizationDetail } from "@/db/queries/organizations";
 import { getPersonDetail } from "@/db/queries/people";
-
-const anthropic = new Anthropic();
+import { getCurrentUser } from "@/lib/supabase/get-current-user";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -15,15 +13,14 @@ export async function POST(request: Request) {
     conversationId: existingConvId,
     message,
     pageContext,
-    audioTranscription,
-    inputLanguage,
   } = body as {
     conversationId?: string;
     message: string;
     pageContext?: PageContext;
-    audioTranscription?: string;
-    inputLanguage?: string;
   };
+
+  const user = await getCurrentUser();
+  const userHandle = user?.handle ?? "jerry";
 
   // 1. Get or create conversation
   let convId = existingConvId;
@@ -44,68 +41,33 @@ export async function POST(request: Request) {
     conversationId: convId,
     role: "user",
     content: message,
-    transcription: audioTranscription ?? null,
-    inputLanguage: inputLanguage ?? null,
   });
 
-  // Update conversation
   await db
     .update(conversations)
     .set({
-      messageCount: (
-        await db
-          .select()
-          .from(chatMessages)
-          .where(eq(chatMessages.conversationId, convId))
-      ).length,
       lastMessageAt: new Date(),
       updatedAt: new Date(),
     })
     .where(eq(conversations.id, convId));
 
-  // 3. Load conversation history
+  // 3. Load conversation history for context
   const history = await db
     .select()
     .from(chatMessages)
     .where(eq(chatMessages.conversationId, convId))
     .orderBy(asc(chatMessages.createdAt))
-    .limit(50);
+    .limit(30);
 
-  // Build Anthropic messages from history
-  const anthropicMessages: Anthropic.MessageParam[] = [];
-  for (const msg of history) {
-    if (msg.role === "user") {
-      anthropicMessages.push({ role: "user", content: msg.content ?? "" });
-    } else if (msg.role === "assistant") {
-      anthropicMessages.push({
-        role: "assistant",
-        content: msg.content ?? "",
-      });
-    } else if (msg.role === "tool_call" && msg.toolName && msg.toolInput) {
-      anthropicMessages.push({
-        role: "assistant",
-        content: [
-          {
-            type: "tool_use",
-            id: msg.id,
-            name: msg.toolName,
-            input: msg.toolInput as Record<string, unknown>,
-          },
-        ],
-      });
-    } else if (msg.role === "tool_result" && msg.toolOutput) {
-      anthropicMessages.push({
-        role: "user",
-        content: [
-          {
-            type: "tool_result",
-            tool_use_id: msg.id,
-            content: JSON.stringify(msg.toolOutput),
-          },
-        ],
-      });
-    }
-  }
+  // Build prompt from history
+  const historyText = history
+    .map((msg) => {
+      if (msg.role === "user") return `User: ${msg.content}`;
+      if (msg.role === "assistant") return `Cloud: ${msg.content}`;
+      return "";
+    })
+    .filter(Boolean)
+    .join("\n\n");
 
   // 4. Load entity data for context
   let entityData = null;
@@ -117,7 +79,22 @@ export async function POST(request: Request) {
 
   const systemPrompt = buildSystemPrompt({ pageContext, entityData });
 
-  // 5. Create streaming response
+  // 5. Create a job for the local daemon to process
+  const fullPrompt = `${systemPrompt}\n\n--- CONVERSATION HISTORY ---\n${historyText}\n\n--- CURRENT MESSAGE ---\nUser: ${message}`;
+
+  const [job] = await db
+    .insert(chatJobs)
+    .values({
+      conversationId: convId,
+      userHandle,
+      prompt: fullPrompt,
+      tools: ORBIT_TOOLS,
+      pageContext: pageContext ?? null,
+      status: "pending",
+    })
+    .returning();
+
+  // 6. Return SSE stream that polls for job completion
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream({
@@ -128,131 +105,57 @@ export async function POST(request: Request) {
         );
       };
 
-      try {
-        let continueLoop = true;
-        let currentMessages = [...anthropicMessages];
-        let fullAssistantText = "";
+      sendEvent("text_delta", { content: "Thinking..." });
 
-        while (continueLoop) {
-          const response = await anthropic.messages.create({
-            model: "claude-sonnet-4-6-20250514",
-            max_tokens: 4096,
-            system: systemPrompt,
-            messages: currentMessages,
-            tools: ORBIT_TOOLS as any,
-          });
+      // Poll for job completion (max 120s)
+      const maxAttempts = 60;
+      let attempts = 0;
 
-          // Process response blocks
-          for (const block of response.content) {
-            if (block.type === "text") {
-              fullAssistantText += block.text;
-              sendEvent("text_delta", { content: block.text });
-            } else if (block.type === "tool_use") {
-              sendEvent("tool_use", {
-                name: block.name,
-                input: block.input,
-              });
+      while (attempts < maxAttempts) {
+        await new Promise((r) => setTimeout(r, 2000));
+        attempts++;
 
-              // Execute the tool
-              const toolResult = await executeToolCall(
-                block.name,
-                block.input
-              );
+        const [currentJob] = await db
+          .select()
+          .from(chatJobs)
+          .where(eq(chatJobs.id, job.id))
+          .limit(1);
 
-              // Save tool call + result
-              await db.insert(chatMessages).values({
-                conversationId: convId!,
-                role: "tool_call",
-                toolName: block.name,
-                toolInput: block.input as any,
-                content: JSON.stringify(block.input),
-              });
+        if (!currentJob) break;
 
-              await db.insert(chatMessages).values({
-                conversationId: convId!,
-                role: "tool_result",
-                toolName: block.name,
-                toolOutput: toolResult,
-                content: JSON.stringify(toolResult),
-              });
+        if (currentJob.status === "complete" && currentJob.result) {
+          // Clear the "Thinking..." and send the real response
+          sendEvent("text_delta", { content: `\n\n${currentJob.result}` });
 
-              // If it's a draft, send special event
-              if (block.name === "create_draft_record") {
-                const [draftMsg] = await db
-                  .insert(chatMessages)
-                  .values({
-                    conversationId: convId!,
-                    role: "assistant",
-                    content: "Draft created",
-                    draftPayload: toolResult,
-                    draftStatus: "pending",
-                  })
-                  .returning();
-
-                sendEvent("draft", {
-                  payload: toolResult,
-                  draftId: draftMsg.id,
-                });
-              }
-
-              sendEvent("tool_result", {
-                name: block.name,
-                output: toolResult,
-              });
-
-              // Append tool use + result to messages for continuation
-              currentMessages.push({
-                role: "assistant",
-                content: [
-                  {
-                    type: "tool_use",
-                    id: block.id,
-                    name: block.name,
-                    input: block.input,
-                  },
-                ],
-              });
-              currentMessages.push({
-                role: "user",
-                content: [
-                  {
-                    type: "tool_result",
-                    tool_use_id: block.id,
-                    content: JSON.stringify(toolResult),
-                  },
-                ],
-              });
-            }
-          }
-
-          // Check if we should continue the loop
-          if (response.stop_reason === "tool_use") {
-            // Claude wants to make more tool calls after seeing results
-            continueLoop = true;
-          } else {
-            continueLoop = false;
-          }
-        }
-
-        // Save final assistant message
-        if (fullAssistantText) {
+          // Save assistant message
           await db.insert(chatMessages).values({
             conversationId: convId!,
             role: "assistant",
-            content: fullAssistantText,
-            model: "claude-sonnet-4-6-20250514",
+            content: currentJob.result,
           });
+
+          sendEvent("done", { conversationId: convId });
+          controller.close();
+          return;
         }
 
-        sendEvent("done", {
-          conversationId: convId,
-        });
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
-        sendEvent("error", { message: msg });
-      } finally {
-        controller.close();
+        if (currentJob.status === "failed") {
+          sendEvent("text_delta", {
+            content: `\n\nError: ${currentJob.error ?? "Job failed"}`,
+          });
+          sendEvent("done", { conversationId: convId });
+          controller.close();
+          return;
+        }
       }
+
+      // Timeout
+      sendEvent("text_delta", {
+        content:
+          "\n\nCloud is taking longer than expected. Your Mac may be asleep or the daemon isn't running.",
+      });
+      sendEvent("done", { conversationId: convId });
+      controller.close();
     },
   });
 
