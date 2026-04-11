@@ -34,7 +34,7 @@ export default function FocusPage() {
   const today = new Date().toISOString().split("T")[0];
   const tomorrow = new Date(Date.now() + 86400_000).toISOString().split("T")[0];
 
-  const { data: objectivesData } = useObjectives("active");
+  const { data: objectivesData, mutate: mutateObjectives } = useObjectives("active");
   const { data: allActions, mutate: mutateActions } = useActions();
   const { data: momentum } = useMomentum();
   const { data: teamPulse } = useTeamPulse();
@@ -42,6 +42,15 @@ export default function FocusPage() {
   const { data: pipeline } = usePipelineSummary();
 
   const [actionTab, setActionTab] = useState("all");
+  const [showNewObjective, setShowNewObjective] = useState(false);
+  const [showNewAction, setShowNewAction] = useState(false);
+  const [newObjTitle, setNewObjTitle] = useState("");
+  const [newObjEntity, setNewObjEntity] = useState("");
+  const [newObjPriority, setNewObjPriority] = useState("p1");
+  const [newObjDeadline, setNewObjDeadline] = useState("");
+  const [newActionTitle, setNewActionTitle] = useState("");
+  const [newActionType, setNewActionType] = useState("action");
+  const [newActionDue, setNewActionDue] = useState("");
 
   const objectives = objectivesData ?? [];
   const actions = allActions ?? [];
@@ -94,6 +103,44 @@ export default function FocusPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus }),
     });
+    mutateActions();
+  };
+
+  const createObjective = async () => {
+    if (!newObjTitle.trim()) return;
+    await fetch("/api/objectives", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: newObjTitle,
+        entityCode: newObjEntity || undefined,
+        priority: newObjPriority,
+        deadline: newObjDeadline || undefined,
+      }),
+    });
+    setNewObjTitle("");
+    setNewObjEntity("");
+    setNewObjPriority("p1");
+    setNewObjDeadline("");
+    setShowNewObjective(false);
+    mutateObjectives();
+  };
+
+  const createAction = async () => {
+    if (!newActionTitle.trim()) return;
+    await fetch("/api/actions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: newActionTitle,
+        type: newActionType,
+        dueDate: newActionDue || undefined,
+      }),
+    });
+    setNewActionTitle("");
+    setNewActionType("action");
+    setNewActionDue("");
+    setShowNewAction(false);
     mutateActions();
   };
 
@@ -206,12 +253,87 @@ export default function FocusPage() {
 
       {/* Objectives Board */}
       <section>
-        <h2
-          className="font-[Space_Grotesk] text-[10px] uppercase tracking-[0.15em] mb-3"
-          style={{ color: "var(--text-tertiary)" }}
-        >
-          Objectives
-        </h2>
+        <div className="flex items-center justify-between mb-3">
+          <h2
+            className="font-[Space_Grotesk] text-[10px] uppercase tracking-[0.15em]"
+            style={{ color: "var(--text-tertiary)" }}
+          >
+            Objectives
+          </h2>
+          <button
+            onClick={() => setShowNewObjective(!showNewObjective)}
+            className="flex items-center gap-1 text-[10px] font-[Space_Grotesk] uppercase tracking-wider hover:opacity-80"
+            style={{ color: "var(--accent)" }}
+          >
+            <span className="material-symbols-rounded text-[14px]">add</span>
+            New
+          </button>
+        </div>
+
+        {/* Inline create form */}
+        {showNewObjective && (
+          <div
+            className="p-4 rounded-lg mb-3 space-y-2 border"
+            style={{ background: "#181c22", borderColor: "var(--accent)" }}
+          >
+            <input
+              type="text"
+              value={newObjTitle}
+              onChange={(e) => setNewObjTitle(e.target.value)}
+              placeholder="Objective title..."
+              autoFocus
+              className="w-full bg-transparent text-sm focus:outline-none placeholder-[#9a8f80]/50"
+              style={{ color: "var(--text-primary)" }}
+              onKeyDown={(e) => e.key === "Enter" && createObjective()}
+            />
+            <div className="flex items-center gap-2 flex-wrap">
+              <select
+                value={newObjEntity}
+                onChange={(e) => setNewObjEntity(e.target.value)}
+                className="bg-[#262a31] text-[10px] font-[Space_Grotesk] uppercase rounded px-2 py-1 focus:outline-none"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                <option value="">Entity</option>
+                <option value="CE">CE</option>
+                <option value="SYN">SYN</option>
+                <option value="UUL">UUL</option>
+                <option value="FO">FO</option>
+              </select>
+              <select
+                value={newObjPriority}
+                onChange={(e) => setNewObjPriority(e.target.value)}
+                className="bg-[#262a31] text-[10px] font-[Space_Grotesk] uppercase rounded px-2 py-1 focus:outline-none"
+                style={{ color: PRIORITY_COLORS[newObjPriority] }}
+              >
+                <option value="p0">P0</option>
+                <option value="p1">P1</option>
+                <option value="p2">P2</option>
+              </select>
+              <input
+                type="date"
+                value={newObjDeadline}
+                onChange={(e) => setNewObjDeadline(e.target.value)}
+                className="bg-[#262a31] text-[10px] font-[JetBrains_Mono] rounded px-2 py-1 focus:outline-none"
+                style={{ color: "var(--text-secondary)" }}
+              />
+              <div className="flex-1" />
+              <button
+                onClick={createObjective}
+                className="text-[10px] font-[Space_Grotesk] uppercase tracking-wider px-3 py-1 rounded hover:brightness-110"
+                style={{ background: "var(--accent)", color: "#412d00" }}
+              >
+                Create
+              </button>
+              <button
+                onClick={() => setShowNewObjective(false)}
+                className="text-[10px] px-2 py-1"
+                style={{ color: "var(--text-tertiary)" }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
         {objectives.length > 0 ? (
           <div className="space-y-2">
             {objectives.map((obj: any) => (
@@ -321,6 +443,7 @@ export default function FocusPage() {
       {/* Action Stream */}
       <section>
         <div className="flex items-center gap-4 mb-3">
+          <div className="flex items-center gap-4 flex-1">
           {ACTION_TABS.map((tab) => (
             <button
               key={tab.key}
@@ -348,7 +471,69 @@ export default function FocusPage() {
               )}
             </button>
           ))}
+          </div>
+          <button
+            onClick={() => setShowNewAction(!showNewAction)}
+            className="flex items-center gap-1 text-[10px] font-[Space_Grotesk] uppercase tracking-wider hover:opacity-80"
+            style={{ color: "var(--accent)" }}
+          >
+            <span className="material-symbols-rounded text-[14px]">add</span>
+            New
+          </button>
         </div>
+
+        {/* Inline create form */}
+        {showNewAction && (
+          <div
+            className="p-3 rounded-lg mb-3 space-y-2 border"
+            style={{ background: "#181c22", borderColor: "var(--accent)" }}
+          >
+            <input
+              type="text"
+              value={newActionTitle}
+              onChange={(e) => setNewActionTitle(e.target.value)}
+              placeholder="What needs to be done?"
+              autoFocus
+              className="w-full bg-transparent text-sm focus:outline-none placeholder-[#9a8f80]/50"
+              style={{ color: "var(--text-primary)" }}
+              onKeyDown={(e) => e.key === "Enter" && createAction()}
+            />
+            <div className="flex items-center gap-2 flex-wrap">
+              <select
+                value={newActionType}
+                onChange={(e) => setNewActionType(e.target.value)}
+                className="bg-[#262a31] text-[10px] font-[Space_Grotesk] uppercase rounded px-2 py-1 focus:outline-none"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                <option value="action">Action</option>
+                <option value="decision">Decision</option>
+                <option value="follow_up">Follow-up</option>
+              </select>
+              <input
+                type="date"
+                value={newActionDue}
+                onChange={(e) => setNewActionDue(e.target.value)}
+                className="bg-[#262a31] text-[10px] font-[JetBrains_Mono] rounded px-2 py-1 focus:outline-none"
+                style={{ color: "var(--text-secondary)" }}
+              />
+              <div className="flex-1" />
+              <button
+                onClick={createAction}
+                className="text-[10px] font-[Space_Grotesk] uppercase tracking-wider px-3 py-1 rounded hover:brightness-110"
+                style={{ background: "var(--accent)", color: "#412d00" }}
+              >
+                Create
+              </button>
+              <button
+                onClick={() => setShowNewAction(false)}
+                className="text-[10px] px-2 py-1"
+                style={{ color: "var(--text-tertiary)" }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
         {filteredActions.length > 0 ? (
           <div className="space-y-1.5">
             {filteredActions.map((a: any) => (
