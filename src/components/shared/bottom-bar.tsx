@@ -52,7 +52,7 @@ export function BottomBar() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around border-t md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around border-t lg:hidden"
       style={{
         background: "rgba(10, 14, 20, 0.85)",
         backdropFilter: "blur(24px)",
