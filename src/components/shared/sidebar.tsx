@@ -74,8 +74,8 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
       {/* Logo + collapse toggle */}
       <div className={cn("py-5 flex items-center", collapsed ? "px-3 justify-center" : "px-5 gap-2.5")}>
         <button
-          onClick={onNavigate ? undefined : toggleCollapsed}
-          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 hover:brightness-110 transition-all"
+          onClick={onNavigate ?? toggleCollapsed}
+          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 hover:brightness-110 active:scale-95 transition-all"
           style={{ background: "var(--accent)" }}
           title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
@@ -90,7 +90,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
           </span>
         </button>
         {!collapsed && (
-          <div>
+          <Link href="/brief" onClick={onNavigate} className="hover:opacity-80 transition-opacity">
             <div
               className="font-[Manrope] font-extrabold text-sm tracking-tight"
               style={{ color: "var(--text-primary)" }}
@@ -103,7 +103,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
             >
               Graph Intelligence
             </div>
-          </div>
+          </Link>
         )}
       </div>
 

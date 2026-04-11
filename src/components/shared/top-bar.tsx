@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useNavigation } from "./navigation-provider";
 
 export function TopBar() {
@@ -15,34 +16,29 @@ export function TopBar() {
         borderColor: "var(--border-subtle)",
       }}
     >
-      {/* Hamburger */}
+      {/* Gold arrow — opens sidebar drawer */}
       <button
         onClick={toggleSidebar}
-        className="p-2 -ml-2 text-[#9a8f80] hover:text-[#dfe2eb] active:text-[#e9c176] transition-colors"
+        className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 hover:brightness-110 active:scale-95 transition-all"
+        style={{ background: "var(--accent)" }}
+        title="Open sidebar"
       >
-        <span className="material-symbols-rounded text-[22px]">menu</span>
+        <span
+          className="material-symbols-rounded text-sm font-bold"
+          style={{ color: "#412d00" }}
+        >
+          double_arrow
+        </span>
       </button>
 
-      {/* Logo */}
-      <div className="flex items-center gap-2 ml-2">
-        <div
-          className="w-7 h-7 rounded-md flex items-center justify-center"
-          style={{ background: "var(--accent)" }}
-        >
-          <span
-            className="material-symbols-rounded text-xs font-bold"
-            style={{ color: "#412d00" }}
-          >
-            double_arrow
-          </span>
-        </div>
-        <span
-          className="font-[var(--font-headline)] font-extrabold text-sm tracking-tight"
-          style={{ color: "var(--text-primary)" }}
-        >
-          ORBIT
-        </span>
-      </div>
+      {/* Logo text — links to home */}
+      <Link
+        href="/brief"
+        className="font-[var(--font-headline)] font-extrabold text-sm tracking-tight ml-2.5 hover:opacity-80 transition-opacity"
+        style={{ color: "var(--text-primary)" }}
+      >
+        ORBIT
+      </Link>
     </header>
   );
 }
