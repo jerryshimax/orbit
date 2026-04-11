@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
@@ -32,6 +33,7 @@ export default function CalendarEventPage() {
   const meetingNotes = data?.notes;
   const fieldTrip = data?.fieldTrip;
   const org = data?.org;
+  const attendeeMap: Record<string, string> = data?.attendeeMap ?? {};
 
   // Seed local state from server on first load
   const seeded =
@@ -218,10 +220,11 @@ export default function CalendarEventPage() {
                 .slice(0, 2)
                 .toUpperCase();
               const accepted = a.responseStatus === "accepted";
-              return (
+              const personId = attendeeMap[name];
+
+              const chip = (
                 <div
-                  key={i}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs"
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs ${personId ? "hover:brightness-125 cursor-pointer" : ""}`}
                   style={{
                     background: "#262a31",
                     color: accepted
@@ -239,7 +242,20 @@ export default function CalendarEventPage() {
                     {initials}
                   </div>
                   <span className="truncate max-w-[120px]">{name}</span>
+                  {personId && (
+                    <span className="material-symbols-rounded text-[12px]" style={{ color: "var(--text-tertiary)" }}>
+                      open_in_new
+                    </span>
+                  )}
                 </div>
+              );
+
+              return personId ? (
+                <Link key={i} href={`/contacts/${personId}`}>
+                  {chip}
+                </Link>
+              ) : (
+                <div key={i}>{chip}</div>
               );
             })}
           </div>

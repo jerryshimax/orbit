@@ -5,8 +5,9 @@ import {
   orbitMeetingNotes,
   fieldTripMeetings,
   organizations,
+  people,
 } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, ilike } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/supabase/get-current-user";
 import {
   updateGcalEvent,
@@ -15,6 +16,48 @@ import {
 } from "@/lib/google/write-calendar";
 
 export const dynamic = "force-dynamic";
+
+type Attendee = { name?: string; email?: string };
+
+/**
+ * Match attendee names/emails to people records.
+ * Returns a map of name/email → personId.
+ */
+async function resolveAttendees(
+  attendees: Array<{ name?: string; email?: string }> | null
+): Promise<Record<string, string>> {
+  if (!attendees || attendees.length === 0) return {};
+
+  const matched: Record<string, string> = {};
+
+  for (const a of attendees) {
+    // Try email match first
+    if (a.email) {
+      const [byEmail] = await db
+        .select({ id: people.id })
+        .from(people)
+        .where(ilike(people.email, a.email))
+        .limit(1);
+      if (byEmail) {
+        matched[a.name || a.email] = byEmail.id;
+        continue;
+      }
+    }
+    // Try name match
+    if (a.name) {
+      const [byName] = await db
+        .select({ id: people.id })
+        .from(people)
+        .where(ilike(people.fullName, a.name))
+        .limit(1);
+      if (byName) {
+        matched[a.name] = byName.id;
+      }
+    }
+  }
+
+  return matched;
+}
 
 export async function GET(
   _request: NextRequest,
@@ -72,6 +115,10 @@ export async function GET(
       }
     }
 
+    const attendeeMap = await resolveAttendees(
+      gcalEvent.attendees as Attendee[] | null
+    );
+
     return Response.json({
       event: {
         ...gcalEvent,
@@ -81,6 +128,7 @@ export async function GET(
       notes: notes ?? null,
       fieldTrip,
       org,
+      attendeeMap,
       source: "gcal",
     });
   }
@@ -114,6 +162,10 @@ export async function GET(
     new Date(startTime).getTime() + durationMs
   ).toISOString();
 
+  const ftAttendeeMap = await resolveAttendees(
+    m.attendees as Attendee[] | null
+  );
+
   return Response.json({
     event: {
       id: m.id,
@@ -136,6 +188,7 @@ export async function GET(
           notes: ftRow.orgNotes,
         }
       : null,
+    attendeeMap: ftAttendeeMap,
     source: "field_trip",
   });
 }
