@@ -126,29 +126,33 @@ export function ChatInput({
         </div>
       )}
 
-      <div className="flex items-end gap-2 px-4 py-3">
-        {/* Attach button */}
+      <div className="flex items-end gap-2 px-4 py-3 relative">
+        {/* Attach button — label wrapping a visually-hidden file input */}
+        <label
+          htmlFor="orbit-file-upload"
+          className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors hover:brightness-125 cursor-pointer"
+          style={{ background: "#262a31", color: "var(--text-tertiary)" }}
+          title="Attach file"
+        >
+          <span className="material-symbols-rounded text-xl">attach_file</span>
+        </label>
         <input
+          id="orbit-file-upload"
           ref={fileInputRef}
           type="file"
           accept="image/*,.pdf,.txt,.csv"
           multiple
           onChange={handleFileSelect}
-          style={{ position: "absolute", width: 0, height: 0, opacity: 0, pointerEvents: "none" }}
-        />
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            fileInputRef.current?.click();
+          style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            overflow: "hidden",
+            clip: "rect(0,0,0,0)",
+            whiteSpace: "nowrap",
+            border: 0,
           }}
-          className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors hover:brightness-125"
-          style={{ background: "#262a31", color: "var(--text-tertiary)" }}
-          title="Attach file"
-        >
-          <span className="material-symbols-rounded text-xl">attach_file</span>
-        </button>
+        />
 
         {/* Text input */}
         <textarea
