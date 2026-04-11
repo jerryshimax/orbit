@@ -23,9 +23,9 @@ export default function DashboardLayout({
         <MobileDrawer />
 
         {/* Main content */}
-        <div className="flex-1 md:ml-[220px]">
+        <div className="flex-1 min-w-0 md:ml-[220px]">
           <DashboardShell>
-            <main className="overflow-auto pb-20 md:pb-0">{children}</main>
+            <main className="overflow-x-hidden pb-20 md:pb-0">{children}</main>
           </DashboardShell>
         </div>
 
