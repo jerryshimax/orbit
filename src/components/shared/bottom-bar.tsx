@@ -1,11 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useNavigation } from "./navigation-provider";
 
 export function BottomBar() {
   const router = useRouter();
-  const { toggleSidebar } = useNavigation();
 
   const buttons = [
     {
@@ -14,18 +12,14 @@ export function BottomBar() {
       onClick: () => router.back(),
     },
     {
-      icon: "menu",
-      label: "Menu",
-      onClick: toggleSidebar,
-    },
-    {
-      icon: "add_circle",
-      label: "New",
+      icon: "cloud",
+      label: "Cloud",
+      accent: true,
       onClick: () => {
-        // Opens command palette with "new" prefix — dispatches Cmd+K
-        document.dispatchEvent(
-          new KeyboardEvent("keydown", { key: "k", metaKey: true })
+        const fab = document.querySelector<HTMLButtonElement>(
+          "[data-chat-fab]"
         );
+        fab?.click();
       },
     },
     {
@@ -35,17 +29,6 @@ export function BottomBar() {
         document.dispatchEvent(
           new KeyboardEvent("keydown", { key: "k", metaKey: true })
         );
-      },
-    },
-    {
-      icon: "smart_toy",
-      label: "Chat",
-      onClick: () => {
-        // Toggle chat panel — look for the FAB and click it
-        const fab = document.querySelector<HTMLButtonElement>(
-          "[data-chat-fab]"
-        );
-        fab?.click();
       },
     },
   ];
@@ -66,7 +49,11 @@ export function BottomBar() {
         <button
           key={btn.icon}
           onClick={btn.onClick}
-          className="flex flex-col items-center justify-center gap-0.5 px-3 py-1 text-[#9a8f80] hover:text-[#dfe2eb] active:text-[#e9c176] active:scale-95 transition-all duration-150"
+          className={`flex flex-col items-center justify-center gap-0.5 px-6 py-1 active:scale-95 transition-all duration-150 ${
+            (btn as any).accent
+              ? "text-[#e9c176]"
+              : "text-[#9a8f80] hover:text-[#dfe2eb] active:text-[#e9c176]"
+          }`}
         >
           <span className="material-symbols-rounded text-[22px]">
             {btn.icon}
