@@ -99,9 +99,7 @@ export default function CalendarPage() {
   const today = new Date().toISOString().split("T")[0];
 
   const now = new Date();
-  const startDate = new Date(now.getTime() - 7 * 86400_000)
-    .toISOString()
-    .split("T")[0];
+  const startDate = today;
   const endDate = new Date(now.getTime() + 30 * 86400_000)
     .toISOString()
     .split("T")[0];
