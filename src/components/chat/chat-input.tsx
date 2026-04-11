@@ -128,21 +128,27 @@ export function ChatInput({
 
       <div className="flex items-end gap-2 px-4 py-3">
         {/* Attach button */}
-        <label
-          className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors hover:brightness-125 cursor-pointer"
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*,.pdf,.txt,.csv"
+          multiple
+          onChange={handleFileSelect}
+          style={{ position: "absolute", width: 0, height: 0, opacity: 0, pointerEvents: "none" }}
+        />
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            fileInputRef.current?.click();
+          }}
+          className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors hover:brightness-125"
           style={{ background: "#262a31", color: "var(--text-tertiary)" }}
           title="Attach file"
         >
           <span className="material-symbols-rounded text-xl">attach_file</span>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*,.pdf,.txt,.csv"
-            multiple
-            onChange={handleFileSelect}
-            className="hidden"
-          />
-        </label>
+        </button>
 
         {/* Text input */}
         <textarea
