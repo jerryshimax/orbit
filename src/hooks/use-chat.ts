@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 import type { PageContext } from "@/lib/chat/system-prompt";
 import { extractProposals } from "@/lib/chat/proposal-parser";
+import { mergeProposal, markProposalRegenerating } from "@/lib/chat/proposal-merge";
 
 export type ProposalPayload = {
   field: string;
@@ -21,7 +22,7 @@ export type ChatMessage = {
   draftId?: string;
   draftStatus?: "pending" | "approved" | "edited" | "discarded";
   proposalPayload?: ProposalPayload;
-  proposalStatus?: "pending" | "applied" | "dismissed";
+  proposalStatus?: "pending" | "applied" | "dismissed" | "regenerating";
   isStreaming?: boolean;
 };
 
@@ -30,6 +31,11 @@ export function useChat(pageContext: PageContext) {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+
+  // Mirror `messages` in a ref so callbacks (e.g. refineProposal) can read the
+  // latest list without re-binding whenever messages change.
+  const messagesRef = useRef(messages);
+  messagesRef.current = messages;
 
   const sendMessage = useCallback(
     async (text: string, opts?: { transcription?: string; language?: string; attachments?: Array<{ url: string; filename: string; contentType: string }> }) => {
@@ -97,23 +103,14 @@ export function useChat(pageContext: PageContext) {
                   fullText += event.content;
                   const { cleaned, proposals } = extractProposals(fullText);
                   setMessages((prev) => {
-                    const existingProposalIds = new Set(
-                      prev.filter((m) => m.proposalPayload).map((m) => m.id)
-                    );
-                    const next = prev.map((m) =>
+                    let next = prev.map((m) =>
                       m.id === assistantId ? { ...m, content: cleaned } : m
                     );
+                    // mergeProposal is idempotent per field: re-parsing the
+                    // full buffer each delta is safe — same field just updates
+                    // the same card.
                     for (const p of proposals) {
-                      const pid = `proposal-${assistantId}-${p.field}`;
-                      if (!existingProposalIds.has(pid)) {
-                        next.push({
-                          id: pid,
-                          role: "assistant",
-                          content: "",
-                          proposalPayload: p,
-                          proposalStatus: "pending",
-                        });
-                      }
+                      next = mergeProposal(next, p, assistantId);
                     }
                     return next;
                   });
@@ -251,6 +248,25 @@ export function useChat(pageContext: PageContext) {
     );
   }, []);
 
+  const refineProposal = useCallback(
+    async (messageId: string, instruction: string) => {
+      const trimmed = instruction.trim();
+      if (!trimmed) return;
+      const source = messagesRef.current.find((m) => m.id === messageId);
+      const proposal = source?.proposalPayload;
+      if (!proposal) return;
+
+      setMessages((prev) => markProposalRegenerating(prev, messageId));
+
+      const prompt =
+        `Refine your proposal for the \`${proposal.field}\` field.\n` +
+        `Current value: ${JSON.stringify(proposal.value)}\n` +
+        `Tweak: ${trimmed}`;
+      await sendMessage(prompt);
+    },
+    [sendMessage]
+  );
+
   const markProposalApplied = useCallback((id: string) => {
     setMessages((prev) =>
       prev.map((m) => (m.id === id ? { ...m, proposalStatus: "applied" } : m))
@@ -275,6 +291,7 @@ export function useChat(pageContext: PageContext) {
     sendMessage,
     approveDraft,
     discardDraft,
+    refineProposal,
     markProposalApplied,
     markProposalDismissed,
     resetConversation,

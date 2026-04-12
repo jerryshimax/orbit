@@ -18,6 +18,7 @@ export function ChatPanel() {
     sendMessage,
     approveDraft,
     discardDraft,
+    refineProposal,
     markProposalApplied,
     markProposalDismissed,
     resetConversation,
@@ -145,6 +146,7 @@ export function ChatPanel() {
                   message={msg}
                   onApplied={markProposalApplied}
                   onDismissed={markProposalDismissed}
+                  onRefine={refineProposal}
                 />
               );
             }
