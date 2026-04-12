@@ -79,7 +79,19 @@ export async function POST(request: Request) {
     entityData = await getPersonDetail(pageContext.entityId);
   }
 
-  const systemPrompt = buildSystemPrompt({ pageContext, entityData });
+  const systemPrompt = buildSystemPrompt({
+    pageContext,
+    entityData,
+    currentUser: user
+      ? {
+          handle: user.handle,
+          fullName: user.fullName,
+          role: user.role,
+          entityAccess: user.entityAccess,
+          isOwner: user.isOwner,
+        }
+      : undefined,
+  });
 
   // 5. Create a job for the local daemon to process
   // Build attachment context
