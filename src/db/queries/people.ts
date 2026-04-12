@@ -5,6 +5,10 @@ import {
   organizations,
   contactChannels,
   interactions,
+  opportunities,
+  opportunityContacts,
+  fieldTripMeetings,
+  fieldTrips,
 } from "@/db/schema";
 import { eq, desc, ilike, and, count, max, inArray, sql } from "drizzle-orm";
 import { type UserContext, visibilityFilter } from "@/lib/access";
@@ -214,4 +218,213 @@ export async function getPersonDetail(id: string) {
   ]);
 
   return { person, affiliations, channels, interactions: personInteractions };
+}
+
+/**
+ * Dossier view consumed by the roadshow Contact Dossier slide-up sheet.
+ * Aggregates:
+ *   - person + primary affiliation (name, title, org)
+ *   - pipeline opportunities the person is linked to via opportunityContacts
+ *     (plus any opportunities attached to affiliated orgs — covers the common
+ *     case where the LP row isn't yet attached to an opp but their org is)
+ *   - field-trip meetings the person has appeared on. Because
+ *     field_trip_meetings.attendees is a freeform jsonb blob (no FK), we use
+ *     org-affiliation as the honest proxy: meetings whose organizationId
+ *     matches one of the person's affiliated orgs.
+ *   - last 20 interactions (person-scoped, joined with org name).
+ */
+export type PersonDossier = {
+  person: typeof people.$inferSelect;
+  primaryOrg: { id: string; name: string; title: string | null } | null;
+  opportunities: Array<{
+    id: string;
+    name: string;
+    stage: string;
+    status: string;
+    entityCode: string;
+    orgName: string | null;
+    role: string | null;
+  }>;
+  tripAppearances: Array<{
+    meetingId: string;
+    tripId: string;
+    tripName: string;
+    meetingTitle: string;
+    meetingDate: string | null;
+    orgName: string | null;
+  }>;
+  interactions: Array<{
+    id: string;
+    interactionType: string;
+    summary: string;
+    interactionDate: string;
+    orgName: string | null;
+    source: string;
+  }>;
+};
+
+export async function getPersonDossier(
+  personId: string
+): Promise<PersonDossier | null> {
+  const [person] = await db
+    .select()
+    .from(people)
+    .where(eq(people.id, personId))
+    .limit(1);
+
+  if (!person) return null;
+
+  const affiliationRows = await db
+    .select({
+      orgId: personOrgAffiliations.organizationId,
+      orgName: organizations.name,
+      title: personOrgAffiliations.title,
+      isPrimaryOrg: personOrgAffiliations.isPrimaryOrg,
+    })
+    .from(personOrgAffiliations)
+    .innerJoin(
+      organizations,
+      eq(personOrgAffiliations.organizationId, organizations.id)
+    )
+    .where(eq(personOrgAffiliations.personId, personId));
+
+  const primaryAffil =
+    affiliationRows.find((a) => a.isPrimaryOrg) ?? affiliationRows[0] ?? null;
+
+  const orgIds = Array.from(new Set(affiliationRows.map((a) => a.orgId)));
+
+  // Opportunities: direct via opportunityContacts + org-linked fallback.
+  const [contactOppRows, orgOppRows] = await Promise.all([
+    db
+      .select({
+        id: opportunities.id,
+        name: opportunities.name,
+        stage: opportunities.stage,
+        status: opportunities.status,
+        entityCode: opportunities.entityCode,
+        orgName: organizations.name,
+        role: opportunityContacts.role,
+      })
+      .from(opportunityContacts)
+      .innerJoin(
+        opportunities,
+        eq(opportunityContacts.opportunityId, opportunities.id)
+      )
+      .leftJoin(
+        organizations,
+        eq(opportunities.organizationId, organizations.id)
+      )
+      .where(eq(opportunityContacts.personId, personId)),
+    orgIds.length > 0
+      ? db
+          .select({
+            id: opportunities.id,
+            name: opportunities.name,
+            stage: opportunities.stage,
+            status: opportunities.status,
+            entityCode: opportunities.entityCode,
+            orgName: organizations.name,
+            role: sql<string | null>`null`.as("role"),
+          })
+          .from(opportunities)
+          .leftJoin(
+            organizations,
+            eq(opportunities.organizationId, organizations.id)
+          )
+          .where(inArray(opportunities.organizationId, orgIds))
+      : Promise.resolve(
+          [] as Array<{
+            id: string;
+            name: string;
+            stage: string;
+            status: string;
+            entityCode: string;
+            orgName: string | null;
+            role: string | null;
+          }>
+        ),
+  ]);
+
+  const seenOpps = new Set<string>();
+  const allOpps: PersonDossier["opportunities"] = [];
+  for (const row of [...contactOppRows, ...orgOppRows]) {
+    if (seenOpps.has(row.id)) continue;
+    seenOpps.add(row.id);
+    allOpps.push({
+      id: row.id,
+      name: row.name,
+      stage: row.stage,
+      status: row.status,
+      entityCode: row.entityCode,
+      orgName: row.orgName ?? null,
+      role: row.role ?? null,
+    });
+  }
+
+  // Trip appearances via org linkage (best available signal).
+  const tripRows =
+    orgIds.length > 0
+      ? await db
+          .select({
+            meetingId: fieldTripMeetings.id,
+            tripId: fieldTripMeetings.tripId,
+            tripName: fieldTrips.name,
+            meetingTitle: fieldTripMeetings.title,
+            meetingDate: fieldTripMeetings.meetingDate,
+            orgName: organizations.name,
+          })
+          .from(fieldTripMeetings)
+          .innerJoin(fieldTrips, eq(fieldTripMeetings.tripId, fieldTrips.id))
+          .leftJoin(
+            organizations,
+            eq(fieldTripMeetings.organizationId, organizations.id)
+          )
+          .where(inArray(fieldTripMeetings.organizationId, orgIds))
+          .orderBy(desc(fieldTripMeetings.meetingDate))
+          .limit(25)
+      : [];
+
+  // Last 20 interactions involving this person.
+  const interactionRows = await db
+    .select({
+      id: interactions.id,
+      interactionType: interactions.interactionType,
+      summary: interactions.summary,
+      interactionDate: interactions.interactionDate,
+      source: interactions.source,
+      orgName: organizations.name,
+    })
+    .from(interactions)
+    .leftJoin(organizations, eq(interactions.orgId, organizations.id))
+    .where(eq(interactions.personId, personId))
+    .orderBy(desc(interactions.interactionDate))
+    .limit(20);
+
+  return {
+    person,
+    primaryOrg: primaryAffil
+      ? {
+          id: primaryAffil.orgId,
+          name: primaryAffil.orgName,
+          title: primaryAffil.title,
+        }
+      : null,
+    opportunities: allOpps,
+    tripAppearances: tripRows.map((r) => ({
+      meetingId: r.meetingId,
+      tripId: r.tripId,
+      tripName: r.tripName,
+      meetingTitle: r.meetingTitle,
+      meetingDate: r.meetingDate,
+      orgName: r.orgName,
+    })),
+    interactions: interactionRows.map((r) => ({
+      id: r.id,
+      interactionType: r.interactionType,
+      summary: r.summary,
+      interactionDate: new Date(r.interactionDate).toISOString(),
+      orgName: r.orgName,
+      source: r.source,
+    })),
+  };
 }

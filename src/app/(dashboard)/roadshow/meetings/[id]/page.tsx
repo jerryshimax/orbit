@@ -4,6 +4,11 @@ import { use } from "react";
 import Link from "next/link";
 import { useMeeting } from "@/hooks/use-roadshow";
 import { useState, useCallback } from "react";
+import { ContactDossier } from "@/components/roadshow/contact-dossier";
+import {
+  strengthToColor,
+  strengthToLabel,
+} from "@/lib/relationship-strength";
 
 const STAGE_LABELS: Record<string, string> = {
   prospect: "PROSPECT",
@@ -16,9 +21,20 @@ const STAGE_LABELS: Record<string, string> = {
   passed: "PASSED",
 };
 
+type MeetingAttendee = {
+  name?: string;
+  title?: string | null;
+  org?: string | null;
+  personId?: string | null;
+  relationshipStrength?: string | null;
+  isTeam?: boolean;
+};
+
 function MeetingDetail({ meetingId }: { meetingId: string }) {
   const { data: meeting, isLoading, mutate } = useMeeting(meetingId);
   const [saving, setSaving] = useState(false);
+  const [dossierAttendee, setDossierAttendee] =
+    useState<MeetingAttendee | null>(null);
 
   const toggleAction = useCallback(
     async (index: number) => {
@@ -47,7 +63,24 @@ function MeetingDetail({ meetingId }: { meetingId: string }) {
     );
   }
 
-  const attendees = Array.isArray(meeting.attendees) ? meeting.attendees : [];
+  const attendees: MeetingAttendee[] = Array.isArray(meeting.attendees)
+    ? (meeting.attendees as MeetingAttendee[])
+    : [];
+  const orgInteractions: Array<{
+    id: string;
+    interactionType: string;
+    summary: string;
+    interactionDate: string | null;
+    source?: string | null;
+  }> = Array.isArray(meeting.orgInteractions)
+    ? (meeting.orgInteractions as Array<{
+        id: string;
+        interactionType: string;
+        summary: string;
+        interactionDate: string | null;
+        source?: string | null;
+      }>)
+    : [];
   const actionItems = Array.isArray(meeting.actionItems)
     ? (meeting.actionItems as any[])
     : [];
@@ -67,6 +100,7 @@ function MeetingDetail({ meetingId }: { meetingId: string }) {
     : "";
 
   return (
+    <>
     <main className="px-4 md:px-8 max-w-5xl mx-auto space-y-6">
       {/* Meeting Header */}
       <section className="bg-[#181c22] p-6 rounded-sm space-y-4">
@@ -213,27 +247,48 @@ function MeetingDetail({ meetingId }: { meetingId: string }) {
               <span className="material-symbols-outlined text-sm">groups</span>
               Key Attendees
             </h3>
-            <div className="space-y-4">
-              {attendees.map((a: any, i: number) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-4 p-3 bg-[#181c22] rounded-sm"
-                >
-                  <div className="w-10 h-10 bg-[#31353c] flex items-center justify-center rounded-sm">
-                    <span className="material-symbols-outlined text-[#e9c176]">
-                      person
+            <div className="space-y-3">
+              {attendees.map((a, i) => {
+                const warmthColor = strengthToColor(a.relationshipStrength);
+                const warmthLabel = strengthToLabel(a.relationshipStrength);
+                return (
+                  <button
+                    type="button"
+                    key={i}
+                    onClick={() => setDossierAttendee(a)}
+                    className="w-full text-left flex items-start gap-4 p-3 bg-[#181c22] rounded-sm border border-transparent hover:border-[#e9c176]/40 active:scale-[0.99] transition-all"
+                    aria-label={`Open dossier for ${a.name ?? "attendee"}`}
+                  >
+                    <div className="relative w-10 h-10 bg-[#31353c] flex items-center justify-center rounded-sm shrink-0">
+                      <span className="material-symbols-outlined text-[#e9c176]">
+                        person
+                      </span>
+                      {a.isTeam && (
+                        <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#e9c176] ring-2 ring-[#1c2026]" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="inline-block w-2 h-2 rounded-full shrink-0"
+                          style={{ backgroundColor: warmthColor }}
+                          title={warmthLabel}
+                          aria-label={warmthLabel}
+                        />
+                        <p className="font-[Manrope] text-sm font-bold text-[#dfe2eb] truncate">
+                          {a.name}
+                        </p>
+                      </div>
+                      <p className="font-[Space_Grotesk] text-[11px] text-[#d1c5b4] uppercase tracking-tighter truncate">
+                        {[a.title, a.org].filter(Boolean).join(" · ")}
+                      </p>
+                    </div>
+                    <span className="material-symbols-outlined text-[18px] text-[#4e4639] shrink-0 mt-1">
+                      chevron_right
                     </span>
-                  </div>
-                  <div>
-                    <p className="font-[Manrope] text-sm font-bold text-[#dfe2eb]">
-                      {a.name}
-                    </p>
-                    <p className="font-[Space_Grotesk] text-[11px] text-[#d1c5b4] uppercase tracking-tighter">
-                      {[a.title, a.org].filter(Boolean).join(" · ")}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
@@ -344,6 +399,13 @@ function MeetingDetail({ meetingId }: { meetingId: string }) {
         </section>
       )}
     </main>
+    <ContactDossier
+      open={dossierAttendee !== null}
+      attendee={dossierAttendee}
+      inlineInteractions={orgInteractions}
+      onClose={() => setDossierAttendee(null)}
+    />
+    </>
   );
 }
 
