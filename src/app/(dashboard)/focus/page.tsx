@@ -253,22 +253,45 @@ export default function FocusPage() {
         </section>
       )}
 
-      {/* Objectives Board */}
-      <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2
-            className="font-[Space_Grotesk] text-[10px] uppercase tracking-[0.15em]"
-            style={{ color: "var(--text-tertiary)" }}
-          >
-            Objectives
-          </h2>
+      {/* Objectives Board — strategic tier */}
+      <section
+        className="rounded-xl p-5 border"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(245,180,70,0.04) 0%, rgba(245,180,70,0.01) 100%)",
+          borderColor: "rgba(245,180,70,0.18)",
+        }}
+      >
+        <div className="flex items-start justify-between mb-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span
+                className="material-symbols-rounded text-[16px]"
+                style={{ color: "var(--accent)" }}
+              >
+                flag
+              </span>
+              <h2
+                className="font-[Manrope] font-bold text-base"
+                style={{ color: "var(--text-primary)" }}
+              >
+                Strategic Objectives
+              </h2>
+            </div>
+            <p
+              className="text-xs"
+              style={{ color: "var(--text-tertiary)" }}
+            >
+              Big rocks — what success looks like this quarter
+            </p>
+          </div>
           <button
             onClick={() => setShowNewObjective(!showNewObjective)}
-            className="flex items-center gap-1 text-[10px] font-[Space_Grotesk] uppercase tracking-wider hover:opacity-80"
-            style={{ color: "var(--accent)" }}
+            className="flex items-center gap-1 text-[10px] font-[Space_Grotesk] uppercase tracking-wider hover:opacity-80 px-2 py-1 rounded border"
+            style={{ color: "var(--accent)", borderColor: "rgba(245,180,70,0.3)" }}
           >
             <span className="material-symbols-rounded text-[14px]">add</span>
-            New
+            New Objective
           </button>
         </div>
 
@@ -282,7 +305,7 @@ export default function FocusPage() {
               type="text"
               value={newObjTitle}
               onChange={(e) => setNewObjTitle(e.target.value)}
-              placeholder="Objective title..."
+              placeholder="What are you trying to accomplish? e.g., Close Fund I LP #3 by EOQ"
               autoFocus
               className="w-full bg-transparent text-sm focus:outline-none placeholder-[#9a8f80]/50"
               style={{ color: "var(--text-primary)" }}
@@ -442,8 +465,30 @@ export default function FocusPage() {
         )}
       </section>
 
-      {/* Action Stream */}
+      {/* Action Stream — tactical tier */}
       <section>
+        <div className="mb-3">
+          <div className="flex items-center gap-2 mb-1">
+            <span
+              className="material-symbols-rounded text-[14px]"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              bolt
+            </span>
+            <h2
+              className="font-[Manrope] font-semibold text-sm"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              Work Queue
+            </h2>
+          </div>
+          <p
+            className="text-xs"
+            style={{ color: "var(--text-tertiary)" }}
+          >
+            Day-to-day execution — actions, decisions, follow-ups
+          </p>
+        </div>
         <div className="flex items-center gap-4 mb-3">
           <div className="flex items-center gap-4 flex-1">
           {ACTION_TABS.map((tab) => (
@@ -494,7 +539,7 @@ export default function FocusPage() {
               type="text"
               value={newActionTitle}
               onChange={(e) => setNewActionTitle(e.target.value)}
-              placeholder="What needs to be done?"
+              placeholder="Next step... e.g., Send deck to Ray by Friday"
               autoFocus
               className="w-full bg-transparent text-sm focus:outline-none placeholder-[#9a8f80]/50"
               style={{ color: "var(--text-primary)" }}
