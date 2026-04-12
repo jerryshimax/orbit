@@ -42,6 +42,31 @@ export async function updateGcalEvent(
 }
 
 /**
+ * Delete a Google Calendar event.
+ * Uses sendUpdates: "none" to avoid notifying external attendees.
+ * Returns true on success or 404/410 (already gone).
+ */
+export async function deleteGcalEvent(
+  userId: string,
+  eventId: string
+): Promise<boolean> {
+  const client = await getGoogleClient(userId);
+  if (!client) return false;
+
+  const res = await client.fetch(
+    `${GCAL_EVENTS_URL}/${encodeURIComponent(eventId)}?sendUpdates=none`,
+    { method: "DELETE" }
+  );
+
+  if (!res.ok && res.status !== 404 && res.status !== 410) {
+    console.error("GCal delete failed:", res.status, await res.text());
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * Map Orbit status to GCal event status.
  */
 export function orbitStatusToGcal(

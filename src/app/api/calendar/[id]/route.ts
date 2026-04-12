@@ -11,6 +11,7 @@ import { eq, and, ilike } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/supabase/get-current-user";
 import {
   updateGcalEvent,
+  deleteGcalEvent,
   orbitStatusToGcal,
   buildGcalDescription,
 } from "@/lib/google/write-calendar";
@@ -294,6 +295,44 @@ export async function PATCH(
       .update(fieldTripMeetings)
       .set(updateFields)
       .where(eq(fieldTripMeetings.id, id));
+  }
+
+  return Response.json({ ok: true });
+}
+
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const user = await getCurrentUser();
+  if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { id } = await params;
+
+  // Check gcal first
+  const [event] = await db
+    .select()
+    .from(gcalEvents)
+    .where(eq(gcalEvents.id, id))
+    .limit(1);
+
+  if (event?.gcalEventId) {
+    // Delete from Google Calendar
+    await deleteGcalEvent(user.id, event.gcalEventId);
+    // Remove our notes (per-user)
+    await db
+      .delete(orbitMeetingNotes)
+      .where(
+        and(
+          eq(orbitMeetingNotes.userId, user.id),
+          eq(orbitMeetingNotes.gcalEventId, event.gcalEventId)
+        )
+      );
+    // Remove our cached row
+    await db.delete(gcalEvents).where(eq(gcalEvents.id, id));
+  } else {
+    // Field trip meeting — cascade handles attendees; recon FK is set null
+    await db.delete(fieldTripMeetings).where(eq(fieldTripMeetings.id, id));
   }
 
   return Response.json({ ok: true });

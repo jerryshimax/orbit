@@ -35,6 +35,11 @@ export async function getMergedCalendar(
 ): Promise<CalendarEvent[]> {
   const events: CalendarEvent[] = [];
 
+  // Cancelled events older than 24h are auto-hidden from timeline
+  const cancelledCutoff = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const isStaleCancelled = (status: string | null, updatedAt: Date | null) =>
+    status === "cancelled" && updatedAt !== null && updatedAt < cancelledCutoff;
+
   // 1. Fetch GCal events
   const gcalRows = await db
     .select()
@@ -49,6 +54,7 @@ export async function getMergedCalendar(
     .orderBy(gcalEvents.startTime);
 
   for (const row of gcalRows) {
+    if (isStaleCancelled(row.status, row.updatedAt)) continue;
     events.push({
       id: row.id,
       type: "gcal",
@@ -82,6 +88,7 @@ export async function getMergedCalendar(
     for (const row of ftRows) {
       const m = row.meeting;
       if (!m.meetingDate) continue;
+      if (isStaleCancelled(m.status, m.updatedAt)) continue;
 
       const startTime = m.meetingTime
         ? `${m.meetingDate}T${m.meetingTime}`

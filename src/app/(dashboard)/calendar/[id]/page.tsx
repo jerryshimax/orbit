@@ -3,9 +3,14 @@
 import { useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import useSWR from "swr";
+import useSWR, { mutate as globalMutate } from "swr";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
+const invalidateCalendarLists = () =>
+  globalMutate(
+    (key) => typeof key === "string" && key.startsWith("/api/calendar?")
+  );
 
 const STATUS_OPTIONS = [
   { value: "planned", label: "Planned", color: "#3b82f6" },
@@ -69,9 +74,28 @@ export default function CalendarEventPage() {
       });
       setSaving(false);
       mutate();
+      invalidateCalendarLists();
     },
     [id, mutate]
   );
+
+  const [deleting, setDeleting] = useState(false);
+  const handleDelete = useCallback(async () => {
+    if (deleting) return;
+    if (!confirm("Delete this event? This cannot be undone.")) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/calendar/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        invalidateCalendarLists();
+        router.push("/calendar");
+      } else {
+        setDeleting(false);
+      }
+    } catch {
+      setDeleting(false);
+    }
+  }, [id, router, deleting]);
 
   if (!event) {
     return (
@@ -123,8 +147,23 @@ export default function CalendarEventPage() {
             {event.title}
           </h1>
 
+          {/* Actions: status + delete */}
+          <div className="flex items-center gap-2 shrink-0">
+          {/* Delete button */}
+          <button
+            onClick={handleDelete}
+            disabled={deleting}
+            title="Delete event"
+            className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-[Space_Grotesk] uppercase tracking-wider border transition-colors hover:bg-red-500/10 disabled:opacity-40"
+            style={{ borderColor: "#ef444440", color: "#ef4444" }}
+          >
+            <span className="material-symbols-rounded text-base">
+              {deleting ? "hourglass_top" : "delete_outline"}
+            </span>
+          </button>
+
           {/* Status dropdown */}
-          <div className="relative shrink-0">
+          <div className="relative">
             <button
               onClick={() => setStatusOpen(!statusOpen)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-[Space_Grotesk] uppercase tracking-wider border transition-colors"
@@ -162,6 +201,7 @@ export default function CalendarEventPage() {
                 ))}
               </div>
             )}
+          </div>
           </div>
         </div>
 
