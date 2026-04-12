@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Cloud Daemon LaunchAgent template.
+
+  Substitute the following placeholders before installing:
+    {{USER_HANDLE}}   — your Orbit handle (e.g. ray, jerry, angel)
+    {{DATABASE_URL}}  — Supabase Postgres connection string
+    {{REPO_PATH}}     — absolute path to the orbit repo checkout
+    {{NODE_BIN_DIR}}  — directory containing node/npx (e.g. /opt/homebrew/bin)
+
+  Install:
+    cp docs/cloud-daemon.plist.template ~/Library/LaunchAgents/com.cloud.orbit-daemon.plist
+    # edit placeholders
+    launchctl load ~/Library/LaunchAgents/com.cloud.orbit-daemon.plist
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.cloud.orbit-daemon</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>{{NODE_BIN_DIR}}/npx</string>
+        <string>tsx</string>
+        <string>src/scripts/cloud-daemon.ts</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>{{REPO_PATH}}</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>CLOUD_USER_HANDLE</key>
+        <string>{{USER_HANDLE}}</string>
+        <key>DATABASE_URL</key>
+        <string>{{DATABASE_URL}}</string>
+        <key>PATH</key>
+        <string>{{NODE_BIN_DIR}}:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/USERNAME/Library/Logs/cloud-orbit-daemon.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/USERNAME/Library/Logs/cloud-orbit-daemon.err.log</string>
+
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+</dict>
+</plist>

@@ -12,12 +12,15 @@
 
 import postgres from "postgres";
 import { execFileSync } from "child_process";
+import { buildClaimQuery } from "./cloud-daemon-claim";
 
 const DATABASE_URL = process.env.DATABASE_URL;
 if (!DATABASE_URL) {
   console.error("DATABASE_URL not set");
   process.exit(1);
 }
+
+const CLOUD_USER_HANDLE = process.env.CLOUD_USER_HANDLE;
 
 const sql = postgres(DATABASE_URL, { ssl: "require" });
 const SESSION_SERVER = "http://localhost:3847";
@@ -92,15 +95,21 @@ async function processJob(job: any) {
 }
 
 async function poll() {
-  const jobs = await sql`
-    SELECT * FROM chat_jobs WHERE status = 'pending' ORDER BY created_at ASC LIMIT 1
-  `;
+  const { sql: claimSql, params } = buildClaimQuery(CLOUD_USER_HANDLE);
+  const jobs = await sql.unsafe(claimSql, params as never[]);
   if (jobs.length > 0) await processJob(jobs[0]);
 }
 
 async function main() {
   const sessionUp = await isSessionServerUp();
   console.log("☁️  Orbit Cloud Daemon");
+  if (CLOUD_USER_HANDLE) {
+    console.log(`   Daemon claiming jobs for user_handle=${CLOUD_USER_HANDLE}`);
+  } else {
+    console.log(
+      "   WARNING: CLOUD_USER_HANDLE unset — claiming ALL jobs (dev mode)",
+    );
+  }
   console.log(`   Session Server: ${sessionUp ? "✅ connected" : "❌ not running (fallback to claude -p)"}`);
   console.log(`   Polling every ${POLL_INTERVAL / 1000}s...\n`);
 
