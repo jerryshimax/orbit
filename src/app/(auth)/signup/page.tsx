@@ -16,6 +16,7 @@ export default function SignUpPage() {
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmationSent, setConfirmationSent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -34,6 +35,13 @@ export default function SignUpPage() {
     if (result?.error) {
       setError(ERROR_MESSAGES[result.error] ?? result.error);
       setLoading(false);
+    } else if (result?.success) {
+      if (result.needsConfirmation) {
+        setConfirmationSent(true);
+        setLoading(false);
+      } else {
+        window.location.href = "/focus";
+      }
     }
   }
 
@@ -57,14 +65,37 @@ export default function SignUpPage() {
               </div>
             </div>
             <h1 className="text-xl font-bold tracking-tight font-[var(--font-headline)] text-[#dfe2eb]">
-              Set Up Your Account
+              {confirmationSent ? "Check Your Email" : "Set Up Your Account"}
             </h1>
             <p className="text-xs text-[#9a8f80] mt-1.5 font-[var(--font-label)] uppercase tracking-wider">
-              Create a password for your invite
+              {confirmationSent ? "Confirm to activate" : "Create a password for your invite"}
             </p>
           </div>
 
-          {error && (
+          {confirmationSent && (
+            <div className="space-y-4">
+              <div className="flex items-start gap-2 p-3 rounded-lg bg-[#e9c176]/10 text-[#e9c176] text-xs">
+                <span className="material-symbols-rounded text-sm mt-0.5 shrink-0">
+                  mark_email_read
+                </span>
+                <span>
+                  We sent a confirmation link to <strong>{email}</strong>. Click
+                  it to activate your account, then return here to sign in.
+                </span>
+              </div>
+              <Link
+                href="/login"
+                className="block w-full h-11 bg-[#e9c176] text-[#412d00] rounded-lg text-sm font-semibold font-[var(--font-headline)] flex items-center justify-center gap-2 hover:bg-[#d4ad63] transition-colors"
+              >
+                Go to Sign In
+                <span className="material-symbols-rounded text-lg">
+                  arrow_forward
+                </span>
+              </Link>
+            </div>
+          )}
+
+          {!confirmationSent && error && (
             <div className="flex items-start gap-2 mb-5 p-3 rounded-lg bg-[#ffb4ab]/10 text-[#ffb4ab] text-xs">
               <span className="material-symbols-rounded text-sm mt-0.5 shrink-0">
                 error
@@ -73,6 +104,7 @@ export default function SignUpPage() {
             </div>
           )}
 
+          {!confirmationSent && (
           <form onSubmit={handleSubmit} className="space-y-3">
             <div className="relative">
               <span className="material-symbols-rounded absolute left-3 top-1/2 -translate-y-1/2 text-[#9a8f80] text-lg">
@@ -127,7 +159,9 @@ export default function SignUpPage() {
               )}
             </button>
           </form>
+          )}
 
+          {!confirmationSent && (
           <p className="text-center text-xs text-[#9a8f80] mt-5">
             Already have an account?{" "}
             <Link
@@ -137,6 +171,7 @@ export default function SignUpPage() {
               Sign in
             </Link>
           </p>
+          )}
         </div>
       </div>
     </div>

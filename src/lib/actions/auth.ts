@@ -59,7 +59,7 @@ const ALLOWED_DOMAINS = ["synergiscap.com", "currentequities.com"];
 export async function signUpAction(
   email: string,
   password: string
-): Promise<{ error?: string; success?: boolean }> {
+): Promise<{ error?: string; success?: boolean; needsConfirmation?: boolean }> {
   const supabase = await createClient();
   const normalizedEmail = email.trim().toLowerCase();
   const domain = normalizedEmail.split("@")[1];
@@ -119,7 +119,11 @@ export async function signUpAction(
 
   await linkAuthId(user.id, data.user.id, null);
 
-  return { success: true };
+  // If Supabase has email confirmation enabled, signUp returns no session.
+  // The user must click the confirmation link before they can log in.
+  const needsConfirmation = !data.session;
+
+  return { success: true, needsConfirmation };
 }
 
 export async function logoutAction() {

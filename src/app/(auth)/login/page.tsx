@@ -12,6 +12,10 @@ const ERROR_MESSAGES: Record<string, string> = {
   auth_failed: "Authentication failed. Please try again.",
   missing_code: "Missing authentication code.",
   no_email: "No email associated with this account.",
+  "Email not confirmed":
+    "Please click the confirmation link in your email before signing in.",
+  "Invalid login credentials":
+    "Incorrect email or password.",
 };
 
 function LoginForm() {
