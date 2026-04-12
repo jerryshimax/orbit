@@ -119,8 +119,7 @@ export async function POST(request: Request) {
         );
       };
 
-      sendEvent("text_delta", { content: "Thinking..." });
-
+      // No placeholder — frontend shows a pulsing indicator while content is empty.
       // Poll for job completion (max 120s)
       const maxAttempts = 60;
       let attempts = 0;
@@ -138,8 +137,7 @@ export async function POST(request: Request) {
         if (!currentJob) break;
 
         if (currentJob.status === "complete" && currentJob.result) {
-          // Clear the "Thinking..." and send the real response
-          sendEvent("text_delta", { content: `\n\n${currentJob.result}` });
+          sendEvent("text_delta", { content: currentJob.result });
 
           // Save assistant message
           await db.insert(chatMessages).values({

@@ -91,6 +91,27 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
               )}
             </div>
           )}
+
+          {/* Pending indicator — shown when streaming but no content yet */}
+          {!message.content && message.isStreaming && !isUser && (
+            <div
+              className="px-4 py-3 flex items-center gap-1.5"
+              aria-label="Cloud is thinking"
+            >
+              <span
+                className="block w-1.5 h-1.5 rounded-full animate-cloud-pulse"
+                style={{ background: "var(--accent)", animationDelay: "0ms" }}
+              />
+              <span
+                className="block w-1.5 h-1.5 rounded-full animate-cloud-pulse"
+                style={{ background: "var(--accent)", animationDelay: "160ms" }}
+              />
+              <span
+                className="block w-1.5 h-1.5 rounded-full animate-cloud-pulse"
+                style={{ background: "var(--accent)", animationDelay: "320ms" }}
+              />
+            </div>
+          )}
         </div>
       </div>
 
