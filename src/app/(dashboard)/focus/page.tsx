@@ -57,7 +57,7 @@ export default function FocusPage() {
   const objectives = objectivesData ?? [];
   const actions = allActions ?? [];
 
-  // Today's agenda
+  // Today's agenda — full day, not truncated
   const agenda = useMemo(
     () =>
       todayEvents
@@ -65,8 +65,7 @@ export default function FocusPage() {
         .sort(
           (a, b) =>
             new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
-        )
-        .slice(0, 8),
+        ),
     [todayEvents]
   );
 
@@ -201,56 +200,6 @@ export default function FocusPage() {
             ))}
           </div>
         </div>
-      )}
-
-      {/* Today's Agenda */}
-      {agenda.length > 0 && (
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2
-              className="font-[Space_Grotesk] text-[10px] uppercase tracking-[0.15em]"
-              style={{ color: "var(--text-tertiary)" }}
-            >
-              Today's Agenda
-            </h2>
-            <Link
-              href="/calendar"
-              className="text-[10px] font-[Space_Grotesk] uppercase tracking-wider hover:opacity-80"
-              style={{ color: "var(--accent)" }}
-            >
-              See all →
-            </Link>
-          </div>
-          <div className="flex gap-2 overflow-x-auto pb-1 hide-scrollbar">
-            {agenda.map((evt) => (
-              <Link
-                key={evt.id}
-                href={`/calendar/${evt.id}`}
-                className="shrink-0 px-3 py-2 rounded-lg hover:brightness-110 transition-colors"
-                style={{ background: "#181c22", minWidth: 140 }}
-              >
-                <div
-                  className="font-[JetBrains_Mono] text-xs"
-                  style={{ color: "var(--accent)" }}
-                >
-                  {new Date(evt.startTime)
-                    .toLocaleTimeString("en-US", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: false,
-                    })
-                    .slice(0, 5)}
-                </div>
-                <div
-                  className="text-xs font-[Manrope] font-semibold mt-0.5 truncate"
-                  style={{ color: "var(--text-primary)" }}
-                >
-                  {evt.title}
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
       )}
 
       {/* Objectives Board — strategic tier */}
@@ -464,6 +413,94 @@ export default function FocusPage() {
           </div>
         )}
       </section>
+
+      {/* Today's Agenda — expanded, full day */}
+      {agenda.length > 0 && (
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <span
+                className="material-symbols-rounded text-[14px]"
+                style={{ color: "var(--accent)" }}
+              >
+                today
+              </span>
+              <h2
+                className="font-[Manrope] font-semibold text-sm"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                Today's Agenda
+              </h2>
+              <span
+                className="text-[10px] font-[JetBrains_Mono]"
+                style={{ color: "var(--text-tertiary)" }}
+              >
+                {agenda.length} event{agenda.length !== 1 ? "s" : ""}
+              </span>
+            </div>
+            <Link
+              href="/calendar"
+              className="text-[10px] font-[Space_Grotesk] uppercase tracking-wider hover:opacity-80"
+              style={{ color: "var(--accent)" }}
+            >
+              Calendar →
+            </Link>
+          </div>
+          <div className="space-y-1.5">
+            {agenda.map((evt) => {
+              const start = new Date(evt.startTime);
+              const end = evt.endTime ? new Date(evt.endTime) : null;
+              const fmt = (d: Date) =>
+                d
+                  .toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })
+                  .slice(0, 5);
+              return (
+                <Link
+                  key={evt.id}
+                  href={`/calendar/${evt.id}`}
+                  className="flex items-start gap-3 p-3 rounded-lg hover:brightness-110 transition-colors"
+                  style={{ background: "#181c22" }}
+                >
+                  <div
+                    className="font-[JetBrains_Mono] text-xs shrink-0 w-[88px] leading-tight"
+                    style={{ color: "var(--accent)" }}
+                  >
+                    <div>{fmt(start)}</div>
+                    {end && (
+                      <div
+                        className="text-[10px] mt-0.5"
+                        style={{ color: "var(--text-tertiary)" }}
+                      >
+                        {fmt(end)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div
+                      className="text-sm font-[Manrope] font-semibold"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      {evt.title}
+                    </div>
+                    {(evt.location || evt.description) && (
+                      <div
+                        className="text-[11px] mt-0.5 truncate"
+                        style={{ color: "var(--text-tertiary)" }}
+                      >
+                        {evt.location || evt.description}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Action Stream — tactical tier */}
       <section>
