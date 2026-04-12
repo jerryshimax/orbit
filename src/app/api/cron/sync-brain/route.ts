@@ -9,7 +9,11 @@ export async function GET(request: NextRequest) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const result = await syncBrainFiles();
+  // Cron runs without a Supabase session, so we can't derive the user from auth.
+  // Fall back to CRON_DEFAULT_USER (set per-env) or "jerry" — kept consistent
+  // with historical behavior so interaction ownership doesn't shift. Plan B1.
+  const userHandle = process.env.CRON_DEFAULT_USER || "jerry";
+  const result = await syncBrainFiles({ userHandle });
 
   return Response.json({
     scanned: result.scanned,

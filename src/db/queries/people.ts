@@ -29,6 +29,7 @@ export type PersonWithMeta = {
   introChain: string | null;
   entityTags: string[];
   brainNotePath: string | null;
+  source: string | null;
   tags: string[] | null;
   notes: string | null;
   // Primary affiliation
@@ -165,6 +166,7 @@ export async function getPeople(filters?: {
       introChain: p.introChain,
       entityTags: p.entityTags,
       brainNotePath: p.brainNotePath,
+      source: p.source ?? null,
       tags: p.tags,
       notes: p.notes,
       primaryOrg: primaryAffil?.orgName ?? null,

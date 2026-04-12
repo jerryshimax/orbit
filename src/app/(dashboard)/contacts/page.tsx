@@ -124,11 +124,22 @@ export default function ContactsPage() {
 
                 {/* Name */}
                 <div>
-                  <div
-                    className="text-sm font-medium truncate"
-                    style={{ color: "var(--text-primary)" }}
-                  >
-                    {p.fullName}
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <div
+                      className="text-sm font-medium truncate"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      {p.fullName}
+                    </div>
+                    {p.source === "brain" && (
+                      <span
+                        className="shrink-0 px-1.5 py-0.5 rounded text-[9px] font-[Space_Grotesk] font-bold uppercase tracking-wider"
+                        style={{ background: "#7c3aed20", color: "#a78bfa" }}
+                        title="Sourced from Brain notes"
+                      >
+                        Brain
+                      </span>
+                    )}
                   </div>
                   {p.fullNameZh && p.fullNameZh !== p.fullName && (
                     <div

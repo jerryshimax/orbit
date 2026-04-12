@@ -4,10 +4,10 @@ import {
   syncQueue,
   syncLog,
   opportunities,
-  organizations,
   pipelineDefinitions,
 } from "@/db/schema";
-import { eq, ilike, and } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
+import { findOrganizationByName } from "@/lib/brain-sync/org-matcher";
 
 export const dynamic = "force-dynamic";
 
@@ -50,12 +50,8 @@ export async function PATCH(
     // Resolve org if not already linked
     let organizationId = payload.organizationId;
     if (!organizationId && payload.organizationName) {
-      const [org] = await db
-        .select({ id: organizations.id })
-        .from(organizations)
-        .where(ilike(organizations.name, payload.organizationName))
-        .limit(1);
-      organizationId = org?.id;
+      const match = await findOrganizationByName(payload.organizationName);
+      organizationId = match?.id;
     }
 
     // Resolve pipeline — find default for the entity, or first available

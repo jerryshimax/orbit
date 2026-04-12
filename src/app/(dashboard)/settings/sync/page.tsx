@@ -196,9 +196,17 @@ export default function SyncSettingsPage() {
                     item.payload?.title ??
                     "Unknown"}
                 </div>
+                {item.payload?.stage && (
+                  <div
+                    className="text-[10px] mt-0.5 font-[Space_Grotesk] uppercase tracking-wider"
+                    style={{ color: "var(--text-tertiary)" }}
+                  >
+                    stage: <span style={{ color: "var(--text-secondary)" }}>{item.payload.stage}</span>
+                  </div>
+                )}
                 {item.payload?.summary && (
                   <div
-                    className="text-xs mt-1 line-clamp-2"
+                    className="text-xs mt-1 line-clamp-3"
                     style={{ color: "var(--text-tertiary)" }}
                   >
                     {item.payload.summary}

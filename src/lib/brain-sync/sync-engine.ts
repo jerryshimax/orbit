@@ -22,6 +22,7 @@ import {
 } from "@/db/schema";
 import { eq, ilike, and } from "drizzle-orm";
 import { scanBrainFiles, type BrainFileDescriptor } from "./scanner";
+import { findOrganizationByName } from "./org-matcher";
 import {
   extractFromMemo,
   extractFromMeeting,
@@ -53,7 +54,14 @@ interface SyncDetail {
 
 // ── Main Entry ────────────────────────────────────────────────────────────
 
-export async function syncBrainFiles(): Promise<SyncResult> {
+export interface SyncOptions {
+  /** Handle of the orbit_user who initiated the sync. Stored on created
+   *  interactions as `team_member`. Falls back to "jerry" for legacy callers. */
+  userHandle?: string;
+}
+
+export async function syncBrainFiles(options: SyncOptions = {}): Promise<SyncResult> {
+  const userHandle = options.userHandle ?? "jerry";
   const files = scanBrainFiles();
   const result: SyncResult = {
     scanned: files.length,
@@ -67,7 +75,7 @@ export async function syncBrainFiles(): Promise<SyncResult> {
 
   for (const file of files) {
     try {
-      const detail = await syncFile(file);
+      const detail = await syncFile(file, { userHandle });
       result.details.push(detail);
       switch (detail.action) {
         case "created":
@@ -102,14 +110,21 @@ export async function syncBrainFiles(): Promise<SyncResult> {
 
 // ── File Router ───────────────────────────────────────────────────────────
 
-async function syncFile(file: BrainFileDescriptor): Promise<SyncDetail> {
+interface SyncCtx {
+  userHandle: string;
+}
+
+async function syncFile(
+  file: BrainFileDescriptor,
+  ctx: SyncCtx
+): Promise<SyncDetail> {
   switch (file.type) {
     case "person":
       return syncPerson(file);
     case "memo":
       return syncMemo(file);
     case "meeting":
-      return syncMeeting(file);
+      return syncMeeting(file, ctx);
     case "research":
       return syncResearch(file);
     default:
@@ -211,18 +226,13 @@ async function syncPerson(file: BrainFileDescriptor): Promise<SyncDetail> {
 
   // Create org affiliation if we know the org
   if (data.organization && created) {
-    const [org] = await db
-      .select({ id: organizations.id })
-      .from(organizations)
-      .where(ilike(organizations.name, data.organization))
-      .limit(1);
-
-    if (org) {
+    const match = await findOrganizationByName(data.organization);
+    if (match) {
       await db
         .insert(personOrgAffiliations)
         .values({
           personId: created.id,
-          organizationId: org.id,
+          organizationId: match.id,
           title: data.title,
           isPrimaryOrg: true,
         })
@@ -272,12 +282,8 @@ async function syncMemo(file: BrainFileDescriptor): Promise<SyncDetail> {
     return detail;
   }
 
-  // Try to find matching org
-  const [org] = await db
-    .select({ id: organizations.id })
-    .from(organizations)
-    .where(ilike(organizations.name, data.company))
-    .limit(1);
+  // Try to find matching org — exact on name/name_zh first, ilike fallback
+  const orgMatch = await findOrganizationByName(data.company);
 
   // Queue for approval — deals are high-stakes, shouldn't auto-create
   await db.insert(syncQueue).values({
@@ -286,7 +292,7 @@ async function syncMemo(file: BrainFileDescriptor): Promise<SyncDetail> {
     eventType: "new_opportunity",
     payload: {
       ...data,
-      organizationId: org?.id ?? null,
+      organizationId: orgMatch?.id ?? null,
       organizationName: data.company,
     },
     status: "pending",
@@ -300,7 +306,10 @@ async function syncMemo(file: BrainFileDescriptor): Promise<SyncDetail> {
 
 // ── Meeting Sync ──────────────────────────────────────────────────────────
 
-async function syncMeeting(file: BrainFileDescriptor): Promise<SyncDetail> {
+async function syncMeeting(
+  file: BrainFileDescriptor,
+  ctx: SyncCtx
+): Promise<SyncDetail> {
   const data = extractFromMeeting(file);
   const detail: SyncDetail = { path: file.path, type: "meeting", action: "skipped" };
 
@@ -332,7 +341,7 @@ async function syncMeeting(file: BrainFileDescriptor): Promise<SyncDetail> {
     .values({
       interactionType: "meeting",
       source: "brain_sync",
-      teamMember: "jerry",
+      teamMember: ctx.userHandle,
       summary: data.summary ?? data.title,
       interactionDate: data.date ? new Date(data.date) : new Date(),
       entityCode: data.entityCode,
