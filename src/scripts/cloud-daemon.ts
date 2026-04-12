@@ -13,6 +13,7 @@
 import postgres from "postgres";
 import { execFileSync } from "child_process";
 import { buildClaimQuery } from "./cloud-daemon-claim";
+import type { CurrentUser } from "@/lib/supabase/get-current-user";
 
 const DATABASE_URL = process.env.DATABASE_URL;
 if (!DATABASE_URL) {
@@ -57,8 +58,58 @@ async function processViaClaude(prompt: string): Promise<string> {
   return result.trim();
 }
 
+/**
+ * Hydrate CurrentUser for a claimed job. Used by any tool-invoking path
+ * so entity-scope enforcement can run against the correct user.
+ * Fails open (returns undefined) if user_handle is missing or the row
+ * isn't found — preserves dev/back-compat behavior.
+ */
+async function loadUserForJob(job: {
+  user_handle?: string | null;
+}): Promise<CurrentUser | undefined> {
+  if (!job.user_handle) {
+    console.warn(
+      "  ⚠ job has no user_handle — invoking tools with currentUser=undefined (fail-open)",
+    );
+    return undefined;
+  }
+  const rows = await sql`
+    SELECT id, handle, email, full_name, role, entity_access, supabase_auth_id
+    FROM orbit_users
+    WHERE handle = ${job.user_handle}
+    LIMIT 1
+  `;
+  const row = rows[0];
+  if (!row) {
+    console.warn(
+      `  ⚠ user_handle=${job.user_handle} not found in orbit_users — fail-open`,
+    );
+    return undefined;
+  }
+  return {
+    id: row.id as string,
+    authId: (row.supabase_auth_id as string) ?? "",
+    handle: row.handle as string,
+    email: row.email as string,
+    fullName: row.full_name as string,
+    role: row.role as CurrentUser["role"],
+    entityAccess: (row.entity_access as string[]) ?? [],
+    isOwner: row.role === "owner",
+  };
+}
+
 async function processJob(job: any) {
   console.log(`Processing job ${job.id.slice(0, 8)}...`);
+
+  // Hydrate user for downstream tool invocations (no-op for claude/session
+  // paths today, but available when tools are called in-process).
+  const currentUser = await loadUserForJob(job);
+  if (currentUser) {
+    console.log(
+      `  user=${currentUser.handle} role=${currentUser.role} entities=[${currentUser.entityAccess.join(",")}]`,
+    );
+  }
+  void currentUser;
 
   await sql`
     UPDATE chat_jobs SET status = 'processing', started_at = now()

@@ -14,6 +14,83 @@ import {
   pipelineHistory,
 } from "@/db/schema";
 import { eq, ilike, sql, desc, asc, and, inArray } from "drizzle-orm";
+import type { CurrentUser } from "@/lib/supabase/get-current-user";
+import {
+  canAccessEntity,
+  filterByEntity,
+  type ScopedUser,
+} from "./scope-filter";
+
+// ── Scope helpers ──────────────────────────────────────────────────────────
+
+/**
+ * Access check for an organization-like row using entityTags[].
+ * Generic (no tags) is always accessible. Otherwise at least one tag
+ * must be within scope.
+ */
+function canAccessTags(
+  tags: string[] | null | undefined,
+  user: ScopedUser | null | undefined,
+): boolean {
+  if (!user) return true;
+  if (!tags || tags.length === 0) return true;
+  return tags.some((t) => canAccessEntity(user, t));
+}
+
+function scopeDenied(entity: string | null) {
+  return {
+    error: "outside_your_scope" as const,
+    message: `You don't have access to ${entity ?? "this entity"}.`,
+  };
+}
+
+/**
+ * Inspect draft records for any entity references outside the user's scope.
+ * Returns a list of warnings the UI can surface. Does NOT mutate payload —
+ * draft creation is presentation-only; user still confirms.
+ */
+export function filterDraftRecordsByScope(
+  payload: { records?: Array<{ type?: string; data?: Record<string, unknown> }> },
+  user: CurrentUser | undefined,
+): Array<{ index: number; entity: string; message: string }> {
+  if (!user) return [];
+  const warnings: Array<{ index: number; entity: string; message: string }> =
+    [];
+  const records = Array.isArray(payload.records) ? payload.records : [];
+  records.forEach((rec, idx) => {
+    const data = (rec?.data ?? {}) as Record<string, unknown>;
+    const candidateKeys = ["entity_code", "entityCode"];
+    for (const key of candidateKeys) {
+      const val = data[key];
+      if (typeof val === "string" && val.length > 0) {
+        if (!canAccessEntity(user, val)) {
+          warnings.push({
+            index: idx,
+            entity: val,
+            message: `Record ${idx} references "${val}" which is outside your scope.`,
+          });
+        }
+      }
+    }
+    // Also check entity_tags / entityTags arrays.
+    for (const key of ["entity_tags", "entityTags"]) {
+      const tags = data[key];
+      if (Array.isArray(tags)) {
+        const outside = tags.filter(
+          (t): t is string => typeof t === "string" && !canAccessEntity(user, t),
+        );
+        for (const t of outside) {
+          warnings.push({
+            index: idx,
+            entity: t,
+            message: `Record ${idx} references "${t}" which is outside your scope.`,
+          });
+        }
+      }
+    }
+  });
+  return warnings;
+}
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -86,25 +163,38 @@ export function formatCurrency(val: string | number | null | undefined): string 
 
 // ── Tool Handlers ─────────────────────────────────────────────────────────
 
-export async function handleLogInteraction(params: {
-  contact_name: string;
-  organization: string;
-  interaction_type: string;
-  summary: string;
-  team_member: string;
-  source?: string;
-  org_type?: string;
-  entity_code?: string;
-  title?: string;
-  location?: string;
-  pipeline_stage?: string;
-  target_commitment?: string;
-  email?: string;
-  wechat?: string;
-  introduced_by?: string;
-}) {
+export async function handleLogInteraction(
+  params: {
+    contact_name: string;
+    organization: string;
+    interaction_type: string;
+    summary: string;
+    team_member: string;
+    source?: string;
+    org_type?: string;
+    entity_code?: string;
+    title?: string;
+    location?: string;
+    pipeline_stage?: string;
+    target_commitment?: string;
+    email?: string;
+    wechat?: string;
+    introduced_by?: string;
+  },
+  currentUser?: CurrentUser,
+) {
+  // Scope check on target entity (default CE if caller didn't specify).
+  const effectiveEntity = params.entity_code ?? "CE";
+  if (!canAccessEntity(currentUser, effectiveEntity)) {
+    return scopeDenied(effectiveEntity);
+  }
+
   // 1. Find or create org
   let org = await fuzzyFindOrg(params.organization);
+  // If the org already exists, verify the user can write against its tags.
+  if (org && !canAccessTags(org.entityTags, currentUser)) {
+    return scopeDenied(org.entityTags?.[0] ?? null);
+  }
   if (!org) {
     const [newOrg] = await db
       .insert(organizations)
@@ -224,26 +314,35 @@ export async function handleLogInteraction(params: {
   };
 }
 
-export async function handlePipelineStatus(params: {
-  stale_days?: number;
-  entity_code?: string;
-}) {
+export async function handlePipelineStatus(
+  params: {
+    stale_days?: number;
+    entity_code?: string;
+  },
+  currentUser?: CurrentUser,
+) {
   const staleDays = params.stale_days ?? 14;
   const staleDate = new Date();
   staleDate.setDate(staleDate.getDate() - staleDays);
+
+  // If caller requested a specific entity they can't see, short-circuit.
+  if (params.entity_code && !canAccessEntity(currentUser, params.entity_code)) {
+    return scopeDenied(params.entity_code);
+  }
 
   const conditions: any[] = [eq(opportunities.status, "active")];
   if (params.entity_code) {
     conditions.push(eq(opportunities.entityCode, params.entity_code));
   }
 
-  const opps = await db
+  const oppsRaw = await db
     .select({
       stage: opportunities.stage,
       dealSize: opportunities.dealSize,
       commitment: opportunities.commitment,
       orgId: opportunities.organizationId,
       orgName: organizations.name,
+      entityCode: opportunities.entityCode,
     })
     .from(opportunities)
     .leftJoin(
@@ -251,6 +350,8 @@ export async function handlePipelineStatus(params: {
       eq(opportunities.organizationId, organizations.id)
     )
     .where(and(...conditions));
+
+  const opps = filterByEntity(oppsRaw, currentUser);
 
   const stageBuckets: Record<
     string,
@@ -309,18 +410,29 @@ export async function handlePipelineStatus(params: {
   };
 }
 
-export async function handleMoveStage(params: {
-  organization: string;
-  new_stage: string;
-  changed_by: string;
-  notes?: string;
-  actual_commitment?: string;
-}) {
+export async function handleMoveStage(
+  params: {
+    organization: string;
+    new_stage: string;
+    changed_by: string;
+    notes?: string;
+    actual_commitment?: string;
+  },
+  currentUser?: CurrentUser,
+) {
   const org = await fuzzyFindOrg(params.organization);
   if (!org) return { error: `Organization "${params.organization}" not found.` };
 
+  if (!canAccessTags(org.entityTags, currentUser)) {
+    return scopeDenied(org.entityTags?.[0] ?? null);
+  }
+
   const opp = await getActiveOpportunity(org.id);
   if (!opp) return { error: `No active opportunity for "${org.name}".` };
+
+  if (!canAccessEntity(currentUser, opp.entityCode)) {
+    return scopeDenied(opp.entityCode);
+  }
 
   const oldStage = opp.stage;
 
@@ -352,15 +464,21 @@ export async function handleMoveStage(params: {
   };
 }
 
-export async function handleSearch(params: {
-  stage?: string;
-  org_type?: string;
-  days_since_contact?: number;
-  relationship_owner?: string;
-  query?: string;
-  entity_code?: string;
-  limit?: number;
-}) {
+export async function handleSearch(
+  params: {
+    stage?: string;
+    org_type?: string;
+    days_since_contact?: number;
+    relationship_owner?: string;
+    query?: string;
+    entity_code?: string;
+    limit?: number;
+  },
+  currentUser?: CurrentUser,
+) {
+  if (params.entity_code && !canAccessEntity(currentUser, params.entity_code)) {
+    return scopeDenied(params.entity_code);
+  }
   const conditions: any[] = [];
 
   if (params.org_type)
@@ -384,6 +502,13 @@ export async function handleSearch(params: {
     .where(conditions.length > 0 ? and(...conditions) : undefined)
     .orderBy(asc(organizations.name))
     .limit(params.limit ?? 20);
+
+  // Scope filter: drop orgs whose entityTags aren't in the user's scope.
+  if (currentUser) {
+    results = results.filter((org) =>
+      canAccessTags(org.entityTags, currentUser),
+    );
+  }
 
   // Filter by stage
   if (params.stage) {
@@ -431,10 +556,17 @@ export async function handleSearch(params: {
   return { count: formatted.length, results: formatted };
 }
 
-export async function handleGetDetail(params: { organization: string }) {
+export async function handleGetDetail(
+  params: { organization: string },
+  currentUser?: CurrentUser,
+) {
   const org = await fuzzyFindOrg(params.organization);
   if (!org)
     return { error: `Organization "${params.organization}" not found.` };
+
+  if (!canAccessTags(org.entityTags, currentUser)) {
+    return scopeDenied(org.entityTags?.[0] ?? null);
+  }
 
   const orgPeople = await db
     .select({ person: people, affiliation: personOrgAffiliations })
@@ -448,14 +580,16 @@ export async function handleGetDetail(params: { organization: string }) {
     .where(eq(opportunities.organizationId, org.id))
     .orderBy(desc(opportunities.updatedAt));
 
-  const recentInteractions = await db
+  const recentInteractionsRaw = await db
     .select()
     .from(interactions)
     .where(eq(interactions.orgId, org.id))
     .orderBy(desc(interactions.interactionDate))
     .limit(20);
+  const recentInteractions = filterByEntity(recentInteractionsRaw, currentUser);
+  const oppsFiltered = filterByEntity(opps, currentUser);
 
-  const oppIds = opps.map((o) => o.id);
+  const oppIds = oppsFiltered.map((o) => o.id);
   let history: any[] = [];
   if (oppIds.length > 0) {
     history = await db
@@ -489,7 +623,7 @@ export async function handleGetDetail(params: { organization: string }) {
       owner: org.relationshipOwner,
       entities: org.entityTags,
     },
-    opportunities: opps.map((o) => ({
+    opportunities: oppsFiltered.map((o) => ({
       name: o.name,
       stage: o.stage,
       type: o.opportunityType,
@@ -529,29 +663,35 @@ export async function handleGetDetail(params: { organization: string }) {
   };
 }
 
-export async function handleUpdateContact(params: {
-  contact_name?: string;
-  organization?: string;
-  email?: string;
-  phone?: string;
-  title?: string;
-  wechat?: string;
-  telegram?: string;
-  linkedin?: string;
-  headquarters?: string;
-  website?: string;
-  aum?: string;
-  target_commitment?: string;
-  org_type?: string;
-  relationship_strength?: string;
-  notes?: string;
-  tags?: string[];
-}) {
+export async function handleUpdateContact(
+  params: {
+    contact_name?: string;
+    organization?: string;
+    email?: string;
+    phone?: string;
+    title?: string;
+    wechat?: string;
+    telegram?: string;
+    linkedin?: string;
+    headquarters?: string;
+    website?: string;
+    aum?: string;
+    target_commitment?: string;
+    org_type?: string;
+    relationship_strength?: string;
+    notes?: string;
+    tags?: string[];
+  },
+  currentUser?: CurrentUser,
+) {
   const updated: string[] = [];
 
   if (params.contact_name) {
     const person = await fuzzyFindPerson(params.contact_name);
     if (person) {
+      if (!canAccessTags(person.entityTags, currentUser)) {
+        return scopeDenied(person.entityTags?.[0] ?? null);
+      }
       const u: any = { updatedAt: new Date() };
       if (params.email) u.email = params.email;
       if (params.phone) u.phone = params.phone;
@@ -574,6 +714,9 @@ export async function handleUpdateContact(params: {
   if (params.organization) {
     const org = await fuzzyFindOrg(params.organization);
     if (org) {
+      if (!canAccessTags(org.entityTags, currentUser)) {
+        return scopeDenied(org.entityTags?.[0] ?? null);
+      }
       const u: any = { updatedAt: new Date() };
       if (params.headquarters) u.headquarters = params.headquarters;
       if (params.website) u.website = params.website;
@@ -596,10 +739,13 @@ export async function handleUpdateContact(params: {
 
 // ── Calendar & Email handlers ──────────────────────────────────────────
 
-export async function handleListCalendarEvents(params: {
-  start_date?: string;
-  end_date?: string;
-}) {
+export async function handleListCalendarEvents(
+  params: {
+    start_date?: string;
+    end_date?: string;
+  },
+  _currentUser?: CurrentUser,
+) {
   const { getMergedCalendar } = await import("@/db/queries/calendar");
   const { getDefaultTrip } = await import("@/db/queries/roadshow");
 
@@ -641,10 +787,13 @@ export async function handleListCalendarEvents(params: {
   };
 }
 
-export async function handleSearchEmails(params: {
-  query: string;
-  max_results?: number;
-}) {
+export async function handleSearchEmails(
+  params: {
+    query: string;
+    max_results?: number;
+  },
+  _currentUser?: CurrentUser,
+) {
   const { getGoogleClient } = await import("@/lib/google/client");
   const { orbitUsers } = await import("@/db/schema");
 
@@ -694,12 +843,15 @@ export async function handleSearchEmails(params: {
   return { results, totalResults: data.resultSizeEstimate ?? 0 };
 }
 
-export async function handleDraftEmail(params: {
-  to: string;
-  subject: string;
-  body: string;
-  cc?: string;
-}) {
+export async function handleDraftEmail(
+  params: {
+    to: string;
+    subject: string;
+    body: string;
+    cc?: string;
+  },
+  _currentUser?: CurrentUser,
+) {
   const { getGoogleClient } = await import("@/lib/google/client");
   const { orbitUsers } = await import("@/db/schema");
 
@@ -748,13 +900,19 @@ export async function handleDraftEmail(params: {
 
 // ── Objectives & Actions handlers ──────────────────────────────────────
 
-export async function handleCreateObjective(params: {
-  title: string;
-  description?: string;
-  entity_code?: string;
-  priority?: string;
-  deadline?: string;
-}) {
+export async function handleCreateObjective(
+  params: {
+    title: string;
+    description?: string;
+    entity_code?: string;
+    priority?: string;
+    deadline?: string;
+  },
+  currentUser?: CurrentUser,
+) {
+  if (params.entity_code && !canAccessEntity(currentUser, params.entity_code)) {
+    return scopeDenied(params.entity_code);
+  }
   const { objectives: objTable } = await import("@/db/schema");
 
   const [created] = await db
@@ -774,14 +932,17 @@ export async function handleCreateObjective(params: {
   return { status: "created", objective: { id: created.id, title: created.title } };
 }
 
-export async function handleCreateAction(params: {
-  title: string;
-  type?: string;
-  priority?: string;
-  due_date?: string;
-  objective_title?: string;
-  notes?: string;
-}) {
+export async function handleCreateAction(
+  params: {
+    title: string;
+    type?: string;
+    priority?: string;
+    due_date?: string;
+    objective_title?: string;
+    notes?: string;
+  },
+  _currentUser?: CurrentUser,
+) {
   const { actionItems, objectives: objTable } = await import("@/db/schema");
 
   // Link to objective if specified
@@ -813,15 +974,22 @@ export async function handleCreateAction(params: {
   return { status: "created", action: { id: created.id, title: created.title, type: created.type } };
 }
 
-export async function handleListObjectives(params: {
-  status?: string;
-  entity_code?: string;
-}) {
+export async function handleListObjectives(
+  params: {
+    status?: string;
+    entity_code?: string;
+  },
+  currentUser?: CurrentUser,
+) {
+  if (params.entity_code && !canAccessEntity(currentUser, params.entity_code)) {
+    return scopeDenied(params.entity_code);
+  }
   const { getObjectives } = await import("@/db/queries/objectives");
-  const results = await getObjectives({
+  const raw = await getObjectives({
     status: params.status ?? "active",
     entityCode: params.entity_code,
   });
+  const results = filterByEntity(raw as Array<{ entityCode?: string | null }>, currentUser) as typeof raw;
 
   return {
     objectives: results.map((o: any) => ({
@@ -837,15 +1005,19 @@ export async function handleListObjectives(params: {
   };
 }
 
-export async function handleListActions(params: {
-  type?: string;
-  status?: string;
-}) {
+export async function handleListActions(
+  params: {
+    type?: string;
+    status?: string;
+  },
+  currentUser?: CurrentUser,
+) {
   const { getActionItems } = await import("@/db/queries/actions");
-  const results = await getActionItems({
+  const raw = await getActionItems({
     type: params.type,
     status: params.status ?? "open",
   });
+  const results = filterByEntity(raw as Array<{ entityCode?: string | null }>, currentUser) as typeof raw;
 
   return {
     items: results.map((a: any) => ({
