@@ -1,10 +1,12 @@
 "use client";
 
-import { use } from "react";
+import { use, useMemo } from "react";
 import Link from "next/link";
 import { useMeeting } from "@/hooks/use-roadshow";
 import { useState, useCallback } from "react";
 import { ContactDossier } from "@/components/roadshow/contact-dossier";
+import { InlineEditableField } from "@/components/shared/inline-editable-field";
+import { useRegisterPageFields } from "@/lib/chat/page-bridge";
 import {
   strengthToColor,
   strengthToLabel,
@@ -36,6 +38,22 @@ function MeetingDetail({ meetingId }: { meetingId: string }) {
   const [dossierAttendee, setDossierAttendee] =
     useState<MeetingAttendee | null>(null);
 
+  const saveMeetingField = useCallback(
+    async (field: "strategicAsk" | "pitchAngle" | "prepNotes", value: string) => {
+      if (!meeting) return;
+      mutate({ ...meeting, [field]: value }, false);
+      setSaving(true);
+      await fetch(`/api/roadshow/meetings/${meetingId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [field]: value }),
+      });
+      setSaving(false);
+      mutate();
+    },
+    [meeting, meetingId, mutate]
+  );
+
   const toggleAction = useCallback(
     async (index: number) => {
       if (!meeting?.actionItems) return;
@@ -53,6 +71,61 @@ function MeetingDetail({ meetingId }: { meetingId: string }) {
     },
     [meeting, meetingId, mutate]
   );
+
+  // PageBridge: expose editable prep fields to Cloud.
+  const strategicAsk = meeting?.strategicAsk ?? "";
+  const pitchAngle = meeting?.pitchAngle ?? "";
+  const prepNotes = meeting?.prepNotes ?? "";
+
+  const bridgeFields = useMemo(
+    () => [
+      {
+        name: "strategicAsk",
+        label: "Strategic Ask",
+        type: "textarea" as const,
+        value: strategicAsk,
+      },
+      {
+        name: "pitchAngle",
+        label: "Pitch Angle",
+        type: "textarea" as const,
+        value: pitchAngle,
+      },
+      {
+        name: "prepNotes",
+        label: "Prep Notes",
+        type: "textarea" as const,
+        value: prepNotes,
+      },
+    ],
+    [strategicAsk, pitchAngle, prepNotes]
+  );
+
+  const applyBridgeField = useCallback(
+    (field: string, value: string) => {
+      if (
+        field === "strategicAsk" ||
+        field === "pitchAngle" ||
+        field === "prepNotes"
+      ) {
+        void saveMeetingField(field, value);
+      }
+    },
+    [saveMeetingField]
+  );
+
+  useRegisterPageFields({
+    route: `/roadshow/meetings/${meetingId}`,
+    title: meeting?.title
+      ? `Meeting Prep — ${meeting.title}`
+      : "Meeting Prep",
+    summary: meeting?.title
+      ? `Preparing for ${meeting.title}`
+      : undefined,
+    fields: bridgeFields,
+    setter: applyBridgeField,
+    enabled: !!meeting,
+  });
 
   if (isLoading || !meeting) {
     return (
@@ -153,34 +226,36 @@ function MeetingDetail({ meetingId }: { meetingId: string }) {
         </div>
       </section>
 
-      {/* Strategic Ask + Pitch Angle (Asymmetric Layout) */}
+      {/* Strategic Ask + Pitch Angle (Asymmetric Layout) — inline editable */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        {meeting.strategicAsk && (
-          <div className="md:col-span-3 bg-[#1c2026] p-6 rounded-sm space-y-4">
-            <div className="flex items-center gap-2 border-l-2 border-[#e9c176] pl-3">
-              <span className="font-[Manrope] text-xs font-bold text-[#e9c176] tracking-widest uppercase">
-                Strategic Ask
-              </span>
-            </div>
-            <p className="text-[#d1c5b4] leading-relaxed text-sm whitespace-pre-wrap">
-              {meeting.strategicAsk}
-            </p>
+        <div className="md:col-span-3 bg-[#1c2026] p-6 rounded-sm space-y-4">
+          <div className="flex items-center gap-2 border-l-2 border-[#e9c176] pl-3">
+            <span className="font-[Manrope] text-xs font-bold text-[#e9c176] tracking-widest uppercase">
+              Strategic Ask
+            </span>
           </div>
-        )}
-        {meeting.pitchAngle && (
-          <div
-            className={`${meeting.strategicAsk ? "md:col-span-2" : "md:col-span-5"} bg-[#1c2026] p-6 rounded-sm space-y-4 border-l border-[#4e4639]/10`}
-          >
-            <div className="flex items-center gap-2 border-l-2 border-[#4e4639] pl-3">
-              <span className="font-[Manrope] text-xs font-bold text-[#d1c5b4] tracking-widest uppercase">
-                Pitch Angle
-              </span>
-            </div>
-            <p className="text-[#d1c5b4] leading-relaxed text-sm whitespace-pre-wrap">
-              {meeting.pitchAngle}
-            </p>
+          <InlineEditableField
+            type="textarea"
+            value={strategicAsk}
+            onSave={(v) => saveMeetingField("strategicAsk", v)}
+            placeholder="Click to add the strategic ask…"
+            rows={3}
+          />
+        </div>
+        <div className="md:col-span-2 bg-[#1c2026] p-6 rounded-sm space-y-4 border-l border-[#4e4639]/10">
+          <div className="flex items-center gap-2 border-l-2 border-[#4e4639] pl-3">
+            <span className="font-[Manrope] text-xs font-bold text-[#d1c5b4] tracking-widest uppercase">
+              Pitch Angle
+            </span>
           </div>
-        )}
+          <InlineEditableField
+            type="textarea"
+            value={pitchAngle}
+            onSave={(v) => saveMeetingField("pitchAngle", v)}
+            placeholder="Click to add the pitch angle…"
+            rows={3}
+          />
+        </div>
       </div>
 
       {/* CRM Data Table */}
@@ -330,17 +405,19 @@ function MeetingDetail({ meetingId }: { meetingId: string }) {
         )}
       </section>
 
-      {/* Prep Notes */}
-      {meeting.prepNotes && (
-        <section className="bg-[#1c2026] p-6 rounded-sm space-y-4">
-          <h3 className="font-[Manrope] text-xs font-bold text-[#d1c5b4] uppercase tracking-widest">
-            Prep Notes
-          </h3>
-          <p className="text-[#d1c5b4] leading-relaxed text-sm whitespace-pre-wrap">
-            {meeting.prepNotes}
-          </p>
-        </section>
-      )}
+      {/* Prep Notes — inline editable */}
+      <section className="bg-[#1c2026] p-6 rounded-sm space-y-4">
+        <h3 className="font-[Manrope] text-xs font-bold text-[#d1c5b4] uppercase tracking-widest">
+          Prep Notes
+        </h3>
+        <InlineEditableField
+          type="textarea"
+          value={prepNotes}
+          onSave={(v) => saveMeetingField("prepNotes", v)}
+          placeholder="Click to add prep notes…"
+          rows={4}
+        />
+      </section>
 
       {/* Action Items / Prep Checklist */}
       {actionItems.length > 0 && (

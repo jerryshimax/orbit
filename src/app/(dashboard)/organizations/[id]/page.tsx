@@ -5,13 +5,14 @@ import { useOrganizationDetail } from "@/hooks/use-organizations";
 import { StageBadge } from "@/components/shared/stage-badge";
 import { WarmthDot } from "@/components/shared/warmth-dot";
 import { BrainPanel } from "@/components/organizations/brain-panel";
+import { OrgEditableFields } from "@/components/organizations/org-editable-fields";
 import { formatMoney, formatDate, formatRelativeDate, daysSince } from "@/lib/format";
 import { LP_TYPES, INTERACTION_TYPES } from "@/lib/constants";
 
 export default function OrgDetailPage() {
   const params = useParams();
   const id = params.id as string;
-  const { data } = useOrganizationDetail(id);
+  const { data, mutate } = useOrganizationDetail(id);
 
   if (!data) {
     return (
@@ -109,19 +110,18 @@ export default function OrgDetailPage() {
         </div>
       )}
 
-      {/* Notes */}
-      {org.notes && (
-        <div
-          className="p-4 rounded-xl text-sm"
-          style={{
-            background: "var(--bg-surface)",
-            border: "1px solid var(--border-subtle)",
-            color: "var(--text-secondary)",
-          }}
-        >
-          {org.notes}
-        </div>
-      )}
+      {/* Editable CRM block — notes, aum, target commitment, tags */}
+      <OrgEditableFields
+        org={{
+          id: org.id,
+          name: org.name,
+          notes: org.notes,
+          aumUsd: org.aumUsd,
+          targetCommitment: org.targetCommitment,
+          tags: org.tags,
+        }}
+        onSaved={() => mutate()}
+      />
 
       {/* Two columns */}
       <div className="grid grid-cols-5 gap-6">

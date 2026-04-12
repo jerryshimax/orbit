@@ -126,6 +126,7 @@ export default function ReconDetailPage({
               content={s.content}
               sectionType={s.sectionType}
               aiGenerated={s.aiGenerated ?? false}
+              projectName={project.name}
               onSave={handleSaveSection}
               onRefineComplete={() => mutate()}
             />
@@ -161,6 +162,7 @@ export default function ReconDetailPage({
               content={s.content}
               sectionType={s.sectionType}
               aiGenerated={s.aiGenerated ?? false}
+              projectName={project.name}
               onSave={handleSaveSection}
               onRefineComplete={() => mutate()}
             />
@@ -190,6 +192,7 @@ export default function ReconDetailPage({
               content={s.content}
               sectionType={s.sectionType}
               aiGenerated={s.aiGenerated ?? false}
+              projectName={project.name}
               onSave={handleSaveSection}
               onRefineComplete={() => mutate()}
             />
@@ -204,6 +207,7 @@ export default function ReconDetailPage({
               content={s.content}
               sectionType={s.sectionType}
               aiGenerated={s.aiGenerated ?? false}
+              projectName={project.name}
               onSave={handleSaveSection}
               onRefineComplete={() => mutate()}
             />

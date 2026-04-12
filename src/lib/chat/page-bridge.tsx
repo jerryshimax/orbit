@@ -159,6 +159,13 @@ export function useRegisterPageFields(opts: {
   setter: FieldSetter;
   title?: string;
   summary?: string;
+  /**
+   * When false the hook does not register its fields. Useful when several
+   * instances of the hook are mounted on the same page (e.g. one per
+   * collapsible section) and only the "active" one should publish to Cloud.
+   * Defaults to true.
+   */
+  enabled?: boolean;
 }) {
   const ctx = useContext(PageBridgeContext);
 
@@ -168,8 +175,11 @@ export function useRegisterPageFields(opts: {
   setterRef.current = opts.setter;
   const setterRefRef = useRef(setterRef);
 
+  const enabled = opts.enabled !== false;
+
   useEffect(() => {
     if (!ctx) return;
+    if (!enabled) return;
     ctx.register({
       route: opts.route,
       title: opts.title ?? null,
@@ -181,8 +191,9 @@ export function useRegisterPageFields(opts: {
 
   useEffect(() => {
     if (!ctx) return;
+    const route = opts.route;
     return () => {
-      ctx.clear(opts.route);
+      ctx.clear(route);
     };
-  }, [ctx, opts.route]);
+  }, [ctx, opts.route, enabled]);
 }

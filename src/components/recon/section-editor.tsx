@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useMemo } from "react";
+import { usePathname } from "next/navigation";
+import { useRegisterPageFields } from "@/lib/chat/page-bridge";
 
 type Props = {
   sectionId: string;
@@ -9,6 +11,7 @@ type Props = {
   content: string;
   sectionType: string;
   aiGenerated?: boolean;
+  projectName?: string;
   onSave: (sectionId: string, content: string) => void;
   onRefineComplete: () => void;
 };
@@ -20,9 +23,11 @@ export function SectionEditor({
   content,
   sectionType,
   aiGenerated,
+  projectName,
   onSave,
   onRefineComplete,
 }: Props) {
+  const pathname = usePathname();
   const [editing, setEditing] = useState(false);
   const [localContent, setLocalContent] = useState(content);
   const [showRefine, setShowRefine] = useState(false);
@@ -30,6 +35,35 @@ export function SectionEditor({
   const [refining, setRefining] = useState(false);
   const [streamedContent, setStreamedContent] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // PageBridge: while this section is being edited, expose its content + title
+  // to Cloud so it can propose refinements. Multiple SectionEditors mount on
+  // the page but only the one actively editing registers with the bridge.
+  const bridgeFields = useMemo(
+    () => [
+      {
+        name: "content",
+        label: title,
+        type: "textarea" as const,
+        value: localContent,
+        placeholder: "Section content",
+      },
+    ],
+    [localContent, title]
+  );
+
+  const applyBridgeField = useCallback((field: string, value: string) => {
+    if (field === "content") setLocalContent(value);
+  }, []);
+
+  useRegisterPageFields({
+    route: pathname ?? `/recon/${projectId}`,
+    title: projectName ? `${projectName} · ${title}` : title,
+    summary: `Editing ${sectionType.replace(/_/g, " ")} section${projectName ? ` of ${projectName}` : ""}`,
+    fields: bridgeFields,
+    setter: applyBridgeField,
+    enabled: editing,
+  });
 
   const handleBlur = useCallback(() => {
     setEditing(false);
