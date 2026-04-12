@@ -2,6 +2,13 @@
 
 import { useState, useCallback, useRef } from "react";
 import type { PageContext } from "@/lib/chat/system-prompt";
+import { extractProposals } from "@/lib/chat/proposal-parser";
+
+export type ProposalPayload = {
+  field: string;
+  value: string;
+  reasoning?: string;
+};
 
 export type ChatMessage = {
   id: string;
@@ -13,6 +20,8 @@ export type ChatMessage = {
   draftPayload?: any;
   draftId?: string;
   draftStatus?: "pending" | "approved" | "edited" | "discarded";
+  proposalPayload?: ProposalPayload;
+  proposalStatus?: "pending" | "applied" | "dismissed";
   isStreaming?: boolean;
 };
 
@@ -84,16 +93,32 @@ export function useChat(pageContext: PageContext) {
               const event = JSON.parse(json);
 
               switch (event.type) {
-                case "text_delta":
+                case "text_delta": {
                   fullText += event.content;
-                  setMessages((prev) =>
-                    prev.map((m) =>
-                      m.id === assistantId
-                        ? { ...m, content: fullText }
-                        : m
-                    )
-                  );
+                  const { cleaned, proposals } = extractProposals(fullText);
+                  setMessages((prev) => {
+                    const existingProposalIds = new Set(
+                      prev.filter((m) => m.proposalPayload).map((m) => m.id)
+                    );
+                    const next = prev.map((m) =>
+                      m.id === assistantId ? { ...m, content: cleaned } : m
+                    );
+                    for (const p of proposals) {
+                      const pid = `proposal-${assistantId}-${p.field}`;
+                      if (!existingProposalIds.has(pid)) {
+                        next.push({
+                          id: pid,
+                          role: "assistant",
+                          content: "",
+                          proposalPayload: p,
+                          proposalStatus: "pending",
+                        });
+                      }
+                    }
+                    return next;
+                  });
                   break;
+                }
 
                 case "tool_use":
                   setMessages((prev) => [
@@ -226,6 +251,18 @@ export function useChat(pageContext: PageContext) {
     );
   }, []);
 
+  const markProposalApplied = useCallback((id: string) => {
+    setMessages((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, proposalStatus: "applied" } : m))
+    );
+  }, []);
+
+  const markProposalDismissed = useCallback((id: string) => {
+    setMessages((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, proposalStatus: "dismissed" } : m))
+    );
+  }, []);
+
   const resetConversation = useCallback(() => {
     setMessages([]);
     setConversationId(null);
@@ -238,6 +275,8 @@ export function useChat(pageContext: PageContext) {
     sendMessage,
     approveDraft,
     discardDraft,
+    markProposalApplied,
+    markProposalDismissed,
     resetConversation,
   };
 }

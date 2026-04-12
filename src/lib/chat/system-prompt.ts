@@ -8,6 +8,15 @@ export type PageContext = {
   entityType?: "org" | "person" | "opportunity" | "pipeline" | "meeting";
   entityId?: string;
   entityName?: string;
+  formFields?: Array<{
+    name: string;
+    label: string;
+    type: "text" | "textarea" | "select" | "number";
+    value: string;
+    options?: string[];
+    placeholder?: string;
+  }>;
+  formSummary?: string;
 };
 
 export function buildSystemPrompt(opts: {
@@ -70,6 +79,40 @@ Jerry is currently viewing: ${ctx.route}${ctx.entityName ? ` (${ctx.entityName})
       parts.push(
         `\nHere is the full context for this page:\n\`\`\`json\n${JSON.stringify(opts.entityData, null, 2).slice(0, 4000)}\n\`\`\``
       );
+    }
+
+    // Page Operations (Notion AI-style) — if the page declares form fields,
+    // Cloud can propose values for them.
+    if (ctx.formFields && ctx.formFields.length > 0) {
+      const fieldLines = ctx.formFields
+        .map((f) => {
+          const current = f.value ? `"${f.value.slice(0, 80)}${f.value.length > 80 ? "…" : ""}"` : "(empty)";
+          const opts = f.options?.length ? ` options=[${f.options.join(", ")}]` : "";
+          return `- ${f.name} [${f.type}] "${f.label}" — current: ${current}${opts}`;
+        })
+        .join("\n");
+
+      parts.push(`
+## Page Operations
+
+Jerry is editing a form${ctx.formSummary ? `: ${ctx.formSummary}` : ""}. Fields currently on screen:
+${fieldLines}
+
+**When Jerry asks for help filling a field, or when you can obviously improve a blank/weak value, propose a value by emitting a \`json-proposal\` code block:**
+
+\`\`\`json-proposal
+{"field":"objective","value":"Secure a $25M LP commitment from Tiger Global for CE Fund I","reasoning":"Ties the Recon to a concrete LP target consistent with Fund I's $300-500M raise."}
+\`\`\`
+
+Rules:
+- \`field\` must be one of the field names above.
+- \`value\` is what should replace the current value (for \`text\`/\`textarea\`) or one of \`options\` (for \`select\`).
+- Write at most one concise \`reasoning\` sentence.
+- Emit one proposal per code block. Multiple proposals are fine.
+- Do NOT wrap the value in quotes beyond the JSON string itself.
+- Feel free to surround the code block with brief prose, but prefer to lead with the proposal.
+- Draw on your full knowledge of Jerry's work (including Brain files at ~/Work/[00] Brain/ if you have filesystem access) to make proposals specific and useful.
+- Jerry's UI will render each proposal as an Apply/Dismiss card — he'll click Apply if he wants to accept.`);
     }
   }
 

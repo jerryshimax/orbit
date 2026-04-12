@@ -7,6 +7,7 @@ import { useChatContext } from "@/hooks/use-chat-context";
 import { ChatInput } from "./chat-input";
 import { MessageBubble } from "./message-bubble";
 import { DraftCard } from "./draft-card";
+import { ProposalCard } from "./proposal-card";
 
 export function ChatPanel() {
   const { isOpen, setIsOpen } = useChatPanel();
@@ -17,6 +18,8 @@ export function ChatPanel() {
     sendMessage,
     approveDraft,
     discardDraft,
+    markProposalApplied,
+    markProposalDismissed,
     resetConversation,
   } = useChat(pageContext);
 
@@ -132,6 +135,16 @@ export function ChatPanel() {
                   message={msg}
                   onApprove={approveDraft}
                   onDiscard={discardDraft}
+                />
+              );
+            }
+            if (msg.proposalPayload) {
+              return (
+                <ProposalCard
+                  key={msg.id}
+                  message={msg}
+                  onApplied={markProposalApplied}
+                  onDismissed={markProposalDismissed}
                 />
               );
             }

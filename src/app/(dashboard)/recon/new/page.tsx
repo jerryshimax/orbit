@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useRegisterPageFields } from "@/lib/chat/page-bridge";
 
 const PROJECT_TYPES = [
   { value: "lp_campaign", label: "LP Campaign" },
@@ -26,6 +27,66 @@ export default function NewReconPage() {
   const [projectType, setProjectType] = useState("custom");
   const [entityCode, setEntityCode] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  // Expose form state to Cloud so it can propose values via the PageBridge.
+  const cloudFields = useMemo(
+    () => [
+      {
+        name: "name",
+        label: "Name",
+        type: "text" as const,
+        value: name,
+        placeholder: "Tiger Global LP Campaign",
+      },
+      {
+        name: "objective",
+        label: "Objective",
+        type: "textarea" as const,
+        value: objective,
+        placeholder: "Secure a $25M LP commitment from Tiger Global for CE Fund I",
+      },
+      {
+        name: "projectType",
+        label: "Type",
+        type: "select" as const,
+        value: projectType,
+        options: PROJECT_TYPES.map((t) => t.value),
+      },
+      {
+        name: "entityCode",
+        label: "Entity",
+        type: "select" as const,
+        value: entityCode,
+        options: ENTITIES.map((e) => e.value).filter(Boolean),
+      },
+    ],
+    [name, objective, projectType, entityCode]
+  );
+
+  const applyCloudField = useCallback((field: string, value: string) => {
+    switch (field) {
+      case "name":
+        setName(value);
+        break;
+      case "objective":
+        setObjective(value);
+        break;
+      case "projectType":
+        setProjectType(value);
+        break;
+      case "entityCode":
+        setEntityCode(value);
+        break;
+    }
+  }, []);
+
+  useRegisterPageFields({
+    route: "/recon/new",
+    title: "New Recon",
+    summary: `New Recon project${entityCode ? ` for ${entityCode}` : ""}`,
+    fields: cloudFields,
+    setter: applyCloudField,
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
