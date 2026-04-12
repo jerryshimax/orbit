@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { getPersonDetail } from "@/db/queries/people";
 import { notFound } from "next/navigation";
+import { ContactEditableFields } from "@/components/contacts/contact-editable-fields";
 
 const INTERACTION_ICONS: Record<string, string> = {
   meeting: "M",
@@ -147,13 +148,16 @@ export default async function ContactDetailPage({
             </div>
           )}
 
-          {/* Notes */}
-          {person.notes && (
-            <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
-              <h3 className="text-sm font-medium text-zinc-300 mb-2">Notes</h3>
-              <p className="text-sm text-zinc-400 whitespace-pre-wrap">{person.notes}</p>
-            </div>
-          )}
+          {/* CRM editable block — notes, relationship strength, tags */}
+          <ContactEditableFields
+            person={{
+              id: person.id,
+              fullName: person.fullName,
+              notes: person.notes,
+              relationshipStrength: person.relationshipStrength,
+              tags: person.tags,
+            }}
+          />
         </div>
 
         {/* Right panel — interaction timeline */}

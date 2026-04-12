@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
 import { useEntity } from "@/components/shared/entity-provider";
+import { useRegisterPageFields } from "@/lib/chat/page-bridge";
 import { useObjectives } from "@/hooks/use-objectives";
 import { useActions } from "@/hooks/use-actions";
 import { useMomentum } from "@/hooks/use-momentum";
@@ -96,6 +97,118 @@ export default function FocusPage() {
     }
     return counts;
   }, [actions]);
+
+  // PageBridge: expose the new-objective form while it's open.
+  const objectiveFields = useMemo(
+    () => [
+      {
+        name: "newObjTitle",
+        label: "Title",
+        type: "text" as const,
+        value: newObjTitle,
+        placeholder: "Close Fund I LP #3 by EOQ",
+      },
+      {
+        name: "newObjEntity",
+        label: "Entity",
+        type: "select" as const,
+        value: newObjEntity,
+        options: ["", "CE", "SYN", "UUL", "FO"],
+      },
+      {
+        name: "newObjPriority",
+        label: "Priority",
+        type: "select" as const,
+        value: newObjPriority,
+        options: ["p0", "p1", "p2"],
+      },
+      {
+        name: "newObjDeadline",
+        label: "Deadline",
+        type: "text" as const,
+        value: newObjDeadline,
+        placeholder: "YYYY-MM-DD",
+      },
+    ],
+    [newObjTitle, newObjEntity, newObjPriority, newObjDeadline]
+  );
+
+  const applyObjectiveField = useCallback((field: string, value: string) => {
+    switch (field) {
+      case "newObjTitle":
+        setNewObjTitle(value);
+        break;
+      case "newObjEntity":
+        setNewObjEntity(value);
+        break;
+      case "newObjPriority":
+        setNewObjPriority(value);
+        break;
+      case "newObjDeadline":
+        setNewObjDeadline(value);
+        break;
+    }
+  }, []);
+
+  useRegisterPageFields({
+    route: "/focus",
+    title: "Focus — New Objective",
+    summary: `Creating new objective${newObjEntity ? ` for ${newObjEntity}` : ""}`,
+    fields: objectiveFields,
+    setter: applyObjectiveField,
+    enabled: showNewObjective,
+  });
+
+  // PageBridge: expose the new-action form while it's open.
+  const actionFields = useMemo(
+    () => [
+      {
+        name: "newActionTitle",
+        label: "Next step",
+        type: "text" as const,
+        value: newActionTitle,
+        placeholder: "Send deck to Ray by Friday",
+      },
+      {
+        name: "newActionType",
+        label: "Type",
+        type: "select" as const,
+        value: newActionType,
+        options: ["action", "decision", "follow_up"],
+      },
+      {
+        name: "newActionDue",
+        label: "Due",
+        type: "text" as const,
+        value: newActionDue,
+        placeholder: "YYYY-MM-DD",
+      },
+    ],
+    [newActionTitle, newActionType, newActionDue]
+  );
+
+  const applyActionField = useCallback((field: string, value: string) => {
+    switch (field) {
+      case "newActionTitle":
+        setNewActionTitle(value);
+        break;
+      case "newActionType":
+        setNewActionType(value);
+        break;
+      case "newActionDue":
+        setNewActionDue(value);
+        break;
+    }
+  }, []);
+
+  useRegisterPageFields({
+    route: "/focus",
+    title: "Focus — New Action",
+    summary: "Creating new action",
+    fields: actionFields,
+    setter: applyActionField,
+    enabled: showNewAction && !showNewObjective,
+  });
 
   const toggleAction = async (id: string, currentStatus: string) => {
     const newStatus = currentStatus === "done" ? "open" : "done";
