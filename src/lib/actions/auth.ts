@@ -4,6 +4,15 @@ import { createClient } from "@/lib/supabase/server";
 import { db } from "@/db";
 import { orbitUsers } from "@/db/schema/users";
 import { eq, sql } from "drizzle-orm";
+import { headers } from "next/headers";
+
+async function getRequestOrigin(): Promise<string> {
+  const h = await headers();
+  const forwardedHost = h.get("x-forwarded-host") ?? h.get("host");
+  const forwardedProto = h.get("x-forwarded-proto") ?? "https";
+  if (forwardedHost) return `${forwardedProto}://${forwardedHost}`;
+  return process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+}
 // redirect removed — client handles navigation after success
 
 async function linkAuthId(
@@ -107,7 +116,14 @@ export async function signUpAction(
     return { error: "already_registered" };
   }
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const origin = await getRequestOrigin();
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: `${origin}/auth/callback`,
+    },
+  });
 
   if (error) {
     return { error: error.message };
