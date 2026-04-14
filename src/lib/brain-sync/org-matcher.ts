@@ -1,30 +1,28 @@
 /**
  * Organization name matcher used by the Brain sync engine.
  *
- * Replaces the previous fuzzy `ilike` single-step lookup with a two-step
- * resolution:
+ * Two-step resolution:
  *   1. Exact match on `name` OR `name_zh` (case-insensitive).
- *   2. Fallback to `ilike` with a `console.log` so drift is visible in logs.
+ *   2. Canonical alias match against `organization_aliases` (case-insensitive).
  *
- * A full canonical aliases table is deliberately out of scope (plan B5).
+ * The legacy `ilike` fuzzy fallback has been removed — non-canonical variants
+ * must now be registered in `organization_aliases` to resolve. This makes
+ * matching deterministic and prevents silent drift.
  */
 
 import { db } from "@/db";
-import { organizations } from "@/db/schema";
-import { eq, ilike, or, sql } from "drizzle-orm";
+import { organizations, organizationAliases } from "@/db/schema";
+import { eq, or, sql } from "drizzle-orm";
 
 export type OrgMatchResult = {
   id: string;
-  matchType: "exact" | "fuzzy";
+  matchType: "exact" | "alias";
 } | null;
-
-export type MinimalOrgRow = {
-  id: string;
-};
 
 /**
  * Pure matching logic — given a candidate name and a set of org rows already
- * fetched from DB, decide whether we have an exact or fuzzy match.
+ * fetched from DB, decide whether we have an exact match. Exact only — alias
+ * resolution happens at the DB layer in `findOrganizationByName`.
  *
  * Split out so we can unit-test without a live Postgres.
  */
@@ -36,7 +34,6 @@ export function pickOrgMatch(
   const needle = candidate.trim().toLowerCase();
   if (!needle) return null;
 
-  // Step 1: exact match (case-insensitive) on name or name_zh
   for (const r of rows) {
     if (r.name && r.name.trim().toLowerCase() === needle) {
       return { id: r.id, matchType: "exact" };
@@ -46,16 +43,24 @@ export function pickOrgMatch(
     }
   }
 
-  // Step 2: fuzzy — first row where candidate is a substring of name/name_zh
-  // or vice versa. Case-insensitive. Mirrors Postgres `ilike '%x%'` semantics.
-  for (const r of rows) {
-    const n = r.name?.toLowerCase() ?? "";
-    const z = r.nameZh?.toLowerCase() ?? "";
-    if (n !== "" && (n.includes(needle) || needle.includes(n))) {
-      return { id: r.id, matchType: "fuzzy" };
-    }
-    if (z !== "" && (z.includes(needle) || needle.includes(z))) {
-      return { id: r.id, matchType: "fuzzy" };
+  return null;
+}
+
+/**
+ * Pure alias-match helper. Given a candidate and a set of alias rows, return
+ * the first organization whose alias matches case-insensitively.
+ */
+export function pickAliasMatch(
+  candidate: string,
+  aliasRows: { organizationId: string; alias: string }[]
+): OrgMatchResult {
+  if (!candidate) return null;
+  const needle = candidate.trim().toLowerCase();
+  if (!needle) return null;
+
+  for (const a of aliasRows) {
+    if (a.alias.trim().toLowerCase() === needle) {
+      return { id: a.organizationId, matchType: "alias" };
     }
   }
 
@@ -64,8 +69,8 @@ export function pickOrgMatch(
 
 /**
  * Two-step org lookup against the DB.
- *  1. Exact match on name OR name_zh (lowercased compare).
- *  2. Fallback ilike — logs when used so fuzzy drift is observable.
+ *  1. Exact match on name OR name_zh (case-insensitive).
+ *  2. Alias lookup against organization_aliases (case-insensitive).
  */
 export async function findOrganizationByName(
   candidate: string
@@ -74,7 +79,6 @@ export async function findOrganizationByName(
   const trimmed = candidate.trim();
   if (!trimmed) return null;
 
-  // Step 1: exact (case-insensitive) on name OR name_zh
   const [exact] = await db
     .select({ id: organizations.id })
     .from(organizations)
@@ -88,25 +92,13 @@ export async function findOrganizationByName(
 
   if (exact) return { id: exact.id, matchType: "exact" };
 
-  // Step 2: fuzzy fallback — keep existing behavior but log it.
-  const [fuzzy] = await db
-    .select({ id: organizations.id })
-    .from(organizations)
-    .where(
-      or(
-        ilike(organizations.name, `%${trimmed}%`),
-        ilike(organizations.nameZh, `%${trimmed}%`)
-      )
-    )
+  const [alias] = await db
+    .select({ organizationId: organizationAliases.organizationId })
+    .from(organizationAliases)
+    .where(sql`lower(${organizationAliases.alias}) = lower(${trimmed})`)
     .limit(1);
 
-  if (fuzzy) {
-    // eslint-disable-next-line no-console
-    console.log(
-      `[brain-sync] org fuzzy-matched "${trimmed}" → id=${fuzzy.id} — consider adding a canonical alias`
-    );
-    return { id: fuzzy.id, matchType: "fuzzy" };
-  }
+  if (alias) return { id: alias.organizationId, matchType: "alias" };
 
   return null;
 }

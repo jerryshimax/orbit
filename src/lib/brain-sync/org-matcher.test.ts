@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { pickOrgMatch } from "./org-matcher";
+import { pickOrgMatch, pickAliasMatch } from "./org-matcher";
 
 const rows = [
   { id: "acme-1", name: "Acme", nameZh: null },
@@ -13,9 +13,7 @@ test("pickOrgMatch: returns null for empty candidate", () => {
   assert.equal(pickOrgMatch("   ", rows), null);
 });
 
-test("pickOrgMatch: exact match wins over fuzzy (plan B5 regression)", () => {
-  // Previous ilike-based logic would have matched "Acme Corp" first on "Acme".
-  // Exact match should pick "Acme" (id acme-1), not "Acme Corp".
+test("pickOrgMatch: exact match on name", () => {
   const r = pickOrgMatch("Acme", rows);
   assert.deepEqual(r, { id: "acme-1", matchType: "exact" });
 });
@@ -30,22 +28,37 @@ test("pickOrgMatch: exact match on name_zh", () => {
   assert.deepEqual(r, { id: "acme-2", matchType: "exact" });
 });
 
-test("pickOrgMatch: fuzzy fallback when no exact", () => {
-  const r = pickOrgMatch("Acme Corporation International", rows);
-  // No exact — should fuzzy-match first row where candidate contains the name.
-  // Both Acme and Acme Corp are substrings of the candidate; Acme comes first.
-  assert.ok(r);
-  assert.equal(r!.matchType, "fuzzy");
-  assert.ok(["acme-1", "acme-2"].includes(r!.id));
+test("pickOrgMatch: returns null when no exact match (fuzzy removed)", () => {
+  assert.equal(pickOrgMatch("Acme Corporation International", rows), null);
+  assert.equal(pickOrgMatch("Nonexistent Holdings", rows), null);
 });
 
-test("pickOrgMatch: returns null when nothing matches", () => {
-  const r = pickOrgMatch("Nonexistent Holdings", rows);
-  assert.equal(r, null);
-});
-
-test("pickOrgMatch: does not exact-match on partial when similar org exists", () => {
-  // "Acme Corp" candidate must NOT exact-match "Acme" — it should pick acme-2.
+test("pickOrgMatch: does not exact-match partial overlap", () => {
   const r = pickOrgMatch("Acme Corp", rows);
   assert.deepEqual(r, { id: "acme-2", matchType: "exact" });
+});
+
+const aliasRows = [
+  { organizationId: "acme-2", alias: "Acme Corporation" },
+  { organizationId: "acme-2", alias: "ACME Ltd." },
+  { organizationId: "other-1", alias: "Other Incorporated" },
+];
+
+test("pickAliasMatch: returns null for empty candidate", () => {
+  assert.equal(pickAliasMatch("", aliasRows), null);
+  assert.equal(pickAliasMatch("   ", aliasRows), null);
+});
+
+test("pickAliasMatch: case-insensitive alias lookup", () => {
+  const r = pickAliasMatch("acme corporation", aliasRows);
+  assert.deepEqual(r, { id: "acme-2", matchType: "alias" });
+});
+
+test("pickAliasMatch: returns null when no alias matches", () => {
+  assert.equal(pickAliasMatch("Unknown Co", aliasRows), null);
+});
+
+test("pickAliasMatch: first registered alias wins", () => {
+  const r = pickAliasMatch("ACME Ltd.", aliasRows);
+  assert.deepEqual(r, { id: "acme-2", matchType: "alias" });
 });

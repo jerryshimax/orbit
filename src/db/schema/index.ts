@@ -8,6 +8,7 @@ export * from "./roadshow";
 // Universal CRM tables
 export * from "./users";
 export * from "./organizations";
+export * from "./organization-aliases";
 export * from "./people";
 export * from "./affiliations";
 export * from "./pipelines";
@@ -21,6 +22,9 @@ export * from "./interactions";
 // Meeting attendees (team member ↔ meeting link)
 export * from "./meeting-attendees";
 
+// Meeting attendee people (external contact ↔ meeting link)
+export * from "./meeting-attendee-people";
+
 // Google integration
 export * from "./google-auth";
 
@@ -33,6 +37,7 @@ export * from "./objectives";
 // Chat
 export * from "./chat";
 export * from "./chat-jobs";
+export * from "./tool-call-log";
 
 // Recon (strategic workspaces)
 export * from "./recon";

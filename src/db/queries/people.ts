@@ -9,6 +9,7 @@ import {
   opportunityContacts,
   fieldTripMeetings,
   fieldTrips,
+  meetingAttendeePeople,
 } from "@/db/schema";
 import { eq, desc, ilike, and, count, max, inArray, sql } from "drizzle-orm";
 import { type UserContext, visibilityFilter } from "@/lib/access";
@@ -363,8 +364,32 @@ export async function getPersonDossier(
     });
   }
 
-  // Trip appearances via org linkage (best available signal).
-  const tripRows =
+  // Trip appearances: direct attendee records first, then org proxy as fallback
+  // for legacy meetings that predate the meeting_attendee_people table.
+  const directTripRows = await db
+    .select({
+      meetingId: fieldTripMeetings.id,
+      tripId: fieldTripMeetings.tripId,
+      tripName: fieldTrips.name,
+      meetingTitle: fieldTripMeetings.title,
+      meetingDate: fieldTripMeetings.meetingDate,
+      orgName: organizations.name,
+    })
+    .from(meetingAttendeePeople)
+    .innerJoin(
+      fieldTripMeetings,
+      eq(meetingAttendeePeople.meetingId, fieldTripMeetings.id)
+    )
+    .innerJoin(fieldTrips, eq(fieldTripMeetings.tripId, fieldTrips.id))
+    .leftJoin(
+      organizations,
+      eq(fieldTripMeetings.organizationId, organizations.id)
+    )
+    .where(eq(meetingAttendeePeople.personId, personId))
+    .orderBy(desc(fieldTripMeetings.meetingDate))
+    .limit(25);
+
+  const proxyTripRows =
     orgIds.length > 0
       ? await db
           .select({
@@ -385,6 +410,20 @@ export async function getPersonDossier(
           .orderBy(desc(fieldTripMeetings.meetingDate))
           .limit(25)
       : [];
+
+  const seenMeetings = new Set<string>();
+  const tripRows: typeof directTripRows = [];
+  for (const row of [...directTripRows, ...proxyTripRows]) {
+    if (seenMeetings.has(row.meetingId)) continue;
+    seenMeetings.add(row.meetingId);
+    tripRows.push(row);
+  }
+  tripRows.sort((a, b) => {
+    const aDate = a.meetingDate ? new Date(a.meetingDate).getTime() : 0;
+    const bDate = b.meetingDate ? new Date(b.meetingDate).getTime() : 0;
+    return bDate - aDate;
+  });
+  tripRows.splice(25);
 
   // Last 20 interactions involving this person.
   const interactionRows = await db

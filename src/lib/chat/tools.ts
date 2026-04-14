@@ -5,6 +5,8 @@
 
 import type Anthropic from "@anthropic-ai/sdk";
 import type { CurrentUser } from "@/lib/supabase/get-current-user";
+import { db } from "@/db";
+import { toolCallLog } from "@/db/schema";
 
 export const ORBIT_TOOLS: Anthropic.Tool[] = [
   {
@@ -233,9 +235,61 @@ export const ORBIT_TOOLS: Anthropic.Tool[] = [
 ];
 
 /**
+ * Fire-and-forget audit log. Never blocks the tool response.
+ */
+function auditToolCall(entry: {
+  userHandle: string | undefined;
+  toolName: string;
+  input: unknown;
+  result: unknown;
+  error: string | null;
+  durationMs: number;
+}) {
+  db.insert(toolCallLog)
+    .values({
+      userHandle: entry.userHandle ?? null,
+      toolName: entry.toolName,
+      input: entry.input as any,
+      result: entry.error ? null : (entry.result as any),
+      error: entry.error,
+      durationMs: entry.durationMs,
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.warn("[tool-call-log] insert failed:", err?.message ?? err);
+    });
+}
+
+/**
  * Route a tool call to the appropriate handler.
  */
 export async function executeToolCall(
+  toolName: string,
+  toolInput: any,
+  currentUser?: CurrentUser
+): Promise<any> {
+  const startedAt = Date.now();
+  let result: unknown;
+  let errorMessage: string | null = null;
+  try {
+    result = await dispatchToolCall(toolName, toolInput, currentUser);
+    return result;
+  } catch (err) {
+    errorMessage = err instanceof Error ? err.message : String(err);
+    throw err;
+  } finally {
+    auditToolCall({
+      userHandle: currentUser?.handle,
+      toolName,
+      input: toolInput,
+      result,
+      error: errorMessage,
+      durationMs: Date.now() - startedAt,
+    });
+  }
+}
+
+async function dispatchToolCall(
   toolName: string,
   toolInput: any,
   currentUser?: CurrentUser
