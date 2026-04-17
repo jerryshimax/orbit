@@ -34,13 +34,18 @@ export const AUTO_APPLY_DENY_LIST: readonly string[] = [
 ];
 
 export const AUTO_APPLY_CONFIDENCE_THRESHOLD = 0.9;
+export const AUTO_APPLY_ACCEPTANCE_THRESHOLD = 0.85;
+export const AUTO_APPLY_MIN_HISTORY = 5;
 
 /**
- * Returns true if this proposal can skip the approval step.
+ * Returns true if this proposal passes the STATIC auto-apply checks.
  *
  * Rule: free-text field + not on deny list + no prior value + confidence
  * meets threshold. All four must hold. Missing confidence blocks auto-apply
  * — an unscored proposal is treated as low confidence by default.
+ *
+ * This does NOT check historical acceptance rate (requires an async DB query).
+ * Use `shouldAutoApplyWithRate` for the full check.
  */
 export function shouldAutoApply(
   proposal: ProposalPayload,
@@ -53,4 +58,34 @@ export function shouldAutoApply(
   if (currentValue && currentValue.trim().length > 0) return false;
   if (typeof proposal.confidence !== "number") return false;
   return proposal.confidence >= AUTO_APPLY_CONFIDENCE_THRESHOLD;
+}
+
+/**
+ * Full auto-apply check: static rules + historical acceptance rate.
+ *
+ * `acceptanceRate` is { total, rate, autoApplyEligible } from GET /api/proposals.
+ * When there's not enough history (< 5 resolved proposals), falls back to
+ * static-only: shouldAutoApply must pass, and we trust the confidence score.
+ */
+export function shouldAutoApplyWithRate(
+  proposal: ProposalPayload,
+  field: PageField | undefined,
+  currentValue: string,
+  acceptanceRate?: { total: number; rate: number; autoApplyEligible: boolean },
+): boolean {
+  // Static rules must always pass
+  if (!shouldAutoApply(proposal, field, currentValue)) return false;
+
+  // If we don't have rate data yet, allow auto-apply based on static rules alone.
+  // This means the first few proposals for a new field type auto-apply if they
+  // meet the confidence threshold — building up history for future decisions.
+  if (!acceptanceRate) return true;
+
+  // Once we have enough history, require the acceptance rate to be high enough.
+  if (acceptanceRate.total >= AUTO_APPLY_MIN_HISTORY) {
+    return acceptanceRate.autoApplyEligible;
+  }
+
+  // Not enough history yet — trust the confidence score.
+  return true;
 }

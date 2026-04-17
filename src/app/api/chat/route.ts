@@ -138,6 +138,7 @@ export async function POST(request: Request) {
       const MAX_ATTEMPTS = 300; // 300 * 400ms = 120s
       let attempts = 0;
       let emittedLength = 0;
+      let emittedToolCount = 0;
 
       while (attempts < MAX_ATTEMPTS) {
         await new Promise((r) => setTimeout(r, POLL_MS));
@@ -152,6 +153,14 @@ export async function POST(request: Request) {
         if (!currentJob) break;
 
         const currentResult = currentJob.result ?? "";
+
+        // Emit new tool_use events the daemon has recorded.
+        const toolCalls = (currentJob.toolCalls as Array<{ name: string; input: unknown }>) ?? [];
+        while (emittedToolCount < toolCalls.length) {
+          const tc = toolCalls[emittedToolCount];
+          sendEvent("tool_use", { name: tc.name, input: tc.input });
+          emittedToolCount++;
+        }
 
         // Emit new tail if the daemon wrote more text since last poll.
         if (currentResult.length > emittedLength) {
@@ -169,7 +178,10 @@ export async function POST(request: Request) {
             content: currentResult,
           });
 
-          sendEvent("done", { conversationId: convId });
+          sendEvent("done", {
+            conversationId: convId,
+            toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+          });
           controller.close();
           return;
         }

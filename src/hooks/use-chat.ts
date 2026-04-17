@@ -4,6 +4,7 @@ import { useState, useCallback, useRef } from "react";
 import type { PageContext } from "@/lib/chat/system-prompt";
 import { extractProposals } from "@/lib/chat/proposal-parser";
 import { mergeProposal, markProposalRegenerating } from "@/lib/chat/proposal-merge";
+import { shouldAutoApplyWithRate } from "@/lib/chat/proposal-rules";
 
 export type ProposalPayload = {
   field: string;
@@ -42,6 +43,9 @@ export function useChat(pageContext: PageContext) {
   // latest list without re-binding whenever messages change.
   const messagesRef = useRef(messages);
   messagesRef.current = messages;
+
+  // Map client-side proposal message IDs → server-side ai_proposals.id
+  const proposalIdMapRef = useRef<Map<string, string>>(new Map());
 
   const sendMessage = useCallback(
     async (text: string, opts?: { transcription?: string; language?: string; attachments?: Array<{ url: string; filename: string; contentType: string }> }) => {
@@ -87,6 +91,7 @@ export function useChat(pageContext: PageContext) {
         const decoder = new TextDecoder();
         let buffer = "";
         let fullText = "";
+        const persistedFields = new Set<string>();
 
         while (true) {
           const { done, value } = await reader.read();
@@ -112,14 +117,39 @@ export function useChat(pageContext: PageContext) {
                     let next = prev.map((m) =>
                       m.id === assistantId ? { ...m, content: cleaned } : m
                     );
-                    // mergeProposal is idempotent per field: re-parsing the
-                    // full buffer each delta is safe — same field just updates
-                    // the same card.
                     for (const p of proposals) {
                       next = mergeProposal(next, p, assistantId);
                     }
                     return next;
                   });
+                  // Persist newly-seen proposals to ai_proposals table
+                  for (const p of proposals) {
+                    if (persistedFields.has(p.field)) continue;
+                    persistedFields.add(p.field);
+                    const msgId = `proposal-${assistantId}-${p.field}`;
+                    fetch("/api/proposals", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        targetKind: pageContext.entityType ?? "unknown",
+                        targetId: pageContext.entityId,
+                        targetField: p.field,
+                        proposedValue: p.value,
+                        priorValue: pageContext.formFields?.find(
+                          (f) => f.name === p.field
+                        )?.value ?? null,
+                        confidence: p.confidence,
+                        rationale: p.reasoning,
+                      }),
+                    })
+                      .then((r) => r.json())
+                      .then((data) => {
+                        if (data.id) {
+                          proposalIdMapRef.current.set(msgId, data.id);
+                        }
+                      })
+                      .catch(() => {});
+                  }
                   break;
                 }
 
@@ -193,6 +223,45 @@ export function useChat(pageContext: PageContext) {
             m.id === assistantId ? { ...m, isStreaming: false } : m
           )
         );
+
+        // Auto-apply eligible proposals
+        const { proposals: finalProposals } = extractProposals(fullText);
+        for (const p of finalProposals) {
+          const msgId = `proposal-${assistantId}-${p.field}`;
+          const field = pageContext.formFields?.find(
+            (f) => f.name === p.field
+          );
+          const currentValue = field?.value ?? "";
+
+          fetch(`/api/proposals?field=${encodeURIComponent(p.field)}`)
+            .then((r) => r.json())
+            .then((rateData) => {
+              if (shouldAutoApplyWithRate(p, field, currentValue, rateData)) {
+                // Mark auto-applied locally — parent component watches for this
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === msgId
+                      ? { ...m, proposalStatus: "auto_applied" }
+                      : m
+                  )
+                );
+                // Record outcome server-side
+                const sId = proposalIdMapRef.current.get(msgId);
+                if (sId) {
+                  fetch("/api/proposals", {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      proposalId: sId,
+                      outcome: "auto_applied",
+                      appliedValue: p.value,
+                    }),
+                  }).catch(() => {});
+                }
+              }
+            })
+            .catch(() => {});
+        }
       } catch (err) {
         if ((err as Error).name !== "AbortError") {
           setMessages((prev) =>
@@ -264,6 +333,16 @@ export function useChat(pageContext: PageContext) {
 
       setMessages((prev) => markProposalRegenerating(prev, messageId));
 
+      // Record refinement in audit trail
+      const serverId = proposalIdMapRef.current.get(messageId);
+      if (serverId) {
+        fetch("/api/proposals", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ proposalId: serverId, outcome: "refined" }),
+        }).catch(() => {});
+      }
+
       const prompt =
         `Refine your proposal for the \`${proposal.field}\` field.\n` +
         `Current value: ${JSON.stringify(proposal.value)}\n` +
@@ -273,16 +352,32 @@ export function useChat(pageContext: PageContext) {
     [sendMessage]
   );
 
-  const markProposalApplied = useCallback((id: string) => {
+  const markProposalApplied = useCallback((id: string, appliedValue?: string) => {
     setMessages((prev) =>
       prev.map((m) => (m.id === id ? { ...m, proposalStatus: "applied" } : m))
     );
+    const serverId = proposalIdMapRef.current.get(id);
+    if (serverId) {
+      fetch("/api/proposals", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ proposalId: serverId, outcome: "applied", appliedValue }),
+      }).catch(() => {});
+    }
   }, []);
 
   const markProposalDismissed = useCallback((id: string) => {
     setMessages((prev) =>
       prev.map((m) => (m.id === id ? { ...m, proposalStatus: "dismissed" } : m))
     );
+    const serverId = proposalIdMapRef.current.get(id);
+    if (serverId) {
+      fetch("/api/proposals", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ proposalId: serverId, outcome: "dismissed" }),
+      }).catch(() => {});
+    }
   }, []);
 
   const markProposalAutoApplied = useCallback((id: string) => {
@@ -291,6 +386,14 @@ export function useChat(pageContext: PageContext) {
         m.id === id ? { ...m, proposalStatus: "auto_applied" } : m
       )
     );
+    const serverId = proposalIdMapRef.current.get(id);
+    if (serverId) {
+      fetch("/api/proposals", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ proposalId: serverId, outcome: "auto_applied" }),
+      }).catch(() => {});
+    }
   }, []);
 
   const resetConversation = useCallback(() => {

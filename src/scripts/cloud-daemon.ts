@@ -65,8 +65,9 @@ async function processViaSession(prompt: string, context?: string): Promise<stri
  */
 async function processViaClaudeStreaming(
   prompt: string,
-  onPartial: (text: string) => void
-): Promise<{ text: string; final: StreamFinal }> {
+  onPartial: (text: string) => void,
+  onToolUse?: (tool: { name: string; input: unknown }) => void,
+): Promise<{ text: string; final: StreamFinal; toolCalls: Array<{ name: string; input: unknown }> }> {
   return new Promise((resolve, reject) => {
     const child = spawn(
       "claude",
@@ -78,14 +79,22 @@ async function processViaClaudeStreaming(
         "stream-json",
         "--include-partial-messages",
         "--verbose",
+        "--bare",
+        "--mcp-config",
+        `${process.cwd()}/mcp-config.json`,
       ],
-      { stdio: ["pipe", "pipe", "pipe"] },
+      {
+        stdio: ["pipe", "pipe", "pipe"],
+        env: { ...process.env },
+        cwd: process.cwd(),
+      },
     );
 
     let stdoutBuffer = "";
     let stderrBuffer = "";
     let accumulated = "";
     let final: StreamFinal | undefined;
+    const toolCalls: Array<{ name: string; input: unknown }> = [];
 
     child.stdout.on("data", (chunk: Buffer) => {
       stdoutBuffer += chunk.toString("utf-8");
@@ -98,14 +107,13 @@ async function processViaClaudeStreaming(
           accumulated += ev.textDelta;
           changed = true;
         } else if (ev.textAbsolute && ev.textAbsolute.length > accumulated.length) {
-          // Full-message snapshot is longer than what we've streamed via
-          // partials — trust the snapshot (it may include text the partial
-          // events missed).
           accumulated = ev.textAbsolute;
           changed = true;
         }
         if (ev.toolUse) {
           console.log(`  → tool_use: ${ev.toolUse.name}`);
+          toolCalls.push(ev.toolUse);
+          onToolUse?.(ev.toolUse);
         }
         if (ev.final) {
           final = ev.final;
@@ -146,7 +154,7 @@ async function processViaClaudeStreaming(
         reject(new Error(text || "claude returned error envelope"));
         return;
       }
-      resolve({ text: text.trim(), final: final ?? {} });
+      resolve({ text: text.trim(), final: final ?? {}, toolCalls });
     });
 
     child.stdin.write(prompt);
@@ -240,9 +248,10 @@ async function processJob(job: any) {
       return;
     }
 
-    // Streaming path — flush partials to chat_jobs.result every FLUSH_INTERVAL
-    // ms so the Orbit route can relay them to the browser as SSE deltas.
-    console.log("  → via claude -p --stream-json (live)");
+    // Streaming agentic path — Claude uses MCP tools mid-conversation.
+    // Flush partials to chat_jobs.result every FLUSH_INTERVAL ms so the
+    // Orbit API route can relay SSE deltas to the browser.
+    console.log("  → via claude -p --mcp-config --stream-json (agentic)");
 
     const FLUSH_INTERVAL_MS = 400;
     let pending: string | null = null;
@@ -273,7 +282,19 @@ async function processJob(job: any) {
       }, FLUSH_INTERVAL_MS);
     };
 
-    const { text, final } = await processViaClaudeStreaming(job.prompt, scheduleFlush);
+    const onToolUse = (tool: { name: string; input: unknown }) => {
+      // Fire-and-forget: append tool call to the job's tool_calls array
+      sql`
+        UPDATE chat_jobs SET tool_calls = COALESCE(tool_calls, '[]'::jsonb) || ${JSON.stringify([{ name: tool.name, input: tool.input, at: new Date().toISOString() }])}::jsonb
+        WHERE id = ${job.id}
+      `.catch((err) => console.error("  tool_calls update failed:", err));
+    };
+
+    const { text, final, toolCalls } = await processViaClaudeStreaming(
+      job.prompt,
+      scheduleFlush,
+      onToolUse,
+    );
 
     // Cancel any pending debounced flush — we're about to do the final write.
     if (flushTimer) clearTimeout(flushTimer);
@@ -282,6 +303,7 @@ async function processJob(job: any) {
       UPDATE chat_jobs SET
         status = 'complete',
         result = ${text},
+        tool_calls = ${JSON.stringify(toolCalls)}::jsonb,
         completed_at = now(),
         model = ${final.model ?? null},
         input_tokens = ${final.inputTokens ?? null},
@@ -292,6 +314,7 @@ async function processJob(job: any) {
 
     console.log(
       `  Done: ${text.slice(0, 80)}${text.length > 80 ? "..." : ""}` +
+        (toolCalls.length > 0 ? ` · ${toolCalls.length} tool calls` : "") +
         (final.costUsd !== undefined ? ` · $${final.costUsd.toFixed(4)}` : "") +
         (final.inputTokens !== undefined
           ? ` · ${final.inputTokens}in/${final.outputTokens ?? "?"}out`

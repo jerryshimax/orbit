@@ -1,6 +1,7 @@
 -- Enable RLS on all public tables. No policies = default deny for anon/authenticated.
 -- Drizzle connects as `postgres` (BYPASSRLS), so server-side queries are unaffected.
 ALTER TABLE public.action_items               ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.ai_proposals               ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.chat_jobs                  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.chat_messages              ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.contact_channels           ENABLE ROW LEVEL SECURITY;
