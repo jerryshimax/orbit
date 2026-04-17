@@ -4,12 +4,12 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.cloud.lp-stale-check</string>
+    <string>com.cloud.orbit-weekly-summary</string>
     <key>ProgramArguments</key>
     <array>
         <string>/Users/jerryshi/.local/bin/claude</string>
         <string>-p</string>
-        <string>Check the LP CRM for stale LPs using lp_pipeline_status tool (set stale_days to 14). If any LPs in active stages have gone 14+ days without interaction, send a TG message to Jerry DM (chat_id 7337144058) listing them. If none are stale, do nothing.</string>
+        <string>Get the Orbit pipeline status using lp_pipeline_status tool, then send a weekly summary to Jerry DM (chat_id 7337144058) via TG. Format: total LPs, committed vs $300-500M target, count per stage, any stale LPs. Keep it concise.</string>
         <string>--mcp-config</string>
         <string>/Users/jerryshi/Ship/cloud-mail/mcp-config.json</string>
         <string>--allowedTools</string>
@@ -28,16 +28,18 @@
     </dict>
     <key>StartCalendarInterval</key>
     <dict>
+        <key>Weekday</key>
+        <integer>1</integer>
         <key>Hour</key>
-        <integer>9</integer>
+        <integer>8</integer>
         <key>Minute</key>
         <integer>0</integer>
     </dict>
     <key>WorkingDirectory</key>
     <string>/Users/jerryshi</string>
     <key>StandardOutPath</key>
-    <string>/Users/jerryshi/Ship/ce/lp-crm/logs/stale-check.log</string>
+    <string>/Users/jerryshi/Ship/ce/orbit/logs/weekly-summary.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/jerryshi/Ship/ce/lp-crm/logs/stale-check.log</string>
+    <string>/Users/jerryshi/Ship/ce/orbit/logs/weekly-summary.log</string>
 </dict>
 </plist>

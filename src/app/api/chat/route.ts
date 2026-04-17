@@ -131,13 +131,16 @@ export async function POST(request: Request) {
         );
       };
 
-      // No placeholder — frontend shows a pulsing indicator while content is empty.
-      // Poll for job completion (max 120s)
-      const maxAttempts = 60;
+      // Poll for job progress. Daemon flushes partial result every ~400ms
+      // during streaming (cloud-daemon.ts), so we match that cadence and emit
+      // the delta against what we've already streamed to the browser.
+      const POLL_MS = 400;
+      const MAX_ATTEMPTS = 300; // 300 * 400ms = 120s
       let attempts = 0;
+      let emittedLength = 0;
 
-      while (attempts < maxAttempts) {
-        await new Promise((r) => setTimeout(r, 2000));
+      while (attempts < MAX_ATTEMPTS) {
+        await new Promise((r) => setTimeout(r, POLL_MS));
         attempts++;
 
         const [currentJob] = await db
@@ -148,14 +151,22 @@ export async function POST(request: Request) {
 
         if (!currentJob) break;
 
-        if (currentJob.status === "complete" && currentJob.result) {
-          sendEvent("text_delta", { content: currentJob.result });
+        const currentResult = currentJob.result ?? "";
 
-          // Save assistant message
+        // Emit new tail if the daemon wrote more text since last poll.
+        if (currentResult.length > emittedLength) {
+          sendEvent("text_delta", {
+            content: currentResult.slice(emittedLength),
+          });
+          emittedLength = currentResult.length;
+        }
+
+        if (currentJob.status === "complete") {
+          // Save the final assistant message (full text, not tail).
           await db.insert(chatMessages).values({
             conversationId: convId!,
             role: "assistant",
-            content: currentJob.result,
+            content: currentResult,
           });
 
           sendEvent("done", { conversationId: convId });

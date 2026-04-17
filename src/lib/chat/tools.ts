@@ -7,6 +7,14 @@ import type Anthropic from "@anthropic-ai/sdk";
 import type { CurrentUser } from "@/lib/supabase/get-current-user";
 import { db } from "@/db";
 import { toolCallLog } from "@/db/schema";
+import {
+  ENTITY_CODES,
+  INTERACTION_SOURCES,
+  INTERACTION_TYPES,
+  ORG_TYPES,
+  PIPELINE_STAGE_KEYS,
+  RELATIONSHIP_STRENGTHS,
+} from "@/lib/tools/enums";
 
 export const ORBIT_TOOLS: Anthropic.Tool[] = [
   {
@@ -21,16 +29,16 @@ export const ORBIT_TOOLS: Anthropic.Tool[] = [
         organization: { type: "string", description: "Organization name" },
         interaction_type: {
           type: "string",
-          enum: ["meeting", "call", "email", "conference", "intro", "dd_session", "deck_sent", "follow_up", "commitment", "note", "telegram_message", "wechat_message", "site_visit", "dinner", "board_meeting"],
+          enum: [...INTERACTION_TYPES],
         },
         summary: { type: "string", description: "Brief summary" },
         team_member: { type: "string", description: "Who logged this (jerry, ray, matt, angel)" },
-        source: { type: "string", enum: ["telegram", "email", "meeting_transcript", "web", "brain_sync", "calendar", "manual", "cloud_bot", "wechat"] },
-        org_type: { type: "string", enum: ["lp", "portfolio_company", "prospect", "strategic_partner", "developer", "manufacturer", "hyperscaler", "epc", "corporate", "other"] },
+        source: { type: "string", enum: [...INTERACTION_SOURCES] },
+        org_type: { type: "string", enum: [...ORG_TYPES] },
         entity_code: { type: "string", description: "Entity (CE, SYN, UUL)" },
         title: { type: "string" },
         location: { type: "string" },
-        pipeline_stage: { type: "string", enum: ["prospect", "intro", "meeting", "dd", "soft_circle", "committed", "closed", "passed"] },
+        pipeline_stage: { type: "string", enum: [...PIPELINE_STAGE_KEYS] },
         target_commitment: { type: "string", description: "Target in millions USD" },
         email: { type: "string" },
         wechat: { type: "string" },
@@ -57,7 +65,7 @@ export const ORBIT_TOOLS: Anthropic.Tool[] = [
       required: ["organization", "new_stage", "changed_by"],
       properties: {
         organization: { type: "string" },
-        new_stage: { type: "string", enum: ["prospect", "intro", "meeting", "dd", "soft_circle", "committed", "closed", "passed"] },
+        new_stage: { type: "string", enum: [...PIPELINE_STAGE_KEYS] },
         changed_by: { type: "string" },
         notes: { type: "string" },
         actual_commitment: { type: "string" },
@@ -70,8 +78,8 @@ export const ORBIT_TOOLS: Anthropic.Tool[] = [
     input_schema: {
       type: "object" as const,
       properties: {
-        stage: { type: "string", enum: ["prospect", "intro", "meeting", "dd", "soft_circle", "committed", "closed", "passed"] },
-        org_type: { type: "string", enum: ["lp", "portfolio_company", "prospect", "strategic_partner", "developer", "manufacturer", "hyperscaler", "epc", "corporate", "other"] },
+        stage: { type: "string", enum: [...PIPELINE_STAGE_KEYS] },
+        org_type: { type: "string", enum: [...ORG_TYPES] },
         days_since_contact: { type: "number" },
         relationship_owner: { type: "string" },
         query: { type: "string", description: "Free text search on org name" },
@@ -110,7 +118,7 @@ export const ORBIT_TOOLS: Anthropic.Tool[] = [
         aum: { type: "string" },
         target_commitment: { type: "string" },
         org_type: { type: "string" },
-        relationship_strength: { type: "string", enum: ["strong", "medium", "weak", "cold"] },
+        relationship_strength: { type: "string", enum: [...RELATIONSHIP_STRENGTHS] },
         notes: { type: "string" },
         tags: { type: "array", items: { type: "string" } },
       },
@@ -164,7 +172,7 @@ export const ORBIT_TOOLS: Anthropic.Tool[] = [
       properties: {
         title: { type: "string" },
         description: { type: "string" },
-        entity_code: { type: "string", enum: ["CE", "SYN", "UUL", "FO"] },
+        entity_code: { type: "string", enum: [...ENTITY_CODES] },
         priority: { type: "string", enum: ["p0", "p1", "p2"] },
         deadline: { type: "string", description: "YYYY-MM-DD" },
       },

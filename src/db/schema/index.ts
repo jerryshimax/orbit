@@ -38,6 +38,7 @@ export * from "./objectives";
 export * from "./chat";
 export * from "./chat-jobs";
 export * from "./tool-call-log";
+export * from "./ai-proposals";
 
 // Recon (strategic workspaces)
 export * from "./recon";

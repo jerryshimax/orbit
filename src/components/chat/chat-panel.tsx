@@ -21,6 +21,7 @@ export function ChatPanel() {
     refineProposal,
     markProposalApplied,
     markProposalDismissed,
+    markProposalAutoApplied,
     resetConversation,
   } = useChat(pageContext);
 
@@ -146,6 +147,7 @@ export function ChatPanel() {
                   message={msg}
                   onApplied={markProposalApplied}
                   onDismissed={markProposalDismissed}
+                  onAutoApplied={markProposalAutoApplied}
                   onRefine={refineProposal}
                 />
               );

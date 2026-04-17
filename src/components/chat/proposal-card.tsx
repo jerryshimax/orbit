@@ -3,16 +3,19 @@
 import { useEffect, useState } from "react";
 import type { ChatMessage } from "@/hooks/use-chat";
 import { usePageBridge } from "@/lib/chat/page-bridge";
+import { shouldAutoApply } from "@/lib/chat/proposal-rules";
 
 export function ProposalCard({
   message,
   onApplied,
   onDismissed,
+  onAutoApplied,
   onRefine,
 }: {
   message: ChatMessage;
   onApplied: (messageId: string) => void;
   onDismissed: (messageId: string) => void;
+  onAutoApplied: (messageId: string) => void;
   onRefine: (messageId: string, instruction: string) => void;
 }) {
   const bridge = usePageBridge();
@@ -31,19 +34,47 @@ export function ProposalCard({
     setRefineText("");
   }, [proposal?.value]);
 
+  const field = proposal
+    ? bridge.fields.find((f) => f.name === proposal.field)
+    : undefined;
+  const currentValue = field?.value ?? "";
+
+  // Auto-apply for high-confidence, low-stakes fields. The card still mounts
+  // and flashes "Auto-applied" so Jerry can see what Cloud did — the diff
+  // between this and silent write is transparency. If the rule rejects
+  // (categorical field, money field, prior value already set, confidence
+  // below threshold), falls through to the manual Apply/Refine/Dismiss flow.
+  useEffect(() => {
+    if (!proposal) return;
+    if (status !== "pending") return;
+    if (!shouldAutoApply(proposal, field, currentValue)) return;
+    const ok = bridge.applyFieldUpdate(proposal.field, proposal.value);
+    if (ok) onAutoApplied(message.id);
+  }, [
+    proposal,
+    field,
+    currentValue,
+    status,
+    bridge,
+    onAutoApplied,
+    message.id,
+  ]);
+
   if (!proposal) return null;
 
-  const field = bridge.fields.find((f) => f.name === proposal.field);
   const label = field?.label ?? proposal.field;
   const isPending = status === "pending";
   const isRegenerating = status === "regenerating";
+  const isAutoApplied = status === "auto_applied";
 
   const statusLabel =
     status === "applied"
       ? "Applied"
       : status === "dismissed"
         ? "Dismissed"
-        : null;
+        : isAutoApplied
+          ? "Auto-applied"
+          : null;
 
   const handleApply = () => {
     const ok = bridge.applyFieldUpdate(proposal.field, draftValue);
@@ -82,8 +113,17 @@ export function ProposalCard({
             className="text-[10px] font-[Space_Grotesk] uppercase px-2 py-0.5 rounded"
             style={{
               background:
-                status === "dismissed" ? "#ef444420" : "#22c55e20",
-              color: status === "dismissed" ? "#ef4444" : "#22c55e",
+                status === "dismissed"
+                  ? "#ef444420"
+                  : isAutoApplied
+                    ? "var(--accent-muted, #f59e0b20)"
+                    : "#22c55e20",
+              color:
+                status === "dismissed"
+                  ? "#ef4444"
+                  : isAutoApplied
+                    ? "var(--accent)"
+                    : "#22c55e",
             }}
           >
             {statusLabel}

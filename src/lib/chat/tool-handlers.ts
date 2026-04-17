@@ -1,6 +1,6 @@
 /**
  * Shared tool handlers used by both the MCP server and the in-app Chat API.
- * Extracted from src/mcp/lp-crm-server.ts to avoid duplication.
+ * Extracted from src/mcp/orbit-server.ts to avoid duplication.
  */
 
 import { db } from "@/db";

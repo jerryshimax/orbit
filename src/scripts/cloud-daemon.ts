@@ -1,8 +1,13 @@
 /**
  * Cloud Daemon — polls Supabase for chat jobs.
  *
- * Routes through Cloud Session Server (localhost:3847) for persistent
- * context. Falls back to direct claude -p if session server is down.
+ * Two execution paths:
+ *   1. Cloud Session Server (localhost:3847) if up — one-shot HTTP call
+ *      that keeps persistent Claude context across requests.
+ *   2. `claude -p --output-format stream-json` — streams token-by-token,
+ *      writing partial result to chat_jobs.result every ~400ms so the
+ *      Orbit API route can relay SSE deltas to the browser. Captures
+ *      cost + token usage from the terminal envelope.
  *
  * NOTE: The Cloud Session Server (~/Ship/cloud-session/) now handles
  * Orbit job polling directly. This daemon is a backup/standalone option.
@@ -11,8 +16,9 @@
  */
 
 import postgres from "postgres";
-import { execFileSync } from "child_process";
+import { spawn } from "child_process";
 import { buildClaimQuery } from "./cloud-daemon-claim";
+import { parseStreamLine, type StreamFinal } from "./stream-parser";
 import type { CurrentUser } from "@/lib/supabase/get-current-user";
 
 const DATABASE_URL = process.env.DATABASE_URL;
@@ -48,14 +54,112 @@ async function processViaSession(prompt: string, context?: string): Promise<stri
   return data.response;
 }
 
-async function processViaClaude(prompt: string): Promise<string> {
-  const result = execFileSync("claude", ["-p", "--model", "sonnet", "--output-format", "text"], {
-    encoding: "utf-8",
-    timeout: 120_000,
-    maxBuffer: 10 * 1024 * 1024,
-    input: prompt,
+/**
+ * Stream claude -p output line-by-line and push partials to the caller.
+ *
+ * onPartial is invoked with the full running text (not incremental deltas)
+ * so the caller can do a single UPDATE and stay idempotent — the route
+ * reader does its own diff against what it has already streamed to the
+ * browser. The caller is responsible for debouncing; this function fires
+ * onPartial on every token event.
+ */
+async function processViaClaudeStreaming(
+  prompt: string,
+  onPartial: (text: string) => void
+): Promise<{ text: string; final: StreamFinal }> {
+  return new Promise((resolve, reject) => {
+    const child = spawn(
+      "claude",
+      [
+        "-p",
+        "--model",
+        "sonnet",
+        "--output-format",
+        "stream-json",
+        "--include-partial-messages",
+        "--verbose",
+      ],
+      { stdio: ["pipe", "pipe", "pipe"] },
+    );
+
+    let stdoutBuffer = "";
+    let stderrBuffer = "";
+    let accumulated = "";
+    let final: StreamFinal | undefined;
+
+    child.stdout.on("data", (chunk: Buffer) => {
+      stdoutBuffer += chunk.toString("utf-8");
+      const lines = stdoutBuffer.split("\n");
+      stdoutBuffer = lines.pop() ?? "";
+      for (const line of lines) {
+        const ev = parseStreamLine(line);
+        let changed = false;
+        if (ev.textDelta) {
+          accumulated += ev.textDelta;
+          changed = true;
+        } else if (ev.textAbsolute && ev.textAbsolute.length > accumulated.length) {
+          // Full-message snapshot is longer than what we've streamed via
+          // partials — trust the snapshot (it may include text the partial
+          // events missed).
+          accumulated = ev.textAbsolute;
+          changed = true;
+        }
+        if (ev.toolUse) {
+          console.log(`  → tool_use: ${ev.toolUse.name}`);
+        }
+        if (ev.final) {
+          final = ev.final;
+        }
+        if (changed) {
+          try {
+            onPartial(accumulated);
+          } catch (err) {
+            console.error("  onPartial threw:", err);
+          }
+        }
+      }
+    });
+
+    child.stderr.on("data", (chunk: Buffer) => {
+      stderrBuffer += chunk.toString("utf-8");
+    });
+
+    child.on("error", (err) => reject(err));
+
+    child.on("close", (code) => {
+      // Flush any trailing JSON line.
+      if (stdoutBuffer.trim()) {
+        const ev = parseStreamLine(stdoutBuffer);
+        if (ev.final) final = ev.final;
+      }
+      const text = final?.result ?? accumulated;
+      if (code !== 0 && !final) {
+        const stderrTail = stderrBuffer.trim().split("\n").slice(-5).join("\n");
+        reject(
+          new Error(
+            `claude exited with code ${code}${stderrTail ? `: ${stderrTail}` : ""}`,
+          ),
+        );
+        return;
+      }
+      if (final?.isError) {
+        reject(new Error(text || "claude returned error envelope"));
+        return;
+      }
+      resolve({ text: text.trim(), final: final ?? {} });
+    });
+
+    child.stdin.write(prompt);
+    child.stdin.end();
+
+    // Hard timeout — same 120s ceiling as the old one-shot path.
+    setTimeout(() => {
+      if (!child.killed) {
+        child.kill("SIGKILL");
+        reject(new Error("claude streaming timed out after 120s"));
+      }
+    }, 120_000);
   });
-  return result.trim();
 }
 
 /**
@@ -117,23 +221,82 @@ async function processJob(job: any) {
   `;
 
   try {
-    let result: string;
     const useSession = await isSessionServerUp();
 
     if (useSession) {
+      // Session Server path — one-shot over HTTP (no partial stream today).
       console.log("  → via Session Server (persistent context)");
-      result = await processViaSession(job.prompt, job.page_context ? JSON.stringify(job.page_context) : undefined);
-    } else {
-      console.log("  → via claude -p (one-shot fallback)");
-      result = await processViaClaude(job.prompt);
+      const result = await processViaSession(
+        job.prompt,
+        job.page_context ? JSON.stringify(job.page_context) : undefined,
+      );
+      await sql`
+        UPDATE chat_jobs SET status = 'complete', result = ${result}, completed_at = now()
+        WHERE id = ${job.id}
+      `;
+      console.log(
+        `  Done: ${result.slice(0, 80)}${result.length > 80 ? "..." : ""}`,
+      );
+      return;
     }
 
+    // Streaming path — flush partials to chat_jobs.result every FLUSH_INTERVAL
+    // ms so the Orbit route can relay them to the browser as SSE deltas.
+    console.log("  → via claude -p --stream-json (live)");
+
+    const FLUSH_INTERVAL_MS = 400;
+    let pending: string | null = null;
+    let lastFlushed = "";
+    let flushTimer: NodeJS.Timeout | null = null;
+
+    const doFlush = async () => {
+      flushTimer = null;
+      if (pending === null || pending === lastFlushed) return;
+      const toWrite = pending;
+      lastFlushed = pending;
+      pending = null;
+      try {
+        await sql`
+          UPDATE chat_jobs SET result = ${toWrite}
+          WHERE id = ${job.id}
+        `;
+      } catch (err) {
+        console.error("  partial flush failed:", err);
+      }
+    };
+
+    const scheduleFlush = (text: string) => {
+      pending = text;
+      if (flushTimer) return;
+      flushTimer = setTimeout(() => {
+        void doFlush();
+      }, FLUSH_INTERVAL_MS);
+    };
+
+    const { text, final } = await processViaClaudeStreaming(job.prompt, scheduleFlush);
+
+    // Cancel any pending debounced flush — we're about to do the final write.
+    if (flushTimer) clearTimeout(flushTimer);
+
     await sql`
-      UPDATE chat_jobs SET status = 'complete', result = ${result}, completed_at = now()
+      UPDATE chat_jobs SET
+        status = 'complete',
+        result = ${text},
+        completed_at = now(),
+        model = ${final.model ?? null},
+        input_tokens = ${final.inputTokens ?? null},
+        output_tokens = ${final.outputTokens ?? null},
+        cost_usd = ${final.costUsd ?? null}
       WHERE id = ${job.id}
     `;
 
-    console.log(`  Done: ${result.slice(0, 80)}${result.length > 80 ? "..." : ""}`);
+    console.log(
+      `  Done: ${text.slice(0, 80)}${text.length > 80 ? "..." : ""}` +
+        (final.costUsd !== undefined ? ` · $${final.costUsd.toFixed(4)}` : "") +
+        (final.inputTokens !== undefined
+          ? ` · ${final.inputTokens}in/${final.outputTokens ?? "?"}out`
+          : ""),
+    );
   } catch (err) {
     const errorMsg = err instanceof Error ? err.message : String(err);
     console.error(`  Failed: ${errorMsg}`);
@@ -161,7 +324,7 @@ async function main() {
       "   WARNING: CLOUD_USER_HANDLE unset — claiming ALL jobs (dev mode)",
     );
   }
-  console.log(`   Session Server: ${sessionUp ? "✅ connected" : "❌ not running (fallback to claude -p)"}`);
+  console.log(`   Session Server: ${sessionUp ? "✅ connected" : "❌ not running (using claude -p streaming)"}`);
   console.log(`   Polling every ${POLL_INTERVAL / 1000}s...\n`);
 
   while (true) {

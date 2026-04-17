@@ -13,7 +13,7 @@ Orbit is the single dashboard that manages LP pipeline, roadshow prep, deal flow
 
 ## What Orbit Does
 
-### LP CRM
+### Orbit CRM
 - **Pipeline Kanban** — drag-drop LP organizations across 8 stages (prospect → committed)
 - **Organization profiles** — contacts, interaction history, pipeline stage, Brain note sync
 - **Contact directory** — people across all LP organizations

@@ -1,5 +1,5 @@
 /**
- * Brain Sync — bidirectional sync between Supabase LP CRM and Brain [People] notes.
+ * Brain Sync — bidirectional sync between Orbit and Brain [People] notes.
  *
  * Supabase owns: pipeline_stage, commitment amounts, contact info fields
  * Brain owns: narrative content (background, interests, detailed notes)

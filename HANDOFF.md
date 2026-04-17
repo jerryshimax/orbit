@@ -312,13 +312,13 @@ Design patterns from Google Stitch were ported into the React components. Refere
 
 ## Part 5: MCP Server
 
-The MCP server (`src/mcp/lp-crm-server.ts`) has been fully rewritten to use the universal schema. All 6 tools now query `organizations`, `people`, `opportunities`, etc.
+The MCP server (`src/mcp/orbit-server.ts`) has been fully rewritten to use the universal schema. All 6 tools now query `organizations`, `people`, `opportunities`, etc.
 
 The tool handlers are now in `src/lib/chat/tool-handlers.ts` — shared between the MCP server and the in-app chat API.
 
 **If you need to test the MCP server:**
 ```bash
-DATABASE_URL=... npx tsx src/mcp/lp-crm-server.ts
+DATABASE_URL=... npx tsx src/mcp/orbit-server.ts
 ```
 
 ---

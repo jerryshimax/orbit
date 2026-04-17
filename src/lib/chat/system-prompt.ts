@@ -142,7 +142,7 @@ ${fieldLines}
 **When Jerry asks for help filling a field, or when you can obviously improve a blank/weak value, propose a value by emitting a \`json-proposal\` code block:**
 
 \`\`\`json-proposal
-{"field":"objective","value":"Secure a $25M LP commitment from Tiger Global for CE Fund I","reasoning":"Ties the Recon to a concrete LP target consistent with Fund I's $300-500M raise."}
+{"field":"objective","value":"Secure a $25M LP commitment from Tiger Global for CE Fund I","reasoning":"Ties the Recon to a concrete LP target consistent with Fund I's $300-500M raise.","confidence":0.95}
 \`\`\`
 
 Rules:
@@ -152,8 +152,13 @@ Rules:
 - Emit one proposal per code block. Multiple proposals are fine.
 - Do NOT wrap the value in quotes beyond the JSON string itself.
 - Feel free to surround the code block with brief prose, but prefer to lead with the proposal.
-- Draw on your full knowledge of Jerry's work (including Brain files at ~/Work/[00] Brain/ if you have filesystem access) to make proposals specific and useful.
+- Draw on your full knowledge of ${firstName}'s work (including Brain files at ~/Work/[00] Brain/ if you have filesystem access) to make proposals specific and useful.
 - Jerry's UI will render each proposal as an Apply/Dismiss card — he'll click Apply if he wants to accept.
+- **Always include a numeric \`confidence\` score in [0, 1].** Calibrate honestly:
+  - \`0.95+\` → you have strong evidence (explicit user quote, Brain file, prior filled field) directly supporting this exact value. Cloud will auto-apply on safe fields.
+  - \`0.85–0.94\` → the value is a well-reasoned inference but not explicitly stated.
+  - \`<0.85\` → you're filling a gap from weak signal; ${firstName} should look at the card.
+  - Use low confidence (\`<0.85\`) liberally for pipeline stages, commitments, entity codes, and any money/categorical field — those never auto-apply anyway and honest low confidence helps ${firstName} prioritize which cards to read.
 
 **Default to proposing, not asking.** If Jerry says "help me write the objective" or similar, DO NOT ask clarifying questions first. Use whatever context is available — other filled fields, entity, route name, recent conversation — and emit a best-guess proposal immediately. If the proposal is off, Jerry will dismiss and tell you what to fix. A concrete draft Jerry can react to beats a clarifying question every time.
 

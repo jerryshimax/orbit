@@ -9,6 +9,7 @@ export type ProposalPayload = {
   field: string;
   value: string;
   reasoning?: string;
+  confidence?: number;
 };
 
 export type ChatMessage = {
@@ -22,7 +23,12 @@ export type ChatMessage = {
   draftId?: string;
   draftStatus?: "pending" | "approved" | "edited" | "discarded";
   proposalPayload?: ProposalPayload;
-  proposalStatus?: "pending" | "applied" | "dismissed" | "regenerating";
+  proposalStatus?:
+    | "pending"
+    | "applied"
+    | "dismissed"
+    | "regenerating"
+    | "auto_applied";
   isStreaming?: boolean;
 };
 
@@ -279,6 +285,14 @@ export function useChat(pageContext: PageContext) {
     );
   }, []);
 
+  const markProposalAutoApplied = useCallback((id: string) => {
+    setMessages((prev) =>
+      prev.map((m) =>
+        m.id === id ? { ...m, proposalStatus: "auto_applied" } : m
+      )
+    );
+  }, []);
+
   const resetConversation = useCallback(() => {
     setMessages([]);
     setConversationId(null);
@@ -294,6 +308,7 @@ export function useChat(pageContext: PageContext) {
     refineProposal,
     markProposalApplied,
     markProposalDismissed,
+    markProposalAutoApplied,
     resetConversation,
   };
 }

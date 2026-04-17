@@ -62,3 +62,36 @@ test("extractProposals: requires both field and value to be strings", () => {
   const { proposals } = extractProposals(raw);
   assert.equal(proposals.length, 0);
 });
+
+test("extractProposals: captures confidence when present in [0,1]", () => {
+  const raw = [
+    "```json-proposal",
+    `{"field":"objective","value":"Secure $25M","confidence":0.92}`,
+    "```",
+  ].join("\n");
+  const { proposals } = extractProposals(raw);
+  assert.equal(proposals.length, 1);
+  assert.equal(proposals[0].confidence, 0.92);
+});
+
+test("extractProposals: drops confidence outside [0,1]", () => {
+  const raw = [
+    "```json-proposal",
+    `{"field":"objective","value":"Secure $25M","confidence":5}`,
+    "```",
+  ].join("\n");
+  const { proposals } = extractProposals(raw);
+  assert.equal(proposals.length, 1);
+  assert.equal(proposals[0].confidence, undefined);
+});
+
+test("extractProposals: drops non-number confidence", () => {
+  const raw = [
+    "```json-proposal",
+    `{"field":"objective","value":"Secure $25M","confidence":"high"}`,
+    "```",
+  ].join("\n");
+  const { proposals } = extractProposals(raw);
+  assert.equal(proposals.length, 1);
+  assert.equal(proposals[0].confidence, undefined);
+});

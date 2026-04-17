@@ -26,6 +26,13 @@ import {
   and,
 } from "drizzle-orm";
 import * as schema from "../db/schema/index.js";
+import {
+  INTERACTION_SOURCES,
+  INTERACTION_TYPES,
+  ORG_TYPES,
+  PIPELINE_STAGE_KEYS,
+  RELATIONSHIP_STRENGTHS,
+} from "../lib/tools/enums.js";
 
 // ── DB Connection ──────────────────────────────────────────────────────────
 
@@ -139,27 +146,15 @@ server.tool(
   {
     contact_name: z.string().describe("Full name of the contact"),
     organization: z.string().describe("Organization name"),
-    interaction_type: z
-      .enum([
-        "meeting", "call", "email", "conference", "intro", "dd_session",
-        "deck_sent", "follow_up", "commitment", "note", "telegram_message",
-        "wechat_message", "site_visit", "dinner", "board_meeting",
-      ])
-      .describe("Type of interaction"),
+    interaction_type: z.enum(INTERACTION_TYPES).describe("Type of interaction"),
     summary: z.string().describe("Brief summary of the interaction"),
     team_member: z.string().describe("Who logged this (jerry, ray, matt, angel)"),
-    source: z
-      .enum(["telegram", "email", "meeting_transcript", "web", "brain_sync", "calendar", "manual", "cloud_bot", "wechat"])
-      .default("telegram").optional(),
-    org_type: z
-      .enum(["lp", "portfolio_company", "prospect", "strategic_partner", "developer", "manufacturer", "hyperscaler", "epc", "corporate", "other"])
-      .optional().describe("Organization type"),
+    source: z.enum(INTERACTION_SOURCES).default("telegram").optional(),
+    org_type: z.enum(ORG_TYPES).optional().describe("Organization type"),
     entity_code: z.string().optional().describe("Entity (CE, SYN, UUL)"),
     title: z.string().optional().describe("Contact's title"),
     location: z.string().optional(),
-    pipeline_stage: z
-      .enum(["prospect", "intro", "meeting", "dd", "soft_circle", "committed", "closed", "passed"])
-      .optional().describe("Set opportunity stage"),
+    pipeline_stage: z.enum(PIPELINE_STAGE_KEYS).optional().describe("Set opportunity stage"),
     target_commitment: z.string().optional().describe("Target commitment in millions USD"),
     email: z.string().optional(),
     wechat: z.string().optional(),
@@ -376,7 +371,7 @@ server.tool(
   "Move an organization's active opportunity to a new pipeline stage.",
   {
     organization: z.string().describe("Organization name"),
-    new_stage: z.enum(["prospect", "intro", "meeting", "dd", "soft_circle", "committed", "closed", "passed"]),
+    new_stage: z.enum(PIPELINE_STAGE_KEYS),
     changed_by: z.string().describe("Who made this change"),
     notes: z.string().optional(),
     actual_commitment: z.string().optional().describe("Actual commitment in millions (for committed/closed)"),
@@ -429,8 +424,8 @@ server.tool(
   "lp_search",
   "Search organizations by type, stage, staleness, or owner.",
   {
-    stage: z.enum(["prospect", "intro", "meeting", "dd", "soft_circle", "committed", "closed", "passed"]).optional(),
-    org_type: z.enum(["lp", "portfolio_company", "prospect", "strategic_partner", "developer", "manufacturer", "hyperscaler", "epc", "corporate", "other"]).optional(),
+    stage: z.enum(PIPELINE_STAGE_KEYS).optional(),
+    org_type: z.enum(ORG_TYPES).optional(),
     days_since_contact: z.number().optional(),
     relationship_owner: z.string().optional(),
     query: z.string().optional(),
@@ -609,8 +604,8 @@ server.tool(
     website: z.string().optional(),
     aum: z.string().optional(),
     target_commitment: z.string().optional(),
-    org_type: z.enum(["lp", "portfolio_company", "prospect", "strategic_partner", "developer", "manufacturer", "hyperscaler", "epc", "corporate", "other"]).optional(),
-    relationship_strength: z.enum(["strong", "medium", "weak", "cold"]).optional(),
+    org_type: z.enum(ORG_TYPES).optional(),
+    relationship_strength: z.enum(RELATIONSHIP_STRENGTHS).optional(),
     notes: z.string().optional(),
     tags: z.array(z.string()).optional(),
   },

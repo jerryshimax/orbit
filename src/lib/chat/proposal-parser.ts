@@ -15,6 +15,7 @@ export type ParsedProposal = {
   field: string;
   value: string;
   reasoning?: string;
+  confidence?: number;
 };
 
 const FENCE_RE = /```json-proposal\s*\n([\s\S]*?)\n```/g;
@@ -36,11 +37,18 @@ export function extractProposals(text: string): {
         typeof parsed.field === "string" &&
         typeof parsed.value === "string"
       ) {
+        const confidence =
+          typeof parsed.confidence === "number" &&
+          parsed.confidence >= 0 &&
+          parsed.confidence <= 1
+            ? parsed.confidence
+            : undefined;
         proposals.push({
           field: parsed.field,
           value: parsed.value,
           reasoning:
             typeof parsed.reasoning === "string" ? parsed.reasoning : undefined,
+          confidence,
         });
         return "";
       }
