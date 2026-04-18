@@ -8,6 +8,7 @@ import { EntitySwitcher } from "./entity-switcher";
 
 const PRIMARY_NAV = [
   { href: "/focus", icon: "target", label: "Focus" },
+  { href: "/research", icon: "labs", label: "Research" },
   { href: "/calendar", icon: "calendar_month", label: "Calendar" },
   { href: "/meetings", icon: "groups", label: "Meetings" },
   { href: "/recon", icon: "strategy", label: "Recon" },

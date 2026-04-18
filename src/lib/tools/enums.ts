@@ -82,9 +82,26 @@ export const RELATIONSHIP_STRENGTHS = ["strong", "medium", "weak", "cold"] as co
 
 export const ENTITY_CODES = ["CE", "SYN", "UUL", "FO"] as const;
 
+// ── Research / Nexus enums ──
+
+export const SUPPLY_CHAIN_RELATIONSHIPS = [
+  "supplier",
+  "customer",
+  "competitor",
+  "partner",
+  "investor",
+] as const;
+
+export const SUPPLY_CHAIN_POSITIONS = [
+  "upstream",
+  "midstream",
+  "downstream",
+] as const;
+
 export type PipelineStageKey = (typeof PIPELINE_STAGE_KEYS)[number];
 export type InteractionType = (typeof INTERACTION_TYPES)[number];
 export type InteractionSource = (typeof INTERACTION_SOURCES)[number];
 export type OrgType = (typeof ORG_TYPES)[number];
 export type RelationshipStrength = (typeof RELATIONSHIP_STRENGTHS)[number];
 export type EntityCode = (typeof ENTITY_CODES)[number];
+export type SupplyChainRelationship = (typeof SUPPLY_CHAIN_RELATIONSHIPS)[number];

@@ -149,3 +149,31 @@ export const draftStatusEnum = pgEnum("draft_status", [
   "edited",
   "discarded",
 ]);
+
+// ─── Research / Nexus enums ───
+
+export const supplyChainRelationshipEnum = pgEnum("supply_chain_relationship", [
+  "supplier",
+  "customer",
+  "competitor",
+  "partner",
+  "investor",
+]);
+
+export const signalSentimentEnum = pgEnum("signal_sentiment", [
+  "bullish",
+  "bearish",
+  "neutral",
+]);
+
+export const signalTypeEnum = pgEnum("signal_type", [
+  "pricing",
+  "capacity",
+  "order",
+  "policy",
+  "earnings",
+  "partnership",
+  "product",
+  "regulatory",
+  "other",
+]);

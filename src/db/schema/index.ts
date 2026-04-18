@@ -42,3 +42,8 @@ export * from "./ai-proposals";
 
 // Recon (strategic workspaces)
 export * from "./recon";
+
+// Research / Nexus (AI supply chain intelligence)
+export * from "./company-universe";
+export * from "./supply-chain-edges";
+export * from "./research-sessions";

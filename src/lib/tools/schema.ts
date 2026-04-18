@@ -20,6 +20,8 @@ import {
   ORG_TYPES,
   PIPELINE_STAGE_KEYS,
   RELATIONSHIP_STRENGTHS,
+  SUPPLY_CHAIN_RELATIONSHIPS,
+  SUPPLY_CHAIN_POSITIONS,
 } from "./enums";
 
 // ── Tool definition type ──────���───────────────────────────────────────────
@@ -154,6 +156,66 @@ export const TOOL_DEFS: ToolDef[] = [
     status: z.enum(["open", "done", "blocked"]).optional(),
   }),
 
+  // ── Research / Nexus ──
+  tool("identify_company", "Identify a public company by name (English or Chinese). Resolves tickers across A-share, HK, and US markets. Checks if already in the research universe.", {
+    query: z.string().describe("Company name, ticker, or Chinese name to identify"),
+  }),
+
+  tool("research_company", "Run deep research on a company. Fetches market data, Chinese supply chain news, existing Brain notes, and prior research. Returns structured data for analysis.", {
+    company_id: z.string().optional().describe("UUID from company_universe (if already identified)"),
+    name: z.string().optional().describe("Company name (if not yet in universe)"),
+    ticker: z.string().optional().describe("Any known ticker (e.g. '600590.SS', 'NVDA')"),
+    include_news: z.boolean().optional().describe("Fetch Chinese supply chain news (default true)"),
+    include_financials: z.boolean().optional().describe("Fetch financial data (default true)"),
+  }),
+
+  tool("arena_analysis", "Run multi-model adversarial analysis on a company. 3 AI models debate bull/bear thesis, risks, and price targets. Returns divergence map.", {
+    company_id: z.string().describe("UUID from company_universe"),
+    mode: z.enum(["quick", "full"]).optional().describe("quick = single round (~15s), full = 2-round adversarial (~5min). Default: quick"),
+    focus: z.string().optional().describe("Specific angle to analyze (e.g. 'CoWoS packaging capacity', 'export risk')"),
+  }),
+
+  tool("save_to_universe", "Save a researched company to the universe with supply chain relationships.", {
+    name: z.string().describe("English company name"),
+    name_zh: z.string().optional().describe("Chinese company name"),
+    ticker_primary: z.string().optional().describe("Primary ticker (e.g. '600590.SS')"),
+    tickers: z.object({
+      A: z.string().optional(),
+      HK: z.string().optional(),
+      US: z.string().optional(),
+    }).optional(),
+    sector: z.string().optional(),
+    sub_sector: z.string().optional(),
+    supply_chain_position: z.enum(SUPPLY_CHAIN_POSITIONS).optional(),
+    country: z.string().optional(),
+    exchange: z.string().optional(),
+    description: z.string().optional(),
+    description_zh: z.string().optional(),
+    relationships: z.array(z.object({
+      target_name: z.string().describe("Name of related company"),
+      type: z.enum(SUPPLY_CHAIN_RELATIONSHIPS),
+      description: z.string().optional(),
+      confidence: z.number().optional(),
+    })).optional().describe("Supply chain relationships to save"),
+  }),
+
+  tool("get_supply_chain", "Get supply chain relationships for a company. Returns suppliers, customers, competitors, and partners from the knowledge graph.", {
+    company_id: z.string().optional().describe("UUID from company_universe"),
+    company_name: z.string().optional().describe("Company name (fuzzy match)"),
+    relationship_type: z.enum(SUPPLY_CHAIN_RELATIONSHIPS).optional().describe("Filter by relationship type"),
+    depth: z.number().optional().describe("Graph traversal depth (default 1, max 3)"),
+  }),
+
+  tool("universe_search", "Search the research universe of tracked companies. Filter by sector, supply chain position, or free text.", {
+    query: z.string().optional().describe("Free text search on company name"),
+    sector: z.string().optional(),
+    sub_sector: z.string().optional(),
+    supply_chain_position: z.enum(SUPPLY_CHAIN_POSITIONS).optional(),
+    country: z.string().optional(),
+    limit: z.number().optional().describe("Max results (default 20)"),
+  }),
+
+  // ── CRM write tools ──
   tool("create_draft_record", "Create a draft of new CRM records for user approval. ALWAYS use this before creating or modifying data. Never write directly.", {
     records: z.array(
       z.object({

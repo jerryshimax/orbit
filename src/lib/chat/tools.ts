@@ -112,6 +112,33 @@ async function dispatchToolCall(
         ...(warnings.length > 0 ? { scope_warnings: warnings } : {}),
       };
     }
+
+    // ── Research / Nexus tools ──
+    case "identify_company": {
+      const research = await import("./research-handlers");
+      return research.handleIdentifyCompany(toolInput);
+    }
+    case "research_company": {
+      const research = await import("./research-handlers");
+      return research.handleResearchCompany(toolInput);
+    }
+    case "arena_analysis": {
+      const research = await import("./research-handlers");
+      return research.handleArenaAnalysis(toolInput);
+    }
+    case "save_to_universe": {
+      const research = await import("./research-handlers");
+      return research.handleSaveToUniverse(toolInput);
+    }
+    case "get_supply_chain": {
+      const research = await import("./research-handlers");
+      return research.handleGetSupplyChain(toolInput);
+    }
+    case "universe_search": {
+      const research = await import("./research-handlers");
+      return research.handleUniverseSearch(toolInput);
+    }
+
     default:
       return { error: `Unknown tool: ${toolName}` };
   }

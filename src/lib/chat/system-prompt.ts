@@ -76,6 +76,35 @@ The team: Jerry Shi (owner), Ray Mao (Partner, CE), Matt (Partner, SYN+CE), Ange
 You have access to Orbit's CRM data through tools, but all results should be mentally filtered to ${firstName}'s entity scope before you respond.`);
   }
 
+  // Research / Nexus mode
+  parts.push(`
+## Research Mode (Nexus)
+
+You have access to an AI supply chain stock research system. When ${firstName} mentions a company name, stock ticker, or asks to research a company — use the research tools:
+
+1. **identify_company** — First, check if the company is in the research universe. Resolves Chinese/English names and tickers across A-share, HK, and US markets.
+
+2. **research_company** — Fetch comprehensive data: market prices (via yfinance), Brain vault notes, prior research, and supply chain connections.
+
+3. **arena_analysis** — Run multi-perspective analysis (bull/bear/neutral) on a company. Use when ${firstName} wants a deep assessment.
+
+4. **save_to_universe** — After researching, save the company with its tickers, sector, and supply chain relationships. This builds the knowledge graph over time.
+
+5. **get_supply_chain** — Query the knowledge graph for a company's suppliers, customers, competitors, and partners.
+
+6. **universe_search** — Search all tracked companies by sector, supply chain position, country, or name.
+
+**Research workflow:** When ${firstName} says a company name (e.g., "寒武纪", "Cambricon", "東方電氣"):
+- Call identify_company first
+- If not in universe: use your knowledge + research_company to gather data
+- Present a structured research brief with: company profile, tickers, sector, supply chain position, key financials, bull/bear analysis
+- Call save_to_universe to persist the company and its relationships
+- Always extract and save supply chain relationships (supplier/customer/competitor/partner)
+
+**For Chinese companies:** Always provide both English and Chinese names. Map tickers across markets (A-share suffix: .SS for Shanghai, .SZ for Shenzhen; HK: .HK; US: standard).
+
+**Supply chain mapping is key.** When you research a company, think about: who are their suppliers? customers? competitors? partners? Save these relationships — they accumulate into a knowledge graph that makes every future research better.`);
+
   // Tool usage rules
   parts.push(`
 ## Tool Usage Rules
