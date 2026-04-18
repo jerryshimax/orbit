@@ -35,7 +35,7 @@ export default function ResearchPage() {
   const hasMessages = messages.length > 0;
 
   return (
-    <main className="flex flex-col h-[calc(100dvh-60px)] lg:h-dvh">
+    <main className="flex flex-col h-[calc(100dvh-136px-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] lg:h-dvh">
       {/* Header */}
       <div
         className="shrink-0 flex items-center justify-between px-4 md:px-8 py-4 border-b"
@@ -172,7 +172,7 @@ export default function ResearchPage() {
       </div>
 
       {/* Input */}
-      <div className="shrink-0 px-4 md:px-8 py-4 max-w-3xl mx-auto w-full">
+      <div className="shrink-0 md:px-8 md:py-4 max-w-3xl mx-auto w-full">
         <ChatInput
           onSend={(text, attachments) =>
             sendMessage(text, attachments ? { attachments } : undefined)
