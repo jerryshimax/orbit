@@ -21,7 +21,7 @@ cp ~/Ship/ce/orbit/com.cloud.orbit-stale-check.plist ~/Library/LaunchAgents/
 cp ~/Ship/ce/orbit/com.cloud.orbit-weekly-summary.plist ~/Library/LaunchAgents/
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cloud.orbit-stale-check.plist
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cloud.orbit-weekly-summary.plist
-echo "  Daily stale LP check: 9:00 AM"
+echo "  Daily stale pipeline check: 9:00 AM"
 echo "  Weekly pipeline summary: Mondays 8:00 AM"
 
 # 3. Register MCP server in .claude.json as "orbit"
@@ -50,4 +50,4 @@ mkdir -p ~/Ship/ce/orbit/logs
 echo ""
 echo "=== Done ==="
 echo "Restart Claude Code for the MCP server to take effect."
-echo "Test: message Cloud on TG with 'LP status'"
+echo "Test: message Cloud on TG with 'Orbit pipeline status'"
